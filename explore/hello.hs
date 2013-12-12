@@ -8,6 +8,7 @@ u = [1..10]
 -- We define x0 = 1 for convenience
 
 x = 1 : [1..10]
+y = 1 : [0, 10..100]
 
 -- n is the number of features
 let n = length x
