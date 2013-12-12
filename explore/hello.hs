@@ -1,7 +1,6 @@
 module Main where
 
 addition a b = a + b
-u = [1..10]
 
 
 -- x is the feature matrix
@@ -11,10 +10,15 @@ x = 1 : [1..10]
 y = 1 : [0, 10..100]
 
 -- n is the number of features
-let n = length x
+n = length x
+
+
+triangles = [ (a,b,c) | c <- [1..10], b <- [1..10], a <- [1..10] ]
+rightTriangles = [ (a,b,c) | c <- [1..10], b <- [1..c], a <- [1..b], a^2 + b^2 == c^2]
+rightTriangles' = [ (a,b,c) | c <- [1..10], b <- [1..c], a <- [1..b], a^2 + b^2 == c^2, a+b+c == 24]
+
+
 
 main :: IO ()
-main = do let z = addition 5 3
+main = do let z = rightTriangles'
           putStrLn $ "The result is: " ++ show z
-
---main = putStrLn "Hello, World!"
