@@ -1,0 +1,34 @@
+The prime factors of 13195 are 5, 7, 13 and 29.
+
+What is the largest prime factor of the number 600,851,475,143 ?
+    (It currently only works on numbers up to 4,294,967,296)
+
+
+
+
+* How do I find factors
+    if a number t / x has no remainder,
+        then it is a factor
+
+    so the list of all of these
+    excluding 1 and itself
+
+
+* How do I find out if a number is prime
+    well... it has no factors,
+        excluding 1 and itself
+
+
+* should i cache things?
+
+
+"Prime Factorization" is finding which prime numbers multiply together to make the original number.
+
+
+"Factor Tree" can help:
+    find any factors of the number,
+    then the factors of those numbers,
+    etc, until we can't factor any more.
+
+It is like the Prime Numbers are the basic building blocks of all numbers.
+
