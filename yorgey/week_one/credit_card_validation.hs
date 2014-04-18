@@ -1,13 +1,6 @@
 -- credit cards
 
 
---a = [1, 2]
---b = [20, 40, 60]
---result = [ x * y | x <- a, y <- b ]
-
-
-
-
 -- convert positive integers to a list of digits
 -- for 0, or negetive inputs, it should return the empty list
 -- toDigits 1234 == [1,2,3,4]
@@ -40,14 +33,19 @@ sumDigits :: [Integer] -> Integer
 sumDigits seq = sum ( [ sum (toDigits x) | x <- seq ] )
 
 
+-- indicates whether an Integer could be a valid credit card
+-- process is
+-- first do the doubling
+-- add the doubled and undoubled numbers
+-- calculate the remainder when divided by 10
+-- if the remainder is zero, then the card is valid
+-- validate 4012888888881881 = True
+-- validate 4012888888881882 = False
+validate :: Integer -> Bool
+validate x = sumDigits (doubleEveryOther (toDigits x)) `mod` 10 == 0
 
---result = toDigits (-1)
 
-x = toDigitsRev (12345)
---result = doubleEveryOther x
---result = doubleEveryOther [1, 2, 3]
---result = doubleEveryOther [1, 2, 3, 4, 5]
-result = sumDigits [1, 2, 33, 4, 5]
+result = validate 4012888888881881
 
 
 
