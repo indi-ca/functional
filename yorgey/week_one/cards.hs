@@ -34,12 +34,20 @@ doubleEveryOther x
     | otherwise          = doubleEveryOther (init (init x)) ++ doubleEveryOther [last (init x), last x]
 
 
+-- the output of doubleEveryOther has a mix of one digit and two digit numbers
+-- sumDigits [16,7,12,5] = 1 + 6 + 7 + 1 + 2 + 5 = 22
+sumDigits :: [Integer] -> Integer
+sumDigits seq = sum ( [ sum (toDigits x) | x <- seq ] )
+
+
+
 --result = toDigits (-1)
 
 x = toDigitsRev (12345)
 --result = doubleEveryOther x
 --result = doubleEveryOther [1, 2, 3]
-result = doubleEveryOther [1, 2, 3, 4, 5]
+--result = doubleEveryOther [1, 2, 3, 4, 5]
+result = sumDigits [1, 2, 33, 4, 5]
 
 
 
