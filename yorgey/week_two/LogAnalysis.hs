@@ -11,55 +11,43 @@ import Log
 -- parseMessage "I 29 la la la" == LogMessage Info 29 "la la la"
 -- parseMessage "This is not in the right format" == Unknown "This is not in the right format"
 
---parseMessage :: String -> LogMessage
---parseMessage k sev time text = LogMessage Info time text
+
+
+--makeWords :: String -> [String]
+--makeWords x = words x
+
+--parseRest :: [String] -> (TimeStamp, String)
+--parseRest (x:xs) = (read x :: Int, unwords xs)
+
+
+-- What are all things wrong with this?
+-- If there is no timestamp, or it cannot be parsed then it will fail
+-- If there is no text afterwards, then it will fail
+getLogMessage :: [String] -> LogMessage
+getLogMessage [] = Unknown ""
+getLogMessage (x:y:ys)
+    | x == "I" = LogMessage Info (timestamp (y:ys)) (text (y:ys))
+    | x == "W" = LogMessage Warning (timestamp (y:ys)) (text (y:ys))
+    | x == "E" = LogMessage (Error (severity y)) (timestamp ys) (text ys)
+    | otherwise = Unknown (unwords (x:y:ys))
+    where timestamp xs = read (head xs) :: Int
+          text xs = unwords (tail xs)
+          severity s = read s :: Int
+getLogMessage x = Unknown (unwords x)
+
+-- How do I integrate this function with the one above
+parseMessage :: String -> LogMessage
+parseMessage x = getLogMessage (words x)
+
+
 
 
 
 -- Can parse the entire file
 parse :: String -> [LogMessage]
-parse _ = [LogMessage Info 29 "la la la"]
+parse x = map parseMessage (lines x)
 
 --
 --testParse parse 10 "error.log"
-
-
-makeWords :: String -> [String]
-makeWords x = words x
-
-parseRest :: [String] -> (TimeStamp, String)
-parseRest (x:xs) = (read x :: Int, unwords xs)
-
-getMessageType :: [String] -> MessageType
-getMessageType (x:y:_)
-    | x == "I" = Info
-    | x == "W" = Warning
-    | x == "E" = Error (read y :: Int)
-
-
-j = "45"
-js = ["hello", "bob"]
-
-
-
-getLogMessage :: [String] -> LogMessage
-getLogMessage (x:y:ys)
-    | x == "I" = LogMessage Info (fst (parseRest (y : ys))) (snd (parseRest (y : ys)))
-    | x == "W" = LogMessage Warning (fst (parseRest (y : ys))) (snd (parseRest (y : ys)))
-    | x == "E" = LogMessage (Error (read y :: Int)) (fst (parseRest ys)) (snd (parseRest ys))
-    | otherwise = Unknown (unwords (x:y:ys))
-
-parseMessage :: String -> LogMessage
-parseMessage x = getLogMessage (words x)
-
-
-input = makeWords "E 6 Completed armadillo processing"
-doMatch = getMessageType input
-
-
-a_message = LogMessage Info 3 "This is the message"
-b_message = Unknown "This is Unknown"
-
-
-baz :: LogMessage -> String
-baz p@(LogMessage n _ _) = "The MessageType is " ++ show p ++ " -----> " ++ show n
+--testParse parse 100 "error.log"
+--testParse parse 5523 "error.log"
