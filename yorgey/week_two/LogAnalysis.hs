@@ -40,9 +40,6 @@ parseMessage :: String -> LogMessage
 parseMessage x = getLogMessage (words x)
 
 
-
-
-
 -- Can parse the entire file
 parse :: String -> [LogMessage]
 parse x = map parseMessage (lines x)
@@ -51,3 +48,53 @@ parse x = map parseMessage (lines x)
 --testParse parse 10 "error.log"
 --testParse parse 100 "error.log"
 --testParse parse 5523 "error.log"
+
+
+message_one :: LogMessage
+message_one = LogMessage Info 10  "This is message one"
+
+message_two :: LogMessage
+message_two = LogMessage Info 10  "This is message two"
+
+
+test_tree = Node Leaf (LogMessage Info 10  "This is a message") Leaf
+
+
+-- which inserts a new LogMessage into an existing MessageTree, producing a new MessageTree.
+-- insert may assume that it is given a sorted MessageTree,
+-- and must produce a new sorted MessageTree containing the new LogMessage
+-- in addition to the contents of the original MessageTree.
+-- However, note that if insert is given a LogMessage which is Unknown,
+-- it should return the MessageTree unchanged.
+insert :: LogMessage -> MessageTree -> MessageTree
+insert (Unknown _) tree = tree
+insert (LogMessage _ timestamp _) tree = tree
+
+
+-- returns a branch to walk down
+decider :: TimeStamp -> MessageTree -> MessageTree
+decider _ Leaf = error "The decider should never be given a leaf"
+decider _ (Node _ (Unknown _) _) = error "There should be no unknowns in the tree"
+decider t1 (Node left (LogMessage _ t2 _) right)
+    | t1 < t2 = left
+    | t1 > t2 = right
+    | otherwise = left
+
+--walker :: TimeStamp -> MessageTree -> MessageTree
+--walker _ Leaf = error "The walker does not walk leaves"
+--walker x (Node left (LogMessage _ node_t _) right)
+--    | (node_t > x) & (left == Leaf) =
+--    | x > node_t &
+
+
+-- These functions replaces the current tree with a new one
+insertLeft :: LogMessage -> MessageTree -> MessageTree
+insertLeft _ Leaf = error "Cannot insert left into a leaf"
+insertLeft incoming (Node _ m right) = Node (Node Leaf incoming Leaf) m right
+
+insertRight :: LogMessage -> MessageTree -> MessageTree
+insertRight _ Leaf = error "Cannot insert right into a leaf"
+insertRight incoming (Node left m _) = Node left m (Node Leaf incoming Leaf)
+
+
+
