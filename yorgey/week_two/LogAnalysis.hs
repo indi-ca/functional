@@ -54,10 +54,13 @@ message_one :: LogMessage
 message_one = LogMessage Info 10  "This is message one"
 
 message_two :: LogMessage
-message_two = LogMessage Info 10  "This is message two"
+message_two = LogMessage Info 20  "This is message two"
+
+message_three :: LogMessage
+message_three = LogMessage Info 5  "This is message three"
 
 
-test_tree = Node Leaf (LogMessage Info 10  "This is a message") Leaf
+tree = Node Leaf message_one Leaf
 
 
 -- which inserts a new LogMessage into an existing MessageTree, producing a new MessageTree.
@@ -72,10 +75,10 @@ insert (LogMessage _ timestamp _) tree = tree
 
 
 -- returns a branch to walk down
-decider :: TimeStamp -> MessageTree -> MessageTree
-decider _ Leaf = error "The decider should never be given a leaf"
-decider _ (Node _ (Unknown _) _) = error "There should be no unknowns in the tree"
-decider t1 (Node left (LogMessage _ t2 _) right)
+chooser :: TimeStamp -> MessageTree -> MessageTree
+chooser _ Leaf = error "The chooser should never be given a leaf"
+chooser _ (Node _ (Unknown _) _) = error "There should be no unknowns in the tree"
+chooser t1 (Node left (LogMessage _ t2 _) right)
     | t1 < t2 = left
     | t1 > t2 = right
     | otherwise = left
@@ -96,5 +99,10 @@ insertRight :: LogMessage -> MessageTree -> MessageTree
 insertRight _ Leaf = error "Cannot insert right into a leaf"
 insertRight incoming (Node left m _) = Node left m (Node Leaf incoming Leaf)
 
+
+insertAgain :: LogMessage -> MessageTree -> MessageTree
+insertAgain (LogMessage m1 x text1) (Node left (LogMessage mtype node_t text ) right)
+    | (node_t > x) && (left == Leaf) = insertLeft (LogMessage m1 x text1) (Node left (LogMessage mtype node_t text ) right)
+    | (node_t < x) && (right == Leaf) = insertRight (LogMessage m1 x text1) (Node left (LogMessage mtype node_t text ) right)
 
 
