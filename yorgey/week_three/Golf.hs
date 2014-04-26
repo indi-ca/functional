@@ -2,7 +2,7 @@
 
 module Golf where
 
-
+import Data.List
 
 -- Skips
 -- The output is a list of lists
@@ -18,14 +18,23 @@ module Golf where
 
 -- the output should be the same length as the input
 
-f :: a -> [a]
-f x = [x, x, x]
+
+--mask x n = [1, x+1..n]
+
+
+-- I might need an accumulator now
+f :: (a, b) -> a
+f (x, y) = x
+
 
 skips :: [a] -> [[a]]
 skips [] = []
-skips x = map f x
+skips x = map f source
+    where source = zip (replicate (length x) x) ([1..(length x)])
 
+a_list = "ABCD"
 
+--temp = elemIndex "A" a_list
 
 
 
@@ -59,10 +68,12 @@ localMaxima a = a
 
 
 
---which takes as input a list of Integers between 0 and 9 (inclusive),
---and outputs a vertical histogram showing how many of each number were in the input list.
---You may assume that the input list does not contain any numbers less than zero
---or greater than 9 (that is, it does not matter what your function does if the input does contain such numbers). Your output must exactly match the output shown in the examples below.
+-- which takes as input a list of Integers between 0 and 9 (inclusive),
+-- and outputs a vertical histogram showing how many of each number were in the input list.
+-- You may assume that the input list does not contain any numbers less than zero
+-- or greater than 9
+-- (that is, it does not matter what your function does if the input does contain such numbers).
+-- Your output must exactly match the output shown in the examples below.
 
 -- histogram [1,1,1,5] ==
 -- *
@@ -86,7 +97,11 @@ localMaxima a = a
 -- "   * *    \n==========\n0123456789\n"
 
 -- This is a textual representation of the String output,
--- including \n escape sequences to indicate newline characters. To actually visualize the histogram as in the examples above, use putStr, for example, putStr (histogram [3,5]).
+-- including \n escape sequences to indicate newline characters.
+-- To actually visualize the histogram as in the examples above, use putStr,
+-- for example, putStr (histogram [3,5]).
 
 histogram :: [Integer] -> String
 histogram a = "bob"
+
+-- might have to do a transpose
