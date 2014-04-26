@@ -10,16 +10,29 @@ module Golf where
 -- The second list in the output should contain every second element from the input list
 -- and the nth list in the output should contain every nth element
 
---skips "ABCD"
---skips "hello!"
---skips [1]
---skips [True,False] == [[True,False], [False]]
---skips []           == []
+-- skips "ABCD"       == ["ABCD", "BD", "C", "D"]
+-- skips "hello!"     == ["hello!", "el!", "l!", "l", "o", "!"]
+-- skips [1]          == [[1]]
+-- skips [True,False] == [[True,False], [False]]
+-- skips []           == []
 
 -- the output should be the same length as the input
 
+f :: a -> [a]
+f x = [x, x, x]
+
 skips :: [a] -> [[a]]
 skips [] = []
+skips x = map f x
+
+
+
+
+
+
+
+
+
 
 
 
@@ -38,34 +51,42 @@ skips [] = []
 --localMaxima [1,2,3,4,5] == []
 
 localMaxima :: [Integer] -> [Integer]
+localMaxima a = a
+
+
+
+
 
 
 
 --which takes as input a list of Integers between 0 and 9 (inclusive),
 --and outputs a vertical histogram showing how many of each number were in the input list.
---You may assume that the input list does not contain any numbers less than zero or greater than 9 (that is, it does not matter what your function does if the input does contain such numbers). Your output must exactly match the output shown in the examples below.
+--You may assume that the input list does not contain any numbers less than zero
+--or greater than 9 (that is, it does not matter what your function does if the input does contain such numbers). Your output must exactly match the output shown in the examples below.
 
---histogram [1,1,1,5] ==
+-- histogram [1,1,1,5] ==
 -- *
 -- *
 -- *   *
---==========
---0123456789
+-- ==========
+-- 0123456789
 
 
---histogram [1,4,5,4,6,6,3,4,2,4,9] ==
---    *
---    *
---    * *
--- ******  *
---==========
---0123456789
+-- histogram [1,4,5,4,6,6,3,4,2,4,9] ==
+--     *
+--     *
+--     * *
+--  ******  *
+-- ==========
+-- 0123456789
 
 
---Important note: If you type something like histogram [3,5] at the ghci prompt, you should see something like this:
+-- Important note: If you type something like histogram [3,5] at the ghci prompt,
+-- you should see something like this:
 -- "   * *    \n==========\n0123456789\n"
 
---This is a textual representation of the String output, including \n escape sequences to indicate newline characters. To actually visualize the histogram as in the examples above, use putStr, for example, putStr (histogram [3,5]).
+-- This is a textual representation of the String output,
+-- including \n escape sequences to indicate newline characters. To actually visualize the histogram as in the examples above, use putStr, for example, putStr (histogram [3,5]).
 
 histogram :: [Integer] -> String
-
+histogram a = "bob"
