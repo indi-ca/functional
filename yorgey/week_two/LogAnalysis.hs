@@ -54,11 +54,15 @@ message_one :: LogMessage
 message_one = LogMessage Info 10  "This is message one"
 
 message_two :: LogMessage
-message_two = LogMessage Info 10  "This is message two"
+message_two = LogMessage Info 20  "This is message two"
+
+message_three :: LogMessage
+message_three = LogMessage Info 5  "This is message three"
 
 
-test_tree = Node Leaf (LogMessage Info 10  "This is a message") Leaf
+a_tree = Node Leaf message_one Leaf
 
+some_logs = testParse parse 5 "error.log"
 
 -- which inserts a new LogMessage into an existing MessageTree, producing a new MessageTree.
 -- insert may assume that it is given a sorted MessageTree,
@@ -66,25 +70,9 @@ test_tree = Node Leaf (LogMessage Info 10  "This is a message") Leaf
 -- in addition to the contents of the original MessageTree.
 -- However, note that if insert is given a LogMessage which is Unknown,
 -- it should return the MessageTree unchanged.
-insert :: LogMessage -> MessageTree -> MessageTree
-insert (Unknown _) tree = tree
-insert (LogMessage _ timestamp _) tree = tree
 
 
--- returns a branch to walk down
-decider :: TimeStamp -> MessageTree -> MessageTree
-decider _ Leaf = error "The decider should never be given a leaf"
-decider _ (Node _ (Unknown _) _) = error "There should be no unknowns in the tree"
-decider t1 (Node left (LogMessage _ t2 _) right)
-    | t1 < t2 = left
-    | t1 > t2 = right
-    | otherwise = left
 
---walker :: TimeStamp -> MessageTree -> MessageTree
---walker _ Leaf = error "The walker does not walk leaves"
---walker x (Node left (LogMessage _ node_t _) right)
---    | (node_t > x) & (left == Leaf) =
---    | x > node_t &
 
 
 -- These functions replaces the current tree with a new one
@@ -95,6 +83,23 @@ insertLeft incoming (Node _ m right) = Node (Node Leaf incoming Leaf) m right
 insertRight :: LogMessage -> MessageTree -> MessageTree
 insertRight _ Leaf = error "Cannot insert right into a leaf"
 insertRight incoming (Node left m _) = Node left m (Node Leaf incoming Leaf)
+
+
+insert :: LogMessage -> MessageTree -> MessageTree
+insert (Unknown _) tree = tree
+insert (LogMessage m1 x text1) Leaf = Node Leaf (LogMessage m1 x text1) Leaf
+insert (LogMessage m1 x text1) (Node left (LogMessage mtype node_t text ) right)
+    | (node_t >= x) && (left == Leaf) = insertLeft (LogMessage m1 x text1) (Node left (LogMessage mtype node_t text ) right)
+    | (node_t >= x) = insert (LogMessage m1 x text1) (left)
+    | (node_t < x) && (right == Leaf) = insertRight (LogMessage m1 x text1) (Node left (LogMessage mtype node_t text ) right)
+    | (node_t < x) = insert (LogMessage m1 x text1) (right)
+
+
+
+-- build a message tree
+-- begins with a leaf
+build ::  [LogMessage] -> MessageTree
+build x = insert (head x) Leaf
 
 
 
