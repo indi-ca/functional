@@ -19,41 +19,24 @@ import Data.List
 -- the output should be the same length as the input
 
 
---mask x n = [1, x+1..n]
 
 
-s x y = [y, y+y.. 4]
-
-g x y = y !! x
-
--- I might need an accumulator now
---f :: (a, b) -> a
-f (x, y) = x
-    where s = length x
-          z = [y, y+y.. length x]
-
-
-skips :: [a] -> [[a]]
-skips [] = []
-skips x = map f source
-    where source = zip (replicate (length x) x) ([1..(length x)])
-
-a_list = "ABCD"
-
---temp = elemIndex "A" a_list
-
-
-a = [1..10]
-
-
-scatter :: [t] -> Int -> [t]
-scatter x n = [x | (x,y) <- zipped, y == True ]
+scatter :: Int -> [t] -> [t]
+scatter n x = [x | (x,y) <- zipped, y == True ]
     where zipped = zip (x) (mask n (length x))
 
+scatter' :: ([t], Int) -> [t]
+scatter' (x, n) = [x | (x,y) <- zipped, y == True ]
+    where zipped = zip (x) (mask n (length x))
 
 mask :: Int -> Int -> [Bool]
 mask n l = take l (cycle pattern)
     where pattern = (replicate (n-1) (False)) ++ [True]
+
+skips x = map scatter' (source x)
+    where source x = zip (replicate (length x) x) ([1..(length x)])
+
+
 
 
 -- Local Maxima
