@@ -38,6 +38,22 @@ skips x = map scatter' (source x)
 
 
 
+-- Try a different perspective
+-- Create a function that creates a function for each item
+
+--a = [1..10]
+a = [2,9,5,6,1]
+
+
+
+generator :: [t] -> Int ->  [t]
+generator xs n = xs
+
+
+some_func xs = map gen source
+    where gen = generator xs
+          source = [1.. (length xs)]
+
 
 -- Local Maxima
 -- A local maximum of a list
@@ -57,6 +73,16 @@ localMaxima :: [Integer] -> [Integer]
 localMaxima a = a
 
 
+local [] = []
+
+
+
+something xs = zip (replicate (length xs) xs) indexes
+    where indexes = [0..((length xs) - 1)]
+
+
+doit xs = map subsets (something xs)
+    where subsets (xs, n) = take 3 (drop n xs)
 
 
 
