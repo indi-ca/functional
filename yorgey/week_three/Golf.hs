@@ -45,10 +45,8 @@ skips x = map scatter' (source x)
 a = [2,9,5,6,1]
 
 
-
 generator :: [t] -> Int ->  [t]
 generator xs n = xs
-
 
 some_func xs = map gen source
     where gen = generator xs
@@ -69,22 +67,30 @@ some_func xs = map gen source
 --localMaxima [2,3,4,1,5] == [4]
 --localMaxima [1,2,3,4,5] == []
 
-localMaxima :: [Integer] -> [Integer]
-localMaxima a = a
+f :: Ord t => t -> t -> t -> [t]
+f a b c
+    | b > a && b > c = [b]
+    | otherwise = []
 
-
+ --[x, head xs, last xs]
+ --This is the local function that support localMaxima
+local :: Ord a => [a] -> [a]
 local [] = []
+local s@(x:xs)
+    | length s == 3 = f x (head xs) (last xs)
+    | otherwise = []
 
 
-
-something xs = zip (replicate (length xs) xs) indexes
+prepr :: [a] -> [([a], Int)]
+prepr xs = zip (replicate (length xs) xs) indexes
     where indexes = [0..((length xs) - 1)]
 
-
-doit xs = map subsets (something xs)
+source :: [a] -> [[a]]
+source xs = map subsets (prepr xs)
     where subsets (xs, n) = take 3 (drop n xs)
 
-
+localMaxima :: [Integer] -> [Integer]
+localMaxima xs = concat (map local (source xs))
 
 
 
