@@ -127,6 +127,16 @@ localMaxima xs = concat (map local (source xs))
 -- To actually visualize the histogram as in the examples above, use putStr,
 -- for example, putStr (histogram [3,5]).
 
+--replaceInList :: Int -> a -> [a] -> [a]
+replaceInList n newVal (x:xs)
+     | n == 0 = newVal:xs
+     | otherwise = x:replaceInList (n-1) newVal xs
+
+
+--increment :: Int -> [Int] -> [Int]
+increment n xs = replaceInList n ((xs !! n) + 1) xs
+
+
 histogram :: [Integer] -> String
 histogram a = "bob"
 
