@@ -19,8 +19,6 @@ import Data.List
 -- the output should be the same length as the input
 
 
-
-
 scatter :: Int -> [t] -> [t]
 scatter n x = [x | (x,y) <- zipped, y == True ]
     where zipped = zip (x) (mask n (length x))
@@ -42,8 +40,8 @@ skips x = map scatter' (source x)
 -- Create a function that creates a function for each item
 
 --a = [1..10]
-a = [2,9,5,6,1]
-
+a = [1,4,5,4,6,6,3,4,2,4,9]
+h = replicate 10 0
 
 generator :: [t] -> Int ->  [t]
 generator xs n = xs
@@ -133,9 +131,29 @@ replaceInList n newVal (x:xs)
      | otherwise = x:replaceInList (n-1) newVal xs
 
 
---increment :: Int -> [Int] -> [Int]
+increment :: Int -> [Int] -> [Int]
 increment n xs = replaceInList n ((xs !! n) + 1) xs
 
+-- takes a list of numbers, and a histogram, and returns a histogram
+recursive :: [Int] -> [Int] -> [Int]
+recursive [] hist = hist
+recursive (x:xs) hist = recursive xs (increment x hist)
+
+
+--maximum' :: [a] -> a
+
+render :: Int -> [Char]
+render x = replicate x '*' ++ replicate (10 - x) ' '
+
+do_something = recursive a h
+
+
+another_thing = map render (recursive a h)
+
+someF :: [Char] -> [Char]
+someF x = x ++ "\n"
+
+finally = concatMap someF (reverse (transpose another_thing))
 
 histogram :: [Integer] -> String
 histogram a = "bob"
