@@ -40,15 +40,15 @@ skips x = map scatter' (source x)
 -- Create a function that creates a function for each item
 
 --a = [1..10]
-a = [1,4,5,4,6,6,3,4,2,4,9]
-h = replicate 10 0
+--a = [1,4,5,4,6,6,3,4,2,4,9]
+--h = replicate 10 0
 
-generator :: [t] -> Int ->  [t]
-generator xs n = xs
+--generator :: [t] -> Int ->  [t]
+--generator xs n = xs
 
-some_func xs = map gen source
-    where gen = generator xs
-          source = [1.. (length xs)]
+--some_func xs = map gen source
+--    where gen = generator xs
+--          source = [1.. (length xs)]
 
 
 -- Local Maxima
@@ -125,11 +125,10 @@ localMaxima xs = concat (map local (source xs))
 -- To actually visualize the histogram as in the examples above, use putStr,
 -- for example, putStr (histogram [3,5]).
 
---replaceInList :: Int -> a -> [a] -> [a]
+replaceInList :: Int -> a -> [a] -> [a]
 replaceInList n newVal (x:xs)
      | n == 0 = newVal:xs
      | otherwise = x:replaceInList (n-1) newVal xs
-
 
 increment :: Int -> [Int] -> [Int]
 increment n xs = replaceInList n ((xs !! n) + 1) xs
@@ -139,34 +138,26 @@ hister :: [Int] -> [Int] -> [Int]
 hister [] hist = hist
 hister (x:xs) hist = hister xs (increment x hist)
 
-
 -- a value, and a max padding
 render :: Int -> Int -> [Char]
 render m x = replicate x '*' ++ replicate (m - x) ' '
 
-
 -- Note, how I can reference source before I have defined it
 -- Note, to avoid tuples, I can partially apply a function
-drawLines = map render' source
-    where render' = render (maximum source)
-          source = hister a h
-
 finalDrawLines xs = map render' xs
     where render' = render (maximum xs)
 
 
-
-finally = concatMap (\x -> x ++ "\n") rendered ++ "==========\n" ++ "0123456789\n"
-    where rendered = (reverse (transpose drawLines))
-
-
-finalRender :: [Int] -> [Char]
-finalRender xs = concatMap (\x -> x ++ "\n") serialized ++ "==========\n" ++ "0123456789\n"
+renderHistogram :: [Int] -> [Char]
+renderHistogram xs = concatMap (\x -> x ++ "\n") serialized ++ "==========\n" ++ "0123456789\n"
     where serialized = reverse (transpose (finalDrawLines xs))
 
+-- I cheated here
+convert :: [Integer] -> [Int]
+convert xs = map (\x -> fromIntegral x :: Int) xs
 
-histogram :: [Int] -> String
-histogram xs = finalRender source
-    where source = hister xs h
+histogram :: [Integer] -> String
+histogram xs = renderHistogram source
+    where source = hister (convert xs) h
 
--- might have to do a transpose
+
