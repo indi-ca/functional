@@ -142,18 +142,25 @@ recursive (x:xs) hist = recursive xs (increment x hist)
 
 --maximum' :: [a] -> a
 
-render :: Int -> [Char]
-render x = replicate x '*' ++ replicate (10 - x) ' '
+-- a value, and a max padding
+render :: Int -> Int -> [Char]
+render m x = replicate x '*' ++ replicate (m - x) ' '
 
 do_something = recursive a h
 
 
-another_thing = map render (recursive a h)
+
+-- Note, how I can reference source before I have defined it
+another_thing = map render' source
+    where render' = render (maximum source)
+          source = recursive a h
+
+
 
 someF :: [Char] -> [Char]
 someF x = x ++ "\n"
 
-finally = concatMap someF (reverse (transpose another_thing))
+finally = concatMap someF (reverse (transpose another_thing)) ++ "==========\n" ++ "0123456789\n"
 
 histogram :: [Integer] -> String
 histogram a = "bob"
