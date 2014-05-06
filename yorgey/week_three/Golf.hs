@@ -135,34 +135,38 @@ increment :: Int -> [Int] -> [Int]
 increment n xs = replaceInList n ((xs !! n) + 1) xs
 
 -- takes a list of numbers, and a histogram, and returns a histogram
-recursive :: [Int] -> [Int] -> [Int]
-recursive [] hist = hist
-recursive (x:xs) hist = recursive xs (increment x hist)
+hister :: [Int] -> [Int] -> [Int]
+hister [] hist = hist
+hister (x:xs) hist = hister xs (increment x hist)
 
-
---maximum' :: [a] -> a
 
 -- a value, and a max padding
 render :: Int -> Int -> [Char]
 render m x = replicate x '*' ++ replicate (m - x) ' '
 
-do_something = recursive a h
-
-
 
 -- Note, how I can reference source before I have defined it
-another_thing = map render' source
+-- Note, to avoid tuples, I can partially apply a function
+drawLines = map render' source
     where render' = render (maximum source)
-          source = recursive a h
+          source = hister a h
+
+finalDrawLines xs = map render' xs
+    where render' = render (maximum xs)
 
 
 
-someF :: [Char] -> [Char]
-someF x = x ++ "\n"
+finally = concatMap (\x -> x ++ "\n") rendered ++ "==========\n" ++ "0123456789\n"
+    where rendered = (reverse (transpose drawLines))
 
-finally = concatMap someF (reverse (transpose another_thing)) ++ "==========\n" ++ "0123456789\n"
 
-histogram :: [Integer] -> String
-histogram a = "bob"
+finalRender :: [Int] -> [Char]
+finalRender xs = concatMap (\x -> x ++ "\n") serialized ++ "==========\n" ++ "0123456789\n"
+    where serialized = reverse (transpose (finalDrawLines xs))
+
+
+histogram :: [Int] -> String
+histogram xs = finalRender source
+    where source = hister xs h
 
 -- might have to do a transpose
