@@ -22,10 +22,20 @@ fun1 (x:xs)
      | even x    = (x - 2) * fun1 xs
      | otherwise = fun1 xs
 
+
+
+-- This is wrong
+fun1' = foldl1 (*) . map (\x -> x - 2) . takeWhile (even)
 -- fun1' = foldr (\x accum -> if (even x) then (accum * (x - 2)) else accum) 1
 --fun1' =  foldl1 (*) . map (\x -> if (even x) then (x - 2) else 1)
 fun1' :: [Integer] -> Integer
-fun1' = foldl1 (*) . map (\x -> x - 2) . takeWhile (even)
+
+
+-- This is right, but it is not that wholemealish
+fun1'' = foldl (\accum x -> if even x then accum * (x-2) else accum) 1
+
+
+
 
 
 fun2 :: Integer -> Integer
@@ -33,11 +43,36 @@ fun2 1               = 0
 fun2 n  | even n     = n + fun2 (n `div` 2)
         | otherwise  = fun2 (3 * n + 1)
 
+--fun2' 1 = 0
+--fun2' n = n + fun2'(n `div` 2)
 
+
+
+
+-- Map Generator
+
+-- the recursive call is happening deeper than the infinite list
+inf = [2..]
+g x = x + g (x `div` 2)
+even_gen = map g inf
+
+
+-- Partial Applications
+
+some_f x = x + 2
+
+original :: Integer -> (Integer -> Integer) -> Integer
+original n f = n + f (n `div` 2)
+
+partially :: (Integer -> Integer) -> Integer
+partially = original 2
 
 a = [1, 1, 1]
-b = [1, 2, 3]
-c = [2, 4, 8]
+b = [1, 2, 3, 4, 5, 6, 7]
+c = [2, 4, 8, 3, 4, 2, 6]
+d = [10, 7, 8, 6, 4, 3, 6, 7]
+
+
 
 -- Confirmed. Sum can be implemented with both a left and right fold
 sum' = foldl1 (\accum x -> accum + x)
@@ -49,6 +84,8 @@ maximum' = foldl1 (\accum x -> if accum > x then accum else x)
 
 maximum'' :: (Ord a) => [a] -> a
 maximum'' = foldr1 (\x accum -> if accum > x then accum else x)
+
+reverse' = foldl (\x acc -> acc : x) []
 
 -- EXERCISE 2
 
