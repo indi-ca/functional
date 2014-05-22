@@ -59,13 +59,30 @@ even_gen = map g inf
 
 -- Partial Applications
 
-some_f x = x + 2
+even_nator :: Integer -> (Integer -> Integer) -> Integer
+even_nator n f = n + f (n `div` 2)
 
-original :: Integer -> (Integer -> Integer) -> Integer
-original n f = n + f (n `div` 2)
+odd_nator :: Integer -> (Integer -> Integer) -> Integer
+odd_nator n f = 0 + f (3 * n + 1)
 
 partially :: (Integer -> Integer) -> Integer
-partially = original 2
+partially = even_nator 2
+
+decider :: Integer -> (Integer -> Integer) -> Integer
+decider x = if even x then even_nator x else odd_nator x
+
+--repeated_applications = iterate decider
+
+
+
+-- Repeated Applications of the same function
+
+f :: Integer -> Integer
+f x = if even x then (x `div` 2) else (3 * x + 1)
+
+do_it x = (takeWhile (>1) (iterate f x))
+temp = do_it 13
+more = foldl (\acc x -> if even x then acc + x else acc) 0 temp
 
 a = [1, 1, 1]
 b = [1, 2, 3, 4, 5, 6, 7]
