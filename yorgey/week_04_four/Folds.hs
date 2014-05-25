@@ -104,6 +104,11 @@ maximum'' = foldr1 (\x accum -> if accum > x then accum else x)
 
 reverse' = foldl (\x acc -> acc : x) []
 
+
+
+
+
+
 -- EXERCISE 2
 
 --Recall the definition of a binary tree data structure. The height of
@@ -117,3 +122,17 @@ data Tree a = Leaf
     deriving (Show, Eq)
 
 -- For this exercise, write a function
+
+
+foldTree :: [a] -> Tree a
+
+
+
+
+
+
+
+
+
+
+
