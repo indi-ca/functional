@@ -91,25 +91,72 @@ reverse' = foldl (\x acc -> acc : x) []
 
 -- EXERCISE 2
 
---Recall the definition of a binary tree data structure. The height of
---a binary tree is the length of a path from the root to the deepest node. For example, the height of a tree with a single node is 0; the height of a tree with three nodes, whose root has two children, is 1; and so on. A binary tree is balanced if the height of its left and right subtrees differ by no more than 1, and its left and right subtrees are also balanced.
+-- Recall the definition of a binary tree data structure. The height of
+-- a binary tree is the length of a path from the root to the deepest node.
+-- For example, the height of a tree with a single node is 0; the height of a tree with three nodes,
+-- whose root has two children, is 1; and so on.
+-- A binary tree is balanced if the height of its left and right subtrees differ by no more than 1,
+-- and its left and right subtrees are also balanced.
 
 
--- You should use the following data structure to represent binary trees. Note that each node stores an extra Integer representing the height at that node.
+-- You should use the following data structure to represent binary trees.
+-- Note that each node stores an extra Integer representing the height at that node.
 
 data Tree a = Leaf
             | Node Integer (Tree a) a (Tree a)
     deriving (Show, Eq)
 
--- For this exercise, write a function
 
-
+-- which generates a balanced binary tree from a list of values using foldr.
 --foldTree :: [a] -> Tree a
 
 
+tr = "ABCDEFGHIJ"
+
+-- bascially, the smaller letter is a child
+-- is this important?
+
+-- how do I do this?
+-- start with the first node as the parent, and create a balanced tree under it
+-- simple
 
 
+-- STARTEGY A: Create a balanced tree
 
+---- These functions replaces the current tree with a new one
+--insertLeft :: Node -> Tree -> Tree
+--insertLeft _ Leaf = error "Cannot insert left into a leaf"
+--insertLeft incoming (Node _ m right) = Node (Node Leaf incoming Leaf) m right
+
+--insertRight :: Node -> Tree -> Tree
+--insertRight _ Leaf = error "Cannot insert right into a leaf"
+--insertRight incoming (Node left m _) = Node left m (Node Leaf incoming Leaf)
+
+
+-- STARTEGY B: Left, right, left, right
+
+-- L, R,  LL, LR, RL, RR,  LLL, LLR, LRL, LRR, RLL, RLR, RRL, RRR
+-- These look like permutations
+-- Not quite
+
+
+-- STARTEGY C: Recursive insert into unbalanced position
+
+node_a = Node 0 Leaf "A" Leaf
+node_b = Node 0 Leaf "B" Leaf
+
+tree_c = Node 1 node_a "C" node_b
+tree_d = Node 2 tree_c "D" Leaf
+
+
+treeHeight :: Tree a -> Integer
+treeHeight Leaf = error "height of a leaf is not defined"
+treeHeight (Node h _ _ _) = h
+
+-- now do an insertLeft
+insertLeft :: Tree a -> Tree a -> Tree a
+insertLeft incoming (Node h left n right) = Node newHeight incoming n right
+    where newHeight = treeHeight incoming + 1
 
 
 
