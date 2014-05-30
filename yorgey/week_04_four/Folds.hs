@@ -126,11 +126,11 @@ tr = "ABCDEFGHIJ"
 ---- These functions replaces the current tree with a new one
 --insertLeft :: Node -> Tree -> Tree
 --insertLeft _ Leaf = error "Cannot insert left into a leaf"
---insertLeft incoming (Node _ m right) = Node (Node Leaf incoming Leaf) m right
+--insertLeft new (Node _ m right) = Node (Node Leaf new Leaf) m right
 
 --insertRight :: Node -> Tree -> Tree
 --insertRight _ Leaf = error "Cannot insert right into a leaf"
---insertRight incoming (Node left m _) = Node left m (Node Leaf incoming Leaf)
+--insertRight new (Node left m _) = Node left m (Node Leaf new Leaf)
 
 
 -- STARTEGY B: Left, right, left, right
@@ -142,22 +142,44 @@ tr = "ABCDEFGHIJ"
 
 -- STARTEGY C: Recursive insert into unbalanced position
 
-node_a = Node 0 Leaf "A" Leaf
-node_b = Node 0 Leaf "B" Leaf
+tree_a = Node 0 Leaf "A" Leaf
+tree_b = Node 0 Leaf "B" Leaf
+tree_c = Node 0 Leaf "C" Leaf
+tree_d = Node 0 Leaf "D" Leaf
 
-tree_c = Node 1 node_a "C" node_b
-tree_d = Node 2 tree_c "D" Leaf
+tree_ba = insertTree tree_a tree_b
+tree_bac = insertTree tree_c tree_ba
+--tree_bac = Node 1 (Node 0 Leaf "A" Leaf) "B" (Node 0 Leaf "C" Leaf)
+
+tree_bacd = insertTree tree_d tree_bac
+
+
 
 
 treeHeight :: Tree a -> Integer
-treeHeight Leaf = error "height of a leaf is not defined"
-treeHeight (Node h _ _ _) = h
+treeHeight Leaf = -1
+treeHeight (Node h left _ right)
+    | left_height >= right_height = left_height + 1
+    | left_height <  right_height = right_height + 1
+    where left_height = treeHeight left
+          right_height = treeHeight right
 
--- now do an insertLeft
-insertLeft :: Tree a -> Tree a -> Tree a
-insertLeft incoming (Node h left n right) = Node newHeight incoming n right
-    where newHeight = treeHeight incoming + 1
 
+-- height_right_subtree <  height_left_subtree  = Node newHeight new n right
+
+-- what is the evalation order of height_left_subtree?
+
+insertTree :: Tree a -> Tree a -> Tree a
+insertTree new Leaf = new
+insertTree new (Node h left n right)
+    | height_left_subtree  >  height_right_subtree = Node newHeightRight left n new_subtree_left
+    | height_right_subtree <= height_left_subtree = Node newHeightLeft new_subtree_left n right
+    where newHeightLeft = treeHeight new_subtree_left + 1
+          newHeightRight = treeHeight new_subtree_right + 1
+    where new_subtree_left = insertTree new left
+          new_subtree_right = insertTree new right
+          height_left_subtree = treeHeight left
+          height_right_subtree = treeHeight right
 
 
 
