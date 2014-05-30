@@ -146,12 +146,18 @@ tree_a = Node 0 Leaf "A" Leaf
 tree_b = Node 0 Leaf "B" Leaf
 tree_c = Node 0 Leaf "C" Leaf
 tree_d = Node 0 Leaf "D" Leaf
+tree_e = Node 0 Leaf "E" Leaf
+tree_f = Node 0 Leaf "F" Leaf
+tree_g = Node 0 Leaf "G" Leaf
 
 tree_ba = insertTree tree_a tree_b
 tree_bac = insertTree tree_c tree_ba
 --tree_bac = Node 1 (Node 0 Leaf "A" Leaf) "B" (Node 0 Leaf "C" Leaf)
 
 tree_bacd = insertTree tree_d tree_bac
+tree_bacde = insertTree tree_e tree_bacd
+tree_bacdef = insertTree tree_f tree_bacde
+tree_bacdefg = insertTree tree_g tree_bacdef
 
 
 
@@ -163,6 +169,10 @@ treeHeight (Node h left _ right)
     | left_height <  right_height = right_height + 1
     where left_height = treeHeight left
           right_height = treeHeight right
+
+treeWeight :: Tree a -> Integer
+treeWeight Leaf = 1
+treeWeight (Node h left _ right) = treeWeight left + treeWeight right
 
 
 -- height_right_subtree <  height_left_subtree  = Node newHeight new n right
@@ -178,8 +188,8 @@ insertTree new (Node h left n right)
           new_subtree_right = insertTree new right
           new_height_left = treeHeight $ insertTree new left
           new_height_right = treeHeight $ insertTree new right
-          height_left_subtree = treeHeight left
-          height_right_subtree = treeHeight right
+          height_left_subtree = treeWeight left
+          height_right_subtree = treeWeight right
 
 
 
