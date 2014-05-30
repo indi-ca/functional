@@ -157,7 +157,7 @@ tree_bacd = insertTree tree_d tree_bac
 
 
 treeHeight :: Tree a -> Integer
-treeHeight Leaf = -1
+treeHeight Leaf = 0
 treeHeight (Node h left _ right)
     | left_height >= right_height = left_height + 1
     | left_height <  right_height = right_height + 1
@@ -172,12 +172,12 @@ treeHeight (Node h left _ right)
 insertTree :: Tree a -> Tree a -> Tree a
 insertTree new Leaf = new
 insertTree new (Node h left n right)
-    | height_left_subtree  >  height_right_subtree = Node newHeightRight left n new_subtree_left
-    | height_right_subtree <= height_left_subtree = Node newHeightLeft new_subtree_left n right
-    where newHeightLeft = treeHeight new_subtree_left + 1
-          newHeightRight = treeHeight new_subtree_right + 1
+    | height_left_subtree  >  height_right_subtree = Node new_height_right left n (insertTree new right)
+    | height_right_subtree <= height_left_subtree = Node new_height_left (insertTree new left) n right
     where new_subtree_left = insertTree new left
           new_subtree_right = insertTree new right
+          new_height_left = treeHeight $ insertTree new left
+          new_height_right = treeHeight $ insertTree new right
           height_left_subtree = treeHeight left
           height_right_subtree = treeHeight right
 
