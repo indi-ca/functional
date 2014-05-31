@@ -108,7 +108,7 @@ data Tree a = Leaf
 
 
 -- which generates a balanced binary tree from a list of values using foldr.
---foldTree :: [a] -> Tree a
+
 
 
 tr = "ABCDEFGHIJ"
@@ -152,17 +152,15 @@ tree_g = Node 0 Leaf "G" Leaf
 
 tree_ba = insertTree tree_a tree_b
 tree_bac = insertTree tree_c tree_ba
---tree_bac = Node 1 (Node 0 Leaf "A" Leaf) "B" (Node 0 Leaf "C" Leaf)
-
 tree_bacd = insertTree tree_d tree_bac
 tree_bacde = insertTree tree_e tree_bacd
 tree_bacdef = insertTree tree_f tree_bacde
 tree_bacdefg = insertTree tree_g tree_bacdef
 
-tree_source = map_source tr
 
-
-
+-- treeHeight, also disperses - and it is amazing that it comes to a conclusion
+-- it assumes that all the child nodes have the correct height set
+-- I'm not feeling a strong case for why I need it
 treeHeight :: Tree a -> Integer
 treeHeight Leaf = 0
 treeHeight (Node h left _ right)
@@ -171,32 +169,64 @@ treeHeight (Node h left _ right)
     where left_height = treeHeight left
           right_height = treeHeight right
 
+
+-- [?] Can something that disperses, be folded?
+-- There is a particular situation, which makes treeWeight necessary
 treeWeight :: Tree a -> Integer
 treeWeight Leaf = 1
 treeWeight (Node h left _ right) = treeWeight left + treeWeight right
 
 
--- height_right_subtree <  height_left_subtree  = Node newHeight new n right
 
--- what is the evalation order of height_left_subtree?
+-- w_right <  w_left  = Node newHeight new n right
 
+-- what is the evalation order of w_left?
+
+-- insertTree does not disperse - it follows a dynamically decided path
+
+-- TOOD: I can get rid the of the first pattern match, because I am not inserting
+-- a tree into a leaf
+-- wait, this is not true
+-- maybe takeWhile will save me
 insertTree :: Tree a -> Tree a -> Tree a
 insertTree new Leaf = new
 insertTree new (Node h left n right)
-    | height_left_subtree  >  height_right_subtree = Node new_height_right left n (insertTree new right)
-    | height_right_subtree <= height_left_subtree = Node new_height_left (insertTree new left) n right
-    where new_subtree_left = insertTree new left
-          new_subtree_right = insertTree new right
-          new_height_left = treeHeight $ insertTree new left
-          new_height_right = treeHeight $ insertTree new right
-          height_left_subtree = treeWeight left
-          height_right_subtree = treeWeight right
+    | w_left  >  w_right = Node (treeHeight new_right) left n new_right
+    | w_right <= w_left = Node (treeHeight new_left) new_left n right
+    where new_left = insertTree new left
+          new_right = insertTree new right
+          w_left = treeWeight left
+          w_right = treeWeight right
 
 
-map_source :: [a] -> [Tree a]
-map_source xs = map (\x -> Node 0 Leaf x Leaf) xs
 
 -- [?] Fold left works just as well
+foldTree :: [a] -> Tree a
+foldTree = foldr1 (\x acc -> insertTree x acc) . map (\x -> Node 0 Leaf x Leaf)
 
-do_it = foldr1 (\x acc -> insertTree x acc) tree_source
---do_it = foldl1 (\acc x -> insertTree x acc) tree_source
+
+
+-- NEXT: A foldr implemention of insertTree
+
+
+
+
+-- EXERCISE 3: More Folds 1.
+-- returns True if and only if there are an odd number of True values in the input list
+xor :: [Bool] -> Bool
+xor = foldl (\x acc -> if x then not acc else acc) False
+
+
+-- EXERCISE 3: More Folds 2.
+-- implement map as a fold
+map' :: (a -> b) -> [a] -> [b]
+map' f = foldr (\x acc -> f x : acc) []
+
+
+
+-- EXERCISE 4:
+
+
+
+
+
