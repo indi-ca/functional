@@ -159,6 +159,7 @@ tree_bacde = insertTree tree_e tree_bacd
 tree_bacdef = insertTree tree_f tree_bacde
 tree_bacdefg = insertTree tree_g tree_bacdef
 
+tree_source = map_source tr
 
 
 
@@ -192,6 +193,10 @@ insertTree new (Node h left n right)
           height_right_subtree = treeWeight right
 
 
+map_source :: [a] -> [Tree a]
+map_source xs = map (\x -> Node 0 Leaf x Leaf) xs
 
+-- [?] Fold left works just as well
 
-
+do_it = foldr1 (\x acc -> insertTree x acc) tree_source
+--do_it = foldl1 (\acc x -> insertTree x acc) tree_source
