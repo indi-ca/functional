@@ -211,21 +211,76 @@ foldTree = foldr1 (\x acc -> insertTree x acc) . map (\x -> Node 0 Leaf x Leaf)
 
 
 
--- EXERCISE 3: More Folds 1.
+-- EXERCISE 3.1: More Folds
 -- returns True if and only if there are an odd number of True values in the input list
 xor :: [Bool] -> Bool
 xor = foldl (\x acc -> if x then not acc else acc) False
 
 
--- EXERCISE 3: More Folds 2.
+-- EXERCISE 3.2: More Folds
 -- implement map as a fold
 map' :: (a -> b) -> [a] -> [b]
 map' f = foldr (\x acc -> f x : acc) []
+
+-- EXERCISE 3.3: Implement foldl using foldr..
+
 
 
 
 -- EXERCISE 4:
 
+-- Implement the algorithm using function composition.
+-- Given an integer n, your function should generate all the odd prime numbers up to 2n + 2.
+
+cartProd :: [a] -> [b] -> [(a, b)]
+cartProd xs ys = [(x,y) | x <- xs, y <- ys]
+
+
+-- [?] How do I do apply twice?
+--sieveSundaram :: Integer -> [Integer]
+--sieveSundaram =  cartProd (\x -> [1..x::Integer]) (\x -> [1..x::Integer])
+
+-- start with a list of integers from 1 to n
+source n = [1..n :: Integer]
+
+
+--do_something = cartProd (source 9) (source 9)
+initial = replicate 2 . (\x -> [1..x::Integer])
+
+
+-- [?] I'm creating the matrix like this because I don't know how to apply twice
+matrix n = cartProd (source n) (source n)
+
+
+
+
+-- Remove all the values where i > j
+filter_cart :: [(Integer, Integer)] -> [(Integer, Integer)]
+filter_cart = filter (\(i,j) -> i <= j)
+
+-- Now apply a multiplication on each element
+do_mult = foldr (\(i,j) acc -> i + j + 2 * i * j : acc) []
+
+-- Remove all the elements greater than: n
+
+post_filter xs n = filter (\x -> x <= n) xs
+
+
+cm = do_mult (filter_cart $  matrix 10)
+dm = post_filter cm 10
+em = remove_items (source 10) dm
+
+-- now remove the items
+-- i could use a list comprehension, or a foldr
+--remove_items xs ys = [x | x <- xs, y <- ys, not (elem y xs)]
+--remove_items xs ys = [x | x <- xs, y <- ys]
+
+remove_items :: [Integer] -> [Integer] -> [Integer]
+remove_items xs subs = foldr (\x acc -> if (elem x subs) then acc else x : acc) [] xs
+
+
+
+double_and_add_one = map (\x -> x * 2 + 1)
 
 
 
