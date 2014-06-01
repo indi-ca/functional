@@ -236,9 +236,6 @@ cartProd :: [a] -> [b] -> [(a, b)]
 cartProd xs ys = [(x,y) | x <- xs, y <- ys]
 
 
--- [?] How do I do apply twice?
---sieveSundaram :: Integer -> [Integer]
---sieveSundaram =  cartProd (\x -> [1..x::Integer]) (\x -> [1..x::Integer])
 
 -- start with a list of integers from 1 to n
 source n = [1..n :: Integer]
@@ -257,6 +254,8 @@ matrix n = cartProd (source n) (source n)
 -- Remove all the values where i > j
 filter_cart :: [(Integer, Integer)] -> [(Integer, Integer)]
 filter_cart = filter (\(i,j) -> i <= j)
+
+cartman x          = cartProd (source x) (source x)
 
 -- Now apply a multiplication on each element
 do_mult = foldr (\(i,j) acc -> i + j + 2 * i * j : acc) []
@@ -282,6 +281,22 @@ remove_items xs subs = foldr (\x acc -> if (elem x subs) then acc else x : acc) 
 
 double_and_add_one = map (\x -> x * 2 + 1)
 
+-- [?] How do I do apply twice?
+--sieveSundaram :: Integer -> [Integer]
+--sieveSundaram n =  map (\x -> x * 2 + 1) . eliminate' . filter (\x -> x <= n) . do_mult . (filter_cart (cartman n))
+--    where eliminate'         = eliminate (source n)
+--          eliminate xs subs  = foldr (\x acc -> if (elem x subs) then acc else x : acc) [] xs
+--          do_mult            = foldr (\(i,j) acc -> i + j + 2 * i * j : acc) []
+--          cartman x          = cartProd (source x) (source x)
+--          source n           = [1..n :: Integer]
 
+--something n = filter_cart cartman
+--    where a = 1
+--          cartman n          = cartProd (source n) (source n)
+--          source n           = [1..n :: Integer]
+
+sieveSundaram n = map (\x -> x * 2 + 1) . eliminate' . filter (\x -> x <= n) . do_mult . filter_cart . cartman
+    where eliminate'         = eliminate (source n)
+          eliminate xs subs  = foldr (\x acc -> if (elem x subs) then acc else x : acc) [] xs
 
 
