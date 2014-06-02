@@ -45,22 +45,13 @@ fun2 1               = 0
 fun2 n  | even n     = n + fun2 (n `div` 2)
         | otherwise  = fun2 (3 * n + 1)
 
--- Returns
--- Bool -> Integer -> Integer
-h = \x -> if x then (`div` 2) else (1+).(3*)
 
--- Forces me to duplicate the last value
--- (h . even) 5 5
-
- --(1+).(3*)
-f :: Integer -> Integer
-f x = if even x then (x `div` 2) else (3 * x + 1)
-fun2' =  foldl (\acc x -> if even x then acc + x else acc) 0 . takeWhile (>1) . iterate f
---fun2' =  foldl (\acc x -> if even x then acc + x else acc) 0 . takeWhile (>1) . iterate (h . even)
-
-
-
-
+fun2' = sum . filter (even) . takeWhile (>1) . iterate z
+    where
+        z = j . k
+        j = uncurry (h . even)
+        k = \x -> (x, x)
+        h = \x -> if x then (`div` 2) else (1+).(3*)
 
 
 
