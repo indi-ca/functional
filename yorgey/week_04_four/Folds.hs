@@ -167,10 +167,17 @@ foldTree = foldr1 (\x acc -> insertTree x acc) . map (\x -> Node 0 Leaf x Leaf)
 
 -- NEXT: A foldr implemention of insertTree
 
+--insertTree' = iterate
+--    where
+--        fth = \x -> if x then (Node (treeHeight new_right) left n new_right) else (Node (treeHeight new_left) new_left n right)
+--        new_left = insertTree new left
+--        new_right = insertTree new right
 
-
-
-
+fgx x (Node h left n right)
+    | x     = Node (treeHeight new_right) left n new_right
+    | not x = Node (treeHeight new_left) new_left n right
+    where new_left = insertTree new left
+          new_right = insertTree new right
 
 
 
