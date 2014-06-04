@@ -165,6 +165,11 @@ insertTree new (Node h left n right)
           w_left = treeWeight left
           w_right = treeWeight right
 
+-- Just flip everything I do an insert
+-- insert the node into the right
+insertTree' :: a -> Tree a -> Tree a
+insertTree' a Leaf = Node 0 Leaf a Leaf
+insertTree' a (Node h left tip right) = Node h right tip (insertTree' a left)
 
 
 -- [?] Fold left works just as well
@@ -221,12 +226,16 @@ foldTree = foldr1 (\x acc -> insertTree x acc) . map (\x -> Node 0 Leaf x Leaf)
 -- returns True if and only if there are an odd number of True values in the input list
 xor :: [Bool] -> Bool
 xor = foldl (\x acc -> if x then not acc else acc) False
+-- can use the not equals which is \=
+
 
 
 -- EXERCISE 3.2: More Folds
 -- implement map as a fold
 map' :: (a -> b) -> [a] -> [b]
 map' f = foldr (\x acc -> f x : acc) []
+
+-- can do something like this: \x -> : . f
 
 -- EXERCISE 3.3: Implement foldl using foldr..
 
@@ -249,10 +258,12 @@ cartProd xs ys = [(x,y) | x <- xs, y <- ys]
 
 
 -- not element in:  notelem
-
+-- [i!] Don't have to use cartProd... just use a list comprehension
 
 -- [?] How do I source the input right in the middle?
 -- [?] Can I over-apply?
+
+
 --sieveSundaram :: Integer -> [Integer]
 sieveSundaram n = map (\x -> x * 2 + 1) . eliminate' . do_mult . filter_cart . uncurry cartProd . source'
     where eliminate'         = eliminate [1..n]
