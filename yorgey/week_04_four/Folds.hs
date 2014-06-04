@@ -24,7 +24,7 @@ fun1 (x:xs)
      | otherwise = fun1 xs
 
 fun1' :: [Integer] -> Integer
-fun1' = foldl1 (*) . map (\x -> x - 2) . filter (even)
+fun1' = product . map (\x -> x - 2) . filter even
 
 
 
@@ -35,7 +35,7 @@ fun2 n  | even n     = n + fun2 (n `div` 2)
         | otherwise  = fun2 (3 * n + 1)
 
 fun2' :: Integer -> Integer
-fun2' = sum . filter (even) . takeWhile (>1) . iterate z
+fun2' = sum . filter even . takeWhile (>1) . iterate z
     where
         z = j . k
         j = uncurry (h . even)
@@ -173,11 +173,11 @@ foldTree = foldr1 (\x acc -> insertTree x acc) . map (\x -> Node 0 Leaf x Leaf)
 --        new_left = insertTree new left
 --        new_right = insertTree new right
 
-fgx x (Node h left n right)
-    | x     = Node (treeHeight new_right) left n new_right
-    | not x = Node (treeHeight new_left) new_left n right
-    where new_left = insertTree new left
-          new_right = insertTree new right
+--fgx x (Node h left n right)
+--    | x     = Node (treeHeight new_right) left n new_right
+--    | not x = Node (treeHeight new_left) new_left n right
+--    where new_left = insertTree new left
+--          new_right = insertTree new right
 
 
 
