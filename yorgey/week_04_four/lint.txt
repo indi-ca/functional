@@ -1,0 +1,134 @@
+Folds.hs:45:9: Error: Redundant lambda
+Found:
+  k = \ x -> (x, x)
+Why not:
+  k x = (x, x)
+
+Folds.hs:46:9: Error: Redundant lambda
+Found:
+  h = \ x -> if x then (`div` 2) else (1 +) . (3 *)
+Why not:
+  h x = if x then (`div` 2) else (1 +) . (3 *)
+
+Folds.hs:56:16: Error: Avoid lambda
+Found:
+  \ accum x -> accum + x
+Why not:
+  (+)
+
+Folds.hs:57:17: Warning: Avoid lambda
+Found:
+  \ x accum -> accum + x
+Why not:
+  flip (+)
+
+Folds.hs:66:19: Warning: Avoid lambda
+Found:
+  \ x acc -> acc : x
+Why not:
+  flip (:)
+
+Folds.hs:96:1: Warning: Use camelCase
+Found:
+  tree_a = ...
+Why not:
+  treeA = ...
+
+Folds.hs:97:1: Warning: Use camelCase
+Found:
+  tree_b = ...
+Why not:
+  treeB = ...
+
+Folds.hs:98:1: Warning: Use camelCase
+Found:
+  tree_c = ...
+Why not:
+  treeC = ...
+
+Folds.hs:99:1: Warning: Use camelCase
+Found:
+  tree_d = ...
+Why not:
+  treeD = ...
+
+Folds.hs:100:1: Warning: Use camelCase
+Found:
+  tree_e = ...
+Why not:
+  treeE = ...
+
+Folds.hs:101:1: Warning: Use camelCase
+Found:
+  tree_f = ...
+Why not:
+  treeF = ...
+
+Folds.hs:102:1: Warning: Use camelCase
+Found:
+  tree_g = ...
+Why not:
+  treeG = ...
+
+Folds.hs:104:1: Warning: Use camelCase
+Found:
+  tree_ba = ...
+Why not:
+  treeBa = ...
+
+Folds.hs:105:1: Warning: Use camelCase
+Found:
+  tree_bac = ...
+Why not:
+  treeBac = ...
+
+Folds.hs:106:1: Warning: Use camelCase
+Found:
+  tree_bacd = ...
+Why not:
+  treeBacd = ...
+
+Folds.hs:107:1: Warning: Use camelCase
+Found:
+  tree_bacde = ...
+Why not:
+  treeBacde = ...
+
+Folds.hs:108:1: Warning: Use camelCase
+Found:
+  tree_bacdef = ...
+Why not:
+  treeBacdef = ...
+
+Folds.hs:109:1: Warning: Use camelCase
+Found:
+  tree_bacdefg = ...
+Why not:
+  treeBacdefg = ...
+
+Folds.hs:172:20: Error: Avoid lambda
+Found:
+  \ x acc -> insertTree x acc
+Why not:
+  insertTree
+
+Folds.hs:259:49: Warning: Redundant bracket
+Found:
+  if (elem x subs) then acc else x : acc
+Why not:
+  if elem x subs then acc else x : acc
+
+Folds.hs:259:53: Warning: Use infix
+Found:
+  elem x subs
+Why not:
+  x `elem` subs
+
+Folds.hs:261:40: Warning: Use uncurry
+Found:
+  \ (i, j) -> i <= j
+Why not:
+  uncurry (<=)
+Note: increases laziness
+
+22 suggestions

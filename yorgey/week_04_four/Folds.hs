@@ -34,7 +34,10 @@ fun2 1               = 0
 fun2 n  | even n     = n + fun2 (n `div` 2)
         | otherwise  = fun2 (3 * n + 1)
 
+-- the hailstone function
 fun2' :: Integer -> Integer
+--fun2' x = sum . filter even . takeWhile (>1) . iterate (if even x then (`div` 2) else (1+).(3*))
+
 fun2' = sum . filter even . takeWhile (>1) . iterate z
     where
         z = j . k
@@ -42,6 +45,10 @@ fun2' = sum . filter even . takeWhile (>1) . iterate z
         k = \x -> (x, x)
         h = \x -> if x then (`div` 2) else (1+).(3*)
 
+
+fun2'' x = sum . filter even . takeWhile (>1) . iterate (h x)
+  where
+      h x = if even x then (`div` 2) else (1+).(3*)
 
 
 
@@ -165,6 +172,34 @@ foldTree :: [a] -> Tree a
 foldTree = foldr1 (\x acc -> insertTree x acc) . map (\x -> Node 0 Leaf x Leaf)
 
 
+
+-- How do I know if the left subtree has become unbalanced?
+-- Well... if the node has a left child, but not a right child
+-- This happens after the left insert
+-- It is unbalanced if the right is a leaf
+
+-- I'm just going to insert into the left subtree
+-- If this has not caused an unbalancing, then the height has not changed
+
+-- If it is unbalanced, then the right node is a leaf
+-- The left becomes the tip
+-- The tip is inserted into the right
+
+
+-- New plan
+-- Insert it into the left subtree
+-- If it is unbalanced,
+-- Then insert it into the right
+
+--insertTree' :: Tree a -> Tree a -> Tree a
+--insertTree' new Leaf = new
+--insertTree' new (Node h Leaf tip right) = Node h new_left tip right
+--  where new_left = insertTree new left
+--insertTree' new (Node h left tip Node) = Node h left tip new_right
+--  where new_right = insertTree new right
+
+
+
 -- NEXT: A foldr implemention of insertTree
 
 --insertTree' = iterate
@@ -211,6 +246,10 @@ map' f = foldr (\x acc -> f x : acc) []
 
 cartProd :: [a] -> [b] -> [(a, b)]
 cartProd xs ys = [(x,y) | x <- xs, y <- ys]
+
+
+-- not element in:  notelem
+
 
 -- [?] How do I source the input right in the middle?
 -- [?] Can I over-apply?
