@@ -165,11 +165,7 @@ insertTree new (Node h left n right)
           w_left = treeWeight left
           w_right = treeWeight right
 
--- Just flip everything I do an insert
--- insert the node into the right
-insertTree' :: a -> Tree a -> Tree a
-insertTree' a Leaf = Node 0 Leaf a Leaf
-insertTree' a (Node h left tip right) = Node h right tip (insertTree' a left)
+
 
 
 -- [?] Fold left works just as well
@@ -218,6 +214,21 @@ foldTree = foldr1 (\x acc -> insertTree x acc) . map (\x -> Node 0 Leaf x Leaf)
 --    | not x = Node (treeHeight new_left) new_left n right
 --    where new_left = insertTree new left
 --          new_right = insertTree new right
+
+
+-- The much simpler solution
+-- Learn how to use let
+-- Just flip everything I do an insert
+-- insert the node into the right
+-- Read about the hailstone function
+insertTree' :: a -> Tree a -> Tree a
+insertTree' a Leaf = Node 0 Leaf a Leaf
+insertTree' a (Node h left tip right) = Node h right tip (insertTree' a left)
+
+
+recursiveInsert :: [a] -> Tree a
+recursiveInsert = foldr (\x acc -> insertTree' x acc) Leaf
+
 
 
 
