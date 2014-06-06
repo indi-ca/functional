@@ -221,9 +221,14 @@ foldTree = foldr1 (\x acc -> insertTree x acc) . map (\x -> Node 0 Leaf x Leaf)
 -- Just flip everything I do an insert
 -- insert the node into the right
 -- Read about the hailstone function
+
+--insertTree' a (Node h left tip right) = Node h right tip (insertTree' a left)
+
+
 insertTree' :: a -> Tree a -> Tree a
-insertTree' a Leaf = Node 0 Leaf a Leaf
-insertTree' a (Node h left tip right) = Node h right tip (insertTree' a left)
+insertTree' x Leaf = Node 0 Leaf x Leaf
+insertTree' x (Node _ l t r) = let insert@(Node h _ _ _) = insertTree' x l
+                                in Node (h+1) r t insert
 
 
 recursiveInsert :: [a] -> Tree a
