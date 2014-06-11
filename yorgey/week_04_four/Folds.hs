@@ -174,63 +174,27 @@ foldTree = foldr1 (\x acc -> insertTree x acc) . map (\x -> Node 0 Leaf x Leaf)
 
 
 
--- How do I know if the left subtree has become unbalanced?
--- Well... if the node has a left child, but not a right child
--- This happens after the left insert
--- It is unbalanced if the right is a leaf
-
--- I'm just going to insert into the left subtree
--- If this has not caused an unbalancing, then the height has not changed
-
--- If it is unbalanced, then the right node is a leaf
--- The left becomes the tip
--- The tip is inserted into the right
-
-
--- New plan
--- Insert it into the left subtree
--- If it is unbalanced,
--- Then insert it into the right
-
---insertTree' :: Tree a -> Tree a -> Tree a
---insertTree' new Leaf = new
---insertTree' new (Node h Leaf tip right) = Node h new_left tip right
---  where new_left = insertTree new left
---insertTree' new (Node h left tip Node) = Node h left tip new_right
---  where new_right = insertTree new right
 
 
 
--- NEXT: A foldr implemention of insertTree
-
---insertTree' = iterate
---    where
---        fth = \x -> if x then (Node (treeHeight new_right) left n new_right) else (Node (treeHeight new_left) new_left n right)
---        new_left = insertTree new left
---        new_right = insertTree new right
-
---fgx x (Node h left n right)
---    | x     = Node (treeHeight new_right) left n new_right
---    | not x = Node (treeHeight new_left) new_left n right
---    where new_left = insertTree new left
---          new_right = insertTree new right
 
 
--- The much simpler solution
--- Learn how to use let
--- Just flip everything I do an insert
--- insert the node into the right
+-- The twist
 -- Read about the hailstone function
+
 insertTree' :: a -> Tree a -> Tree a
-insertTree' a Leaf = Node 0 Leaf a Leaf
-insertTree' a (Node h left tip right) = Node h right tip (insertTree' a left)
+insertTree' x Leaf = Node 0 Leaf x Leaf
+insertTree' x (Node _ l t r) = let insert@(Node h _ _ _) = insertTree' x l
+                                in Node (h+1) r t insert
 
 
-recursiveInsert :: [a] -> Tree a
-recursiveInsert = foldr (\x acc -> insertTree' x acc) Leaf
+foldTree' :: [a] -> Tree a
+foldTree' = foldr (\x acc -> insertTree' x acc) Leaf
 
 
-
+simple x (Node _ l t r) = Node 0 r t (simple x l)
+joosh = iterate simple
+mogwai x = x == Leaf
 
 
 -- EXERCISE 3.1: More Folds
