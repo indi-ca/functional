@@ -32,8 +32,9 @@ eval (Mul (Lit x) y) = x * eval y
 eval (Mul x y) = eval x * eval y
 
 
--- EXERCISE 1
 
+
+-- EXERCISE 2
 
 -- Parser.hs exports parseExp, which is a parser for arithmetic expressions
 -- passing the constructors of ExprT to it as arguments
@@ -42,8 +43,10 @@ eval (Mul x y) = eval x * eval y
 
 -- *Calc> parseExp Lit Add Mul "(2+3)*4"
 -- Just (Mul (Add (Lit 2) (Lit 3)) (Lit 4))
+
 -- *Calc> parseExp Lit Add Mul "2+3*4"
 -- Just (Add (Lit 2) (Mul (Lit 3) (Lit 4)))
+
 -- *Calc> parseExp Lit Add Mul "2+3*"
 -- Nothing
 
@@ -51,4 +54,12 @@ eval (Mul x y) = eval x * eval y
 -- which evaluates a String,
 -- producing Nothing for inputs which are not well-formed
 -- and Just n for well-formed inputs that evaluate to n
--- evalStr :: String -> Maybe Integer
+evalStr :: String -> Maybe Integer
+evalStr x
+    | result == Nothing = Nothing
+    | result x y = eval result
+    where result = parseExp Lit Add Mul x
+
+-- How is Maybe defined again?
+-- data Maybe a = Nothing | Just a
+
