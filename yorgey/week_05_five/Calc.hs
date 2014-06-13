@@ -50,16 +50,33 @@ eval (Mul x y) = eval x * eval y
 -- *Calc> parseExp Lit Add Mul "2+3*"
 -- Nothing
 
+
+
 -- Implement a value added function
 -- which evaluates a String,
 -- producing Nothing for inputs which are not well-formed
 -- and Just n for well-formed inputs that evaluate to n
 evalStr :: String -> Maybe Integer
-evalStr x
-    | result == Nothing = Nothing
-    | result x y = eval result
-    where result = parseExp Lit Add Mul x
+evalStr str = evalStr' result
+    where result = parseExp Lit Add Mul str
 
--- How is Maybe defined again?
--- data Maybe a = Nothing | Just a
+evalStr' :: Maybe ExprT -> Maybe Integer
+evalStr' Nothing = Nothing
+evalStr' (Just x) = Just (eval x)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
