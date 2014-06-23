@@ -66,14 +66,35 @@ evalStr' (Just x) = Just (eval x)
 
 
 
+-- Decision to abstract away the properties of ExprT with a type class
+-- Create a type class called Expr with three methods
+-- lit, add and mul
+-- which parallel the constructors of ExprT
+
+-- Make an instance of Expr for the ExprT type
+-- in such a way that
+-- mul (add (lit 2) (lit 3)) (lit 4) :: ExprT
+--   == Mul (Add (Lit 2) (Lit 3)) (Lit 4)
+
+-- Think carefully about what types lit, add and mul should have
+-- it may be helpful to consider the types of the ExprT constructors
+-- by typing :t Lit
 
 
 
 
 
+class Expr a where
+    lit :: a -> a
+    --add :: ExprT a -> ExprT a -> ExprT a
+    --add :: a -> a -> a
+    --mul :: a -> a -> a
 
 
-
+instance Expr ExprT where
+   lit (Lit x) = 3
+   --add (Lit x1) (Lit y1) = eval (Add (Lit x1) (Lit y1))
+   --mul x y = x
 
 
 
