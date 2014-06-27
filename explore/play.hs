@@ -64,6 +64,23 @@ myInfo = Book 9780135072455 "Algebra of Programming"
 
 data MyBool = False | True
 
+
+
+
+
+
+
+
+-- Have to do something so that ambigious imports don't bother me
+
+class Ideas a where
+    (==) :: a -> a -> Bool
+    (/=) :: a -> a -> Bool
+    --x == y = not (x /= y)
+
+
+
+
 main :: IO ()
 main = do let z = result
           putStrLn $ "Play: " ++ show result
