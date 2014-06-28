@@ -64,23 +64,17 @@ myInfo = Book 9780135072455 "Algebra of Programming"
 
 data MyBool = False | True
 
-
-
-
-
-
 data Fruit = Apple | Orange
 
 
 
 
+-- Have to do something so that ambigious imports don't bother me
 
-
-
-
-
-
-
+class Ideas a where
+    (==) :: a -> a -> Bool
+    (/=) :: a -> a -> Bool
+    --x == y = not (x /= y)
 
 
 
