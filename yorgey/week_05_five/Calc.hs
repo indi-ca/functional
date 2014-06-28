@@ -94,6 +94,8 @@ evalStr' (Just x) = Just (eval x)
  --  deriving (Show, Eq)
 
 
+-- The point of our Expr type class is that we can now write down arithmetic expressions once
+-- and have them interpreted in various ways just by using them at various types.
 class Expr a where
     lit :: a -> ExprT
     add :: a -> a -> ExprT
