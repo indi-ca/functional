@@ -85,14 +85,14 @@ evalStr' (Just x) = Just (eval x)
 
 
 class Expr a where
-    lit :: a -> a
+    lit :: a -> ExprT
     --add :: ExprT a -> ExprT a -> ExprT a
     --add :: a -> a -> a
     --mul :: a -> a -> a
 
 
-instance Expr ExprT where
-   lit (Lit x) = 3
+--instance Expr ExprT where
+   --lit (Lit x) = 3
    --add (Lit x1) (Lit y1) = eval (Add (Lit x1) (Lit y1))
    --mul x y = x
 
