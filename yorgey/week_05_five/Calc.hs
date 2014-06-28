@@ -99,9 +99,10 @@ class Expr a where
     add :: a -> a -> ExprT
     mul :: a -> a -> ExprT
 
---instance Expr Integer where
-    --lit x = Lit x
-    --add x y = Add x y
+instance Expr Integer where
+    lit x = Lit x
+    add x y = Add (Lit x) (Lit y)
+    mul x y = Mul (Lit x) (Lit y)
 
 instance Expr ExprT where
     lit x = x
