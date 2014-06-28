@@ -64,6 +64,26 @@ myInfo = Book 9780135072455 "Algebra of Programming"
 
 data MyBool = False | True
 
+
+
+
+
+
+data Fruit = Apple | Orange
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 main :: IO ()
 main = do let z = result
           putStrLn $ "Play: " ++ show result
