@@ -1,3 +1,5 @@
+{-# LANGUAGE FlexibleInstances #-}
+
 module Calc where
 
 import ExprT
@@ -110,8 +112,9 @@ instance Expr ExprT where
     mul x y = Mul x y
 
 
+--testExp :: Expr a => Maybe a
+--testExp = parseExp lit add mul "(3 * -4) + 5"
 
-
-
+--testInteger = testExp :: Maybe Integer
 
 
