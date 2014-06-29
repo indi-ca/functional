@@ -96,24 +96,60 @@ evalStr' (Just x) = Just (eval x)
 
 -- The point of our Expr type class is that we can now write down arithmetic expressions once
 -- and have them interpreted in various ways just by using them at various types.
-class Expr a where
-    lit :: a -> ExprT
-    add :: a -> a -> ExprT
-    mul :: a -> a -> ExprT
+--class Expr a where
+--    lit :: a -> ExprT
+--    add :: a -> a -> ExprT
+--    mul :: a -> a -> ExprT
 
-instance Expr Integer where
-    lit x = Lit x
-    add x y = Add (Lit x) (Lit y)
-    mul x y = Mul (Lit x) (Lit y)
+class Expr a where
+    lit :: Integer -> a
+    add :: ExprT -> ExprT -> a
+    mul :: ExprT -> ExprT -> a
 
 instance Expr ExprT where
-    lit x = x
+    lit x = Lit x
     add x y = Add x y
     mul x y = Mul x y
 
+--instance Expr Integer where
+--    lit x = Lit x
+--    add x y = Add (Lit x) (Lit y)
+--    mul x y = Mul (Lit x) (Lit y)
 
 
 
+-- i think what this is about is,
+-- the result of the calculation is interpreted as True or False
+--
+-- interpreted as False: every literal value less than or equal to 0
+-- False :=: lit x <= 0
+-- interpreted as True: all positive Integers
+-- True :=: positive Integers
+-- and all positive Integers are interpreted as True; “addition” is logical or, “multiplication” is logical and
+-- addition: is, logical or
+-- multiplication: is, logical and
 
 
+--instance Expr Bool where
+--    lit x = Lit 0
+--    add x y = lit(x || y)
+--    mul x y = lit(x && y)
+
+--    lit x =
+--    add x y
+--    mul x y
+
+
+-- there is a good reason why I can only write this is GHCI
+--example = mul (add (lit 2) (lit 3)) (lit 4)
+
+-- GHCI tells me that this is Maybe ExprT
+--testExp :: Expr a => Maybe a
+--testExp = parseExp lit add mul "(3 * -4) + 5"
+
+
+--testInteger  = testExp :: Maybe Integer
+
+reify :: ExprT -> ExprT
+reify = id
 
