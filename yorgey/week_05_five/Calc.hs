@@ -134,15 +134,33 @@ instance Expr Integer where
 -- multiplication: is, logical and
 
 
---instance Expr Bool where
---    lit x = Lit 0
---    add x y = lit(x || y)
---    mul x y = lit(x && y)
+instance Expr Bool where
+    lit x
+        | x <= 0    = False
+        | otherwise = True
+    add x y = lit (eval x) || lit (eval y)
+    mul x y = lit (eval x) && lit (eval y)
 
---    lit x =
---    add x y
---    mul x y
 
+
+newtype MinMax  = MinMax Integer deriving (Eq, Show)
+newtype Mod7    = Mod7 Integer deriving (Eq, Show)
+
+
+-- “addition” is taken to be the max function, while “multiplication” is the min function
+instance Expr MinMax where
+    lit x = MinMax x
+    add x y = MinMax (max (eval x) (eval y))
+    mul x y = MinMax (min (eval x) (eval y))
+
+
+-- all values should be in the ranage 0 . . . 6,
+-- and all arithmetic is done modulo 7; for example,
+-- 5 + 3 = 1.
+instance Expr Mod7 where
+    lit x = Mod7 (mod x 7)
+    add x y = Mod7 (mod ( eval ( Add x y ) ) 7)
+    mul x y = Mod7 (mod ( eval ( Mul x y ) ) 7)
 
 
 -- there is a good reason why I can only write this is GHCI
