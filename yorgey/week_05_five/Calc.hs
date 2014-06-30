@@ -103,10 +103,15 @@ evalStr' (Just x) = Just (eval x)
 --    add :: a -> a -> ExprT
 --    mul :: a -> a -> ExprT
 
+--class Expr a where
+--    lit :: Integer -> a
+--    add :: ExprT -> ExprT -> a
+--    mul :: ExprT -> ExprT -> a
+
 class Expr a where
     lit :: Integer -> a
-    add :: ExprT -> ExprT -> a
-    mul :: ExprT -> ExprT -> a
+    add :: a -> a -> a
+    mul :: a -> a -> a
 
 
 instance Expr ExprT where
@@ -117,8 +122,10 @@ instance Expr ExprT where
 
 instance Expr Integer where
     lit x = x
-    add x y = eval (Add x y)
-    mul x y = eval (Mul x y)
+    add = (+)
+    mul = (*)
+    --add x y = eval (Add x y)
+    --mul x y = eval (Mul x y)
 
 
 
@@ -169,8 +176,15 @@ instance Expr Mod7 where
 -- GHCI tells me that this is Maybe ExprT
 --testExp :: Expr a => Maybe a
 --testExp = parseExp lit add mul "(3 * -4) + 5"
+
 --testInteger = testExp :: Maybe Integer
 
+
+-- If I just get the type in GHCI
+-- parseExp lit add mul "(3 * -4) + 5" :: Maybe ExprT
+
+testExp :: Expr a => Maybe a
+testExp = parseExp lit add mul "(3 * -4) + 5"
 
 
 reify :: ExprT -> ExprT
