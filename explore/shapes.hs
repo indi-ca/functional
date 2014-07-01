@@ -16,6 +16,10 @@ data Triangle = Triangle Integer deriving (Eq, Ord, Show)
 class Shape a where
     area :: a -> Float
 
+-- Can do stuff like this
+class (Real a, Enum a) => Integral a where
+    quot :: a -> a -> a
+
 
 instance Shape Square where
     area (Square x) = fromIntegral x * fromIntegral x
@@ -55,3 +59,9 @@ findArea shape = area shape
 
 sortByArea :: Shape a => [a] -> [a]
 sortByArea = sortBy (comparing area)
+
+
+
+
+
+

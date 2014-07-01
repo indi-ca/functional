@@ -108,6 +108,7 @@ evalStr' (Just x) = Just (eval x)
 --    add :: ExprT -> ExprT -> a
 --    mul :: ExprT -> ExprT -> a
 
+--class (Ord a) => Expr a where
 class Expr a where
     lit :: Integer -> a
     add :: a -> a -> a
@@ -124,8 +125,6 @@ instance Expr Integer where
     lit x = x
     add = (+)
     mul = (*)
-    --add x y = eval (Add x y)
-    --mul x y = eval (Mul x y)
 
 
 
@@ -145,29 +144,32 @@ instance Expr Bool where
     lit x
         | x <= 0    = False
         | otherwise = True
-    add x y = lit (eval x) || lit (eval y)
-    mul x y = lit (eval x) && lit (eval y)
+    add x y = x || y
+    mul x y = x && y
 
 
 
-newtype MinMax  = MinMax Integer deriving (Eq, Show)
+newtype MinMax  = MinMax Integer deriving (Eq, Show, Ord)
 newtype Mod7    = Mod7 Integer deriving (Eq, Show)
 
 
 -- “addition” is taken to be the max function, while “multiplication” is the min function
 instance Expr MinMax where
     lit x = MinMax x
-    add x y = MinMax (max (eval x) (eval y))
-    mul x y = MinMax (min (eval x) (eval y))
+    add x y = max x y
+    mul x y = min x y
+
+--instance Ord MinMax where
+
 
 
 -- all values should be in the ranage 0 . . . 6,
 -- and all arithmetic is done modulo 7; for example,
 -- 5 + 3 = 1.
-instance Expr Mod7 where
-    lit x = Mod7 (mod x 7)
-    add x y = Mod7 (mod ( eval ( Add x y ) ) 7)
-    mul x y = Mod7 (mod ( eval ( Mul x y ) ) 7)
+--instance Expr Mod7 where
+--    lit x = Mod7 (mod x 7)
+--    add x y = mod (x + y) 7
+--    mul x y =  mod (x * y) 7
 
 
 -- there is a good reason why I can only write this is GHCI
@@ -185,6 +187,11 @@ instance Expr Mod7 where
 
 testExp :: Expr a => Maybe a
 testExp = parseExp lit add mul "(3 * -4) + 5"
+
+testInteger  = testExp :: Maybe Integer
+testBool     = testExp :: Maybe Bool
+testMM       = testExp :: Maybe MinMax
+--testSat      = testExp :: Maybe Mod7
 
 
 reify :: ExprT -> ExprT
