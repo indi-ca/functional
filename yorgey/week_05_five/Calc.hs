@@ -60,13 +60,14 @@ eval (ExprT.Mul x y) = eval x * eval y
 -- which evaluates a String,
 -- producing Nothing for inputs which are not well-formed
 -- and Just n for well-formed inputs that evaluate to n
+evalStr' :: Maybe ExprT -> Maybe Integer
+evalStr' Nothing = Nothing
+evalStr' (Just x) = Just (eval x)
+
 evalStr :: String -> Maybe Integer
 evalStr str = evalStr' result
     where result = parseExp Lit ExprT.Add ExprT.Mul str
 
-evalStr' :: Maybe ExprT -> Maybe Integer
-evalStr' Nothing = Nothing
-evalStr' (Just x) = Just (eval x)
 
 
 
@@ -155,13 +156,14 @@ newtype MinMax  = MinMax Integer deriving (Eq, Show, Ord)
 newtype Mod7    = Mod7 Integer deriving (Eq, Show)
 
 
--- “addition” is taken to be the max function, while “multiplication” is the min function
+-- “addition” is taken to be the max function,
+-- while “multiplication” is the min function
 instance Expr MinMax where
     lit x = MinMax x
     add x y = max x y
     mul x y = min x y
 
---instance Ord MinMax where
+
 
 
 
@@ -200,10 +202,24 @@ reify :: ExprT -> ExprT
 reify = id
 
 
+-- DO THIS
+-- Constrast
+-- parseExp lit add mul "(3 * -4) + 5"
+-- with
+-- parseExp Lit Add Mul "(2+3)*4"
+-- the second one operates with ExprT types
+-- the first one operates with functions
+
+-- Start here:
+-- parseExp
+--  :: (Integer -> a)
+--     -> (a -> a -> a) -> (a -> a -> a) -> String -> Maybe a
 
 
 -- EXERCISE 5
---StackVM.hs, which is a software simulation of the custom CPU. The CPU supports six operations, as embodied in the StackExp data type:
+
+-- StackVM.hs, which is a software simulation of the custom CPU.
+-- The CPU supports six operations, as embodied in the StackExp data type:
 
 --data StackExp = PushI Integer
 --              | PushB Bool
@@ -216,7 +232,9 @@ reify = id
 --type Program = [StackExp]
 
 
---PushI and PushB push values onto the top of the stack, which can store both Integer and Bool values. Add, Mul, And, and Or each pop the top two items off the top of the stack, perform the appropriate operation, and push the result back onto the top of the stack. For example, executing the program
+-- PushI and PushB push values onto the top of the stack,
+-- which can store both Integer and Bool values.
+-- Add, Mul, And, and Or each pop the top two items off the top of the stack, perform the appropriate operation, and push the result back onto the top of the stack. For example, executing the program
 -- [PushB True, PushI 3, PushI 6, Mul]
 --will result in a stack holding True on the bottom, and 18 on top of that.
 
