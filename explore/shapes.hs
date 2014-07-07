@@ -10,7 +10,7 @@ type Radius = Integer
 data Square = Square Integer deriving (Eq, Ord, Show)
 data Circle = Circle Radius deriving (Eq, Ord, Show)
 data Triangle = Triangle Integer deriving (Eq, Ord, Show)
-
+data Fruit = Apple Integer | Orange Integer deriving (Eq, Ord, Show)
 
 -- a default implementation seems impossible
 class Shape a where
@@ -29,6 +29,11 @@ instance Shape Circle where
 
 instance Shape Triangle where
     area (Triangle x) = fromIntegral (x * x) / 2
+
+instance Shape Fruit where
+    area (Apple r) = 2 * pi * fromIntegral (r * r) - 10
+    area (Orange r) = 2 * pi * fromIntegral (r * r)
+
 
 -- Instances of collections can also be defined
 instance Shape a => Shape [a] where
