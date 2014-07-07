@@ -1,9 +1,11 @@
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE TypeSynonymInstances #-}
 
 module Calc where
 
 import ExprT
 import Parser
+import StackVM
 
 --class Addable a where
 --    (+) :: a -> a -> Integer
@@ -23,15 +25,15 @@ import Parser
 
 
 eval :: ExprT -> Integer
-eval (Add (Lit x) (Lit y)) = x + y
-eval (Add x (Lit y)) = eval x + y
-eval (Add (Lit x) y) = x + eval y
-eval (Add x y) = eval x + eval y
+eval (ExprT.Add (Lit x) (Lit y)) = x + y
+eval (ExprT.Add x (Lit y)) = eval x + y
+eval (ExprT.Add (Lit x) y) = x + eval y
+eval (ExprT.Add x y) = eval x + eval y
 
-eval (Mul (Lit x) (Lit y)) = x * y
-eval (Mul x (Lit y)) = eval x * y
-eval (Mul (Lit x) y) = x * eval y
-eval (Mul x y) = eval x * eval y
+eval (ExprT.Mul (Lit x) (Lit y)) = x * y
+eval (ExprT.Mul x (Lit y)) = eval x * y
+eval (ExprT.Mul (Lit x) y) = x * eval y
+eval (ExprT.Mul x y) = eval x * eval y
 
 
 
@@ -60,7 +62,7 @@ eval (Mul x y) = eval x * eval y
 -- and Just n for well-formed inputs that evaluate to n
 evalStr :: String -> Maybe Integer
 evalStr str = evalStr' result
-    where result = parseExp Lit Add Mul str
+    where result = parseExp Lit ExprT.Add ExprT.Mul str
 
 evalStr' :: Maybe ExprT -> Maybe Integer
 evalStr' Nothing = Nothing
@@ -117,8 +119,8 @@ class Expr a where
 
 instance Expr ExprT where
     lit x = Lit x
-    add x y = Add x y
-    mul x y = Mul x y
+    add x y = ExprT.Add x y
+    mul x y = ExprT.Mul x y
 
 
 instance Expr Integer where
@@ -197,3 +199,37 @@ testMM       = testExp :: Maybe MinMax
 reify :: ExprT -> ExprT
 reify = id
 
+
+
+
+-- EXERCISE 5
+--StackVM.hs, which is a software simulation of the custom CPU. The CPU supports six operations, as embodied in the StackExp data type:
+
+--data StackExp = PushI Integer
+--              | PushB Bool
+--              | Add
+--              | Mul
+--              | And
+--              | Or
+--                deriving Show
+
+--type Program = [StackExp]
+
+
+--PushI and PushB push values onto the top of the stack, which can store both Integer and Bool values. Add, Mul, And, and Or each pop the top two items off the top of the stack, perform the appropriate operation, and push the result back onto the top of the stack. For example, executing the program
+-- [PushB True, PushI 3, PushI 6, Mul]
+--will result in a stack holding True on the bottom, and 18 on top of that.
+
+
+--If there are not enough operands on top of the stack, or if an op- eration is performed on operands of the wrong type, the processor will melt into a puddle of silicon goo. For a more precise specifica- tion of the capabilities and behavior of the custom CPU, consult the reference implementation provided in StackVM.hs.
+
+--Your task is to implement a compiler for arithmetic expressions. Simply create an instance of the Expr type class for Program, so that arithmetic expressions can be interpreted as compiled programs. For any arithmetic expression exp :: Expr a => a it should be the case that
+
+
+--stackVM exp == Right [IVal exp]
+
+--Finally, put together the pieces you have to create a function
+
+--compile :: String -> Maybe Program
+--which takes Strings representing arithmetic expressions and com-
+--piles them into programs that can be run on the custom CPU.

@@ -30,6 +30,7 @@ instance Shape Circle where
 instance Shape Triangle where
     area (Triangle x) = fromIntegral (x * x) / 2
 
+-- Pattern matching is where the value constructor is taken apart
 instance Shape Fruit where
     area (Apple r) = 2 * pi * fromIntegral (r * r) - 10
     area (Orange r) = 2 * pi * fromIntegral (r * r)
