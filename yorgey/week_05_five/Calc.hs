@@ -215,6 +215,14 @@ reify = id
 --  :: (Integer -> a)
 --     -> (a -> a -> a) -> (a -> a -> a) -> String -> Maybe a
 
+-- :t parseExp Lit ExprT.Add ExprT.Mul "(2+3)*4" :: Maybe ExprT
+-- :t parseExp lit add mul "(3 * -4) + 5" :: Expr a => Maybe a
+-- the second one takes any type. well, it's how it is defined
+
+-- now how do I fix the type?
+
+
+
 
 -- EXERCISE 5
 
@@ -234,20 +242,26 @@ reify = id
 
 -- PushI and PushB push values onto the top of the stack,
 -- which can store both Integer and Bool values.
--- Add, Mul, And, and Or each pop the top two items off the top of the stack, perform the appropriate operation, and push the result back onto the top of the stack. For example, executing the program
+-- Add, Mul, And, and Or each pop the top two items off the top of the stack, perform the appropriate operation,
+-- and push the result back onto the top of the stack.
+
+-- For example, executing the program
 -- [PushB True, PushI 3, PushI 6, Mul]
---will result in a stack holding True on the bottom, and 18 on top of that.
+-- will result in a stack holding True on the bottom, and 18 on top of that.
 
 
---If there are not enough operands on top of the stack, or if an op- eration is performed on operands of the wrong type, the processor will melt into a puddle of silicon goo. For a more precise specifica- tion of the capabilities and behavior of the custom CPU, consult the reference implementation provided in StackVM.hs.
+--If there are not enough operands on top of the stack,
+-- or if an operation is performed on operands of the wrong type, the processor will melt into a puddle of silicon goo.
+-- For a more precise specification of the capabilities and behavior of the custom CPU, consult the reference implementation provided in StackVM.hs.
 
---Your task is to implement a compiler for arithmetic expressions. Simply create an instance of the Expr type class for Program, so that arithmetic expressions can be interpreted as compiled programs. For any arithmetic expression exp :: Expr a => a it should be the case that
+-- Your task is to implement a compiler for arithmetic expressions.
+-- Simply create an instance of the Expr type class for Program, so that arithmetic expressions can be interpreted as compiled programs.
+-- For any arithmetic expression exp :: Expr a => a it should be the case that
 
+-- stackVM exp == Right [IVal exp]
 
---stackVM exp == Right [IVal exp]
+-- Finally, put together the pieces you have to create a function
+-- compile :: String -> Maybe Program
 
---Finally, put together the pieces you have to create a function
-
---compile :: String -> Maybe Program
---which takes Strings representing arithmetic expressions and com-
---piles them into programs that can be run on the custom CPU.
+-- which takes Strings representing arithmetic expressions and compiles
+-- them into programs that can be run on the custom CPU.
