@@ -70,6 +70,7 @@ evalStr str = evalStr' result
 
 
 
+-- EXERCISE 3
 
 -- Decision to abstract away the properties of ExprT with a type class
 -- Create a type class called Expr with three methods
@@ -101,22 +102,14 @@ evalStr str = evalStr' result
 
 -- The point of our Expr type class is that we can now write down arithmetic expressions once
 -- and have them interpreted in various ways just by using them at various types.
---class Expr a where
---    lit :: a -> ExprT
---    add :: a -> a -> ExprT
---    mul :: a -> a -> ExprT
 
---class Expr a where
---    lit :: Integer -> a
---    add :: ExprT -> ExprT -> a
---    mul :: ExprT -> ExprT -> a
-
---class (Ord a) => Expr a where
 class Expr a where
     lit :: Integer -> a
     add :: a -> a -> a
     mul :: a -> a -> a
 
+
+-- EXERCISE 4
 
 instance Expr ExprT where
     lit x = Lit x
@@ -151,7 +144,6 @@ instance Expr Bool where
     mul x y = x && y
 
 
-
 newtype MinMax  = MinMax Integer deriving (Eq, Show, Ord)
 newtype Mod7    = Mod7 Integer deriving (Eq, Show)
 
@@ -164,16 +156,13 @@ instance Expr MinMax where
     mul x y = min x y
 
 
-
-
-
 -- all values should be in the ranage 0 . . . 6,
 -- and all arithmetic is done modulo 7; for example,
 -- 5 + 3 = 1.
---instance Expr Mod7 where
---    lit x = Mod7 (mod x 7)
---    add x y = mod (x + y) 7
---    mul x y =  mod (x * y) 7
+instance Expr Mod7 where
+    lit x = Mod7 x
+    add (Mod7 x) (Mod7 y) = Mod7 (mod (x + y) 7)
+    mul (Mod7 x) (Mod7 y) = Mod7 (mod (x * y) 7)
 
 
 -- there is a good reason why I can only write this is GHCI
@@ -190,25 +179,19 @@ instance Expr MinMax where
 -- parseExp lit add mul "(3 * -4) + 5" :: Maybe ExprT
 
 testExp :: Expr a => Maybe a
-testExp = parseExp lit add mul "(3 * -4) + 5"
+--testExp = parseExp lit add mul "(3 * -4) + 5"
+--testExp = parseExp lit add mul "5 * ((3 * -4) + (3 * -4))"
+testExp = parseExp lit add mul "(3 * -4) + (9 * -5)"
 
 testInteger  = testExp :: Maybe Integer
 testBool     = testExp :: Maybe Bool
 testMM       = testExp :: Maybe MinMax
---testSat      = testExp :: Maybe Mod7
+testSat      = testExp :: Maybe Mod7
 
 
 reify :: ExprT -> ExprT
 reify = id
 
-
--- DO THIS
--- Constrast
--- parseExp lit add mul "(3 * -4) + 5"
--- with
--- parseExp Lit Add Mul "(2+3)*4"
--- the second one operates with ExprT types
--- the first one operates with functions
 
 -- Start here:
 -- parseExp
@@ -226,22 +209,24 @@ reify = id
 
 -- EXERCISE 5
 
--- StackVM.hs, which is a software simulation of the custom CPU.
--- The CPU supports six operations, as embodied in the StackExp data type:
+-- StackVM.hs is a software simulation of the custom CPU.
+-- The CPU supports six operations
+-- the StackExp data type embodies this:
 
---data StackExp = PushI Integer
---              | PushB Bool
---              | Add
---              | Mul
---              | And
---              | Or
---                deriving Show
+-- data StackExp = PushI Integer
+--               | PushB Bool
+--               | Add
+--               | Mul
+--               | And
+--               | Or
+--                 deriving Show
 
---type Program = [StackExp]
+-- type Program = [StackExp]
 
 
--- PushI and PushB push values onto the top of the stack,
--- which can store both Integer and Bool values.
+-- There is a stack
+-- PushI (stores Integer) and PushB (stores Bool) push values onto the top of the stack,
+
 -- Add, Mul, And, and Or each pop the top two items off the top of the stack, perform the appropriate operation,
 -- and push the result back onto the top of the stack.
 
@@ -249,12 +234,14 @@ reify = id
 -- [PushB True, PushI 3, PushI 6, Mul]
 -- will result in a stack holding True on the bottom, and 18 on top of that.
 
+-- Silicon goo can happen if
+-- * If there are not enough operands on top of the stack,
+-- * or if an operation is performed on operands of the wrong type
 
---If there are not enough operands on top of the stack,
--- or if an operation is performed on operands of the wrong type, the processor will melt into a puddle of silicon goo.
 -- For a more precise specification of the capabilities and behavior of the custom CPU, consult the reference implementation provided in StackVM.hs.
 
 -- Your task is to implement a compiler for arithmetic expressions.
+
 -- Simply create an instance of the Expr type class for Program, so that arithmetic expressions can be interpreted as compiled programs.
 -- For any arithmetic expression exp :: Expr a => a it should be the case that
 
@@ -265,3 +252,14 @@ reify = id
 
 -- which takes Strings representing arithmetic expressions and compiles
 -- them into programs that can be run on the custom CPU.
+
+
+
+-- EXERCISE 6
+-- Some users of your calculator have requested the ability to give
+-- names to intermediate values and then reuse these stored values later.
+
+
+-- To enable this, you first need to give arithmetic expressions the ability to contain variables. Create a new type class HasVars a which contains a single method var :: String -> a. Thus, types which are instances of HasVars have some notion of named variables.
+
+

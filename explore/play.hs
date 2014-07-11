@@ -22,6 +22,10 @@ fn_builder :: (Integer -> Integer -> Integer, Integer -> Integer -> Integer)
 fn_builder = (squarish, cubish)
 
 
+
+
+
+
 -- This is a type constructor and a data constructor
 --data MyEntity = Entity Int String
 --                deriving (Show)
@@ -37,16 +41,25 @@ data MyEntity = Entity {
 -- using record syntax
 myEntity = Entity {
     primaryID = 1,
-    entityName = "This is a new entity"
+    entityName = "NGFW"
     }
 
 mySecondEntity = Entity {
     primaryID = 2,
-    entityName = "This is my second entity"
+    entityName = "Mock"
     }
 
 fn :: MyEntity -> String
 fn x = entityName x ++ " bob"
+
+
+-- I want a list of entities
+entities = [myEntity, mySecondEntity ]
+
+
+-- Maybe I want to create a tree of entities ?
+-- How about a list of trees?
+
 
 
 --myDrop :: Int -> [a] -> [a]
