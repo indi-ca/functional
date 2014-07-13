@@ -259,7 +259,10 @@ testStackExp = parseExp lit add mul "(3+4)*(2+7)"
 testStack  = testStackExp :: Maybe Program
 
 
--- compile :: String -> Maybe Program
+compile :: String -> Maybe Program
+compile arithmetic = expression :: Maybe Program
+                     where expression = parseExp lit add mul arithmetic
+
 -- I have instances of class methods which respond to type Integer, and type Program
 
 
