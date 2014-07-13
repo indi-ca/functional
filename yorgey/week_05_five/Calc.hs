@@ -7,12 +7,6 @@ import ExprT
 import Parser
 import StackVM
 
---class Addable a where
---    (+) :: a -> a -> Integer
-
---instance Addable ExprT where
---    (F x1) + (G x2) = x1 + y1
-
 
 
 -- EXERCISE 1
@@ -252,6 +246,22 @@ reify = id
 
 -- which takes Strings representing arithmetic expressions and compiles
 -- them into programs that can be run on the custom CPU.
+
+
+
+instance Expr Program where
+    lit x = [PushI x]
+    add x y = [StackVM.Add] ++ x ++ y
+    mul x y = [StackVM.Mul] ++ x ++ y
+
+testStackExp :: Expr a => Maybe a
+testStackExp = parseExp lit add mul "(3+4)*(2+7)"
+testStack  = testStackExp :: Maybe Program
+
+
+-- compile :: String -> Maybe Program
+-- I have instances of class methods which respond to type Integer, and type Program
+
 
 
 
