@@ -3,9 +3,9 @@
 
 module Calc where
 
-import ExprT
+import qualified ExprT
 import Parser
-import StackVM
+import qualified StackVM
 import qualified Data.Map as M
 
 
@@ -18,15 +18,15 @@ import qualified Data.Map as M
 -- For example, eval (Mul (Add (Lit 2) (Lit 3)) (Lit 4)) == 20.
 
 
-eval :: ExprT -> Integer
-eval (ExprT.Add (Lit x) (Lit y)) = x + y
-eval (ExprT.Add x (Lit y)) = eval x + y
-eval (ExprT.Add (Lit x) y) = x + eval y
+eval :: ExprT.ExprT -> Integer
+eval (ExprT.Add (ExprT.Lit x) (ExprT.Lit y)) = x + y
+eval (ExprT.Add x (ExprT.Lit y)) = eval x + y
+eval (ExprT.Add (ExprT.Lit x) y) = x + eval y
 eval (ExprT.Add x y) = eval x + eval y
 
-eval (ExprT.Mul (Lit x) (Lit y)) = x * y
-eval (ExprT.Mul x (Lit y)) = eval x * y
-eval (ExprT.Mul (Lit x) y) = x * eval y
+eval (ExprT.Mul (ExprT.Lit x) (ExprT.Lit y)) = x * y
+eval (ExprT.Mul x (ExprT.Lit y)) = eval x * y
+eval (ExprT.Mul (ExprT.Lit x) y) = x * eval y
 eval (ExprT.Mul x y) = eval x * eval y
 
 
@@ -54,13 +54,13 @@ eval (ExprT.Mul x y) = eval x * eval y
 -- which evaluates a String,
 -- producing Nothing for inputs which are not well-formed
 -- and Just n for well-formed inputs that evaluate to n
-evalStr' :: Maybe ExprT -> Maybe Integer
+evalStr' :: Maybe ExprT.ExprT -> Maybe Integer
 evalStr' Nothing = Nothing
 evalStr' (Just x) = Just (eval x)
 
 evalStr :: String -> Maybe Integer
 evalStr str = evalStr' result
-    where result = parseExp Lit ExprT.Add ExprT.Mul str
+    where result = parseExp ExprT.Lit ExprT.Add ExprT.Mul str
 
 
 
@@ -105,8 +105,8 @@ class Expr a where
 
 -- EXERCISE 4
 
-instance Expr ExprT where
-    lit x = Lit x
+instance Expr ExprT.ExprT where
+    lit x = ExprT.Lit x
     add x y = ExprT.Add x y
     mul x y = ExprT.Mul x y
 
@@ -183,7 +183,7 @@ testMM       = testExp :: Maybe MinMax
 testSat      = testExp :: Maybe Mod7
 
 
-reify :: ExprT -> ExprT
+reify :: ExprT.ExprT -> ExprT.ExprT
 reify = id
 
 
@@ -239,7 +239,7 @@ reify = id
 -- Simply create an instance of the Expr type class for Program, so that arithmetic expressions can be interpreted as compiled programs.
 -- For any arithmetic expression exp :: Expr a => a it should be the case that
 
--- stackVM exp == Right [IVal exp]
+-- stackVM exp == Right (IVal exp)
 
 -- Finally, put together the pieces you have to create a function
 -- compile :: String -> Maybe Program
@@ -249,18 +249,18 @@ reify = id
 
 
 
-instance Expr Program where
-    lit x = [PushI x]
+instance Expr StackVM.Program where
+    lit x = [StackVM.PushI x]
     add x y = [StackVM.Add] ++ x ++ y
     mul x y = [StackVM.Mul] ++ x ++ y
 
 testStackExp :: Expr a => Maybe a
 testStackExp = parseExp lit add mul "(3+4)*(2+7)"
-testStack  = testStackExp :: Maybe Program
+testStack  = testStackExp :: Maybe StackVM.Program
 
 
-compile :: String -> Maybe Program
-compile arithmetic = expression :: Maybe Program
+compile :: String -> Maybe StackVM.Program
+compile arithmetic = expression :: Maybe StackVM.Program
                      where expression = parseExp lit add mul arithmetic
 
 -- I have instances of class methods which respond to type Integer, and type Program
@@ -283,7 +283,8 @@ class HasVars a where
 -- Make VarExprT an instance of both Expr and HasVars.
 
 -- How do I do this without specifying a new module?
-
+-- import qualified
+-- maybe required to avoid a name collision
 data VarExprT = Lit2 Integer
             | Add2 VarExprT VarExprT
             | Mul2 VarExprT VarExprT
