@@ -275,4 +275,11 @@ compile arithmetic = expression :: Maybe Program
 
 -- To enable this, you first need to give arithmetic expressions the ability to contain variables. Create a new type class HasVars a which contains a single method var :: String -> a. Thus, types which are instances of HasVars have some notion of named variables.
 
+-- Start out by creating a new data type VarExprT which is the same as ExprT but with an extra constructor for variables. Make VarExprT an instance of both Expr and HasVars. You should now be able to write things like
+-- *Calc> add (lit 3) (var "x") :: VarExprT
+
+-- But we can’t stop there: we want to be able to interpret expres- sions containing variables, given a suitable mapping from variables to values. For storing mappings from variables to values, you should use the Data.Map module. Add
+-- import qualified Data.Map as M
+-- at the top of your file. The qualified import means that you must prefix M. whenever you refer to things from Data.Map. This is stan- dard practice, since Data.Map exports quite a few functions with names that overlap with names from the Prelude. Consult the Data.Map documentation to read about the operations that are sup- ported on Maps.
+
 
