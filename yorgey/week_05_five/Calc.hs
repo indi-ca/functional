@@ -289,12 +289,22 @@ class HasVars a where
 data VarExprT = Lit Integer
             | Add VarExprT VarExprT
             | Mul VarExprT VarExprT
-            | Var VarExprT
+            | Var String
+  deriving (Show, Eq)
+
+instance Expr VarExprT where
+    lit x = Lit x
+    add x y = Add x y
+    mul x y = Mul x y
+
+instance HasVars VarExprT where
+    var x = Var x
+
 
 -- You should now be able to write things like
 -- *Calc> add (lit 3) (var "x") :: VarExprT
 
--- But we can’t stop there: we want to be able to interpret expres-sions containing variables,
+-- But we can’t stop there: we want to be able to interpret expressions containing variables,
 -- given a suitable mapping from variables to values.
 
 -- For storing mappings from variables to values, you should use the Data.Map module. Add
@@ -308,6 +318,11 @@ data VarExprT = Lit Integer
 -- Implement the following instances:
 --  instance HasVars (M.Map String Integer -> Maybe Integer)
 --  instance Expr (M.Map String Integer -> Maybe Integer)
+
+--instance HasVars (M.Map String Integer -> Maybe Integer) where
+    --var (\x f -> x) = 3
+
+    --var x = M.Map "bob" 3 -> Maybe Integer
 
 -- The first instance says that variables can be interpreted as
 -- functions from a mapping of variables to Integer values to (possibly) Integer values.
