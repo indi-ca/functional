@@ -22,11 +22,15 @@ data JValue = JString String
               deriving (Eq, Ord, Show)
 {-- /snippet JValue --}
 
+
+
 {-- snippet getString --}
 getString :: JValue -> Maybe String
 getString (JString s) = Just s
 getString _           = Nothing
 {-- /snippet getString --}
+
+
 
 {-- snippet getters --}
 getInt (JNumber n) = Just (truncate n)

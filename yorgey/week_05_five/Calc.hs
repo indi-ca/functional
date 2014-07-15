@@ -279,15 +279,16 @@ compile arithmetic = expression :: Maybe StackVM.Program
 class HasVars a where
     var :: String -> a
 
--- Start out by creating a new data type VarExprT which is the same as ExprT but with an extra constructor for variables.
+-- Start out by creating a new data type VarExprT which is the same as ExprT
+-- but with an extra constructor for variables.
 -- Make VarExprT an instance of both Expr and HasVars.
 
 -- How do I do this without specifying a new module?
 -- import qualified
 -- maybe required to avoid a name collision
-data VarExprT = Lit2 Integer
-            | Add2 VarExprT VarExprT
-            | Mul2 VarExprT VarExprT
+data VarExprT = Lit Integer
+            | Add VarExprT VarExprT
+            | Mul VarExprT VarExprT
             | Var VarExprT
 
 -- You should now be able to write things like
@@ -314,10 +315,10 @@ data VarExprT = Lit2 Integer
 -- The second instance says that these same functions can be interpreted as expressions
 -- (by passing along the mapping to subexpressions and combining results appropriately).
 
--- Note: to write these instances you will need to enable the FlexibleInstances language extension by putting
+-- Note: to write these instances you will need to enable the FlexibleInstances language extension
 -- {-# LANGUAGE FlexibleInstances #-}
 
---Once you have created these instances, you should be able to test them as follows:
+-- Once you have created these instances, you should be able to test them as follows:
 
 -- withVars :: [(String, Integer)]
 --          -> (M.Map String Integer -> Maybe Integer)
