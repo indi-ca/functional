@@ -325,19 +325,23 @@ something bob = Just 3
 
 bl = [("one", 1), ("two", 2), ("three", 3), ("four", 4)]
 
+
+-- The first instance says that variables can be interpreted as
+-- functions from a mapping of variables to Integer values to (possibly) Integer values.
+-- It should work by looking up the variable in the mapping.
+
+
+-- Look up the variable in the mapping
+-- String -> (M.Map String Integer -> Maybe Integer)
 instance HasVars (M.Map String Integer -> Maybe Integer) where
     var x = something
+
 
 instance Expr (M.Map String Integer -> Maybe Integer) where
     lit x = something
     add x y = something
     mul x y = something
 
-    --var x = M.Map "bob" 3 -> Maybe Integer
-
--- The first instance says that variables can be interpreted as
--- functions from a mapping of variables to Integer values to (possibly) Integer values.
--- It should work by looking up the variable in the mapping.
 -- The second instance says that these same functions can be interpreted as expressions
 -- (by passing along the mapping to subexpressions and combining results appropriately).
 
@@ -354,6 +358,8 @@ withVars vs exp = exp $ M.fromList vs
 -- *Calc> :t add (lit 3) (var "x")
 -- add (lit 3) (var "x") :: (Expr a, HasVars a) => a
 
+
+-- START WITH THE END IN MIND
 -- *Calc> withVars [("x", 6)] $ add (lit 3) (var "x")
 -- Just 9
 
