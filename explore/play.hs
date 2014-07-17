@@ -1,16 +1,8 @@
-import qualified Data.Map as M
---import Data.Map
-
 import Data.Maybe
+import qualified Data.Map as M
 
---b = M.Map 3 5
---b = Tip
 
-f :: M.Map String Integer -> Maybe Integer
-f Tip = Just 3
 
-ggg :: Integer -> Maybe Integer
-ggg x = Just x
 
 multiThree :: (Num a) => a -> (a -> (a -> a))
 multiThree x y z = x * y * z

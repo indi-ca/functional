@@ -319,8 +319,19 @@ instance HasVars VarExprT where
 --  instance HasVars (M.Map String Integer -> Maybe Integer)
 --  instance Expr (M.Map String Integer -> Maybe Integer)
 
---instance HasVars (M.Map String Integer -> Maybe Integer) where
-    --var (\x f -> x) = 3
+
+something :: M.Map String Integer -> Maybe Integer
+something bob = Just 3
+
+bl = [("one", 1), ("two", 2), ("three", 3), ("four", 4)]
+
+instance HasVars (M.Map String Integer -> Maybe Integer) where
+    var x = something
+
+instance Expr (M.Map String Integer -> Maybe Integer) where
+    lit x = something
+    add x y = something
+    mul x y = something
 
     --var x = M.Map "bob" 3 -> Maybe Integer
 
@@ -335,11 +346,10 @@ instance HasVars VarExprT where
 
 -- Once you have created these instances, you should be able to test them as follows:
 
--- withVars :: [(String, Integer)]
---          -> (M.Map String Integer -> Maybe Integer)
---          -> Maybe Integer
-
--- withVars vs exp = exp $ M.fromList vs
+withVars :: [(String, Integer)]
+          -> (M.Map String Integer -> Maybe Integer)
+          -> Maybe Integer
+withVars vs exp = exp $ M.fromList vs
 
 -- *Calc> :t add (lit 3) (var "x")
 -- add (lit 3) (var "x") :: (Expr a, HasVars a) => a
