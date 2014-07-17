@@ -44,7 +44,7 @@ parseMessage x = getLogMessage (words x)
 parse :: String -> [LogMessage]
 parse x = map parseMessage (lines x)
 
---
+
 --testParse parse 10 "error.log"
 --testParse parse 100 "error.log"
 --testParse parse 5523 "error.log"

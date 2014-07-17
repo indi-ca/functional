@@ -25,6 +25,8 @@ mapFromAL = M.fromList al
 mapFromBL :: M.Map String Integer
 mapFromBL = M.fromList bl
 
+value = mapFromBL ! "one"
+
 -- this is what I want to get to
 -- instance HasVars (M.Map String Integer -> Maybe Integer) where
 

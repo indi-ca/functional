@@ -315,10 +315,6 @@ instance HasVars VarExprT where
 -- names that overlap with names from the Prelude.
 -- Consult the Data.Map documentation to read about the operations that are supported on Maps.
 
--- Implement the following instances:
---  instance HasVars (M.Map String Integer -> Maybe Integer)
---  instance Expr (M.Map String Integer -> Maybe Integer)
-
 
 something :: M.Map String Integer -> Maybe Integer
 something bob = Just 3
@@ -331,19 +327,25 @@ bl = [("one", 1), ("two", 2), ("three", 3), ("four", 4)]
 -- It should work by looking up the variable in the mapping.
 
 
+doLookup :: String -> M.Map String Integer -> Maybe Integer
+doLookup str map
+    | M.member str map == False = Nothing
+    | M.member str map == True  = Just (map M.! str)
+
 -- Look up the variable in the mapping
 -- String -> (M.Map String Integer -> Maybe Integer)
+-- basically do a lookup on the map
 instance HasVars (M.Map String Integer -> Maybe Integer) where
-    var x = something
+    var x = doLookup x
 
 
+-- The second instance says that these same functions can be interpreted as expressions
+-- (by passing along the mapping to subexpressions and combining results appropriately).
 instance Expr (M.Map String Integer -> Maybe Integer) where
     lit x = something
     add x y = something
     mul x y = something
 
--- The second instance says that these same functions can be interpreted as expressions
--- (by passing along the mapping to subexpressions and combining results appropriately).
 
 -- Note: to write these instances you will need to enable the FlexibleInstances language extension
 -- {-# LANGUAGE FlexibleInstances #-}
