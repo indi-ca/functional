@@ -300,6 +300,9 @@ instance Expr VarExprT where
 instance HasVars VarExprT where
     var x = Var x
 
+vreify :: VarExprT -> VarExprT
+vreify = id
+
 
 -- You should now be able to write things like
 -- *Calc> add (lit 3) (var "x") :: VarExprT
@@ -317,7 +320,7 @@ instance HasVars VarExprT where
 
 
 something :: M.Map String Integer -> Maybe Integer
-something bob = Just 3
+something bob = Just 4
 
 bl = [("one", 1), ("two", 2), ("three", 3), ("four", 4)]
 
@@ -332,6 +335,16 @@ doLookup str map
     | M.member str map == False = Nothing
     | M.member str map == True  = Just (map M.! str)
 
+
+anotherLookup :: Integer -> M.Map String Integer -> Maybe Integer
+anotherLookup int map = Just 99
+
+combine :: (M.Map String Integer -> Maybe Integer) -> (M.Map String Integer -> Maybe Integer) -> (Maybe Integer)
+combine x y = Just 4
+
+--thirdLookup :: M.Map String Integer -> Maybe Integer -> M.Map String Integer -> Maybe Integer
+--thirdLookup x y = Just 5
+
 -- Look up the variable in the mapping
 -- String -> (M.Map String Integer -> Maybe Integer)
 -- basically do a lookup on the map
@@ -342,9 +355,19 @@ instance HasVars (M.Map String Integer -> Maybe Integer) where
 -- The second instance says that these same functions can be interpreted as expressions
 -- (by passing along the mapping to subexpressions and combining results appropriately).
 instance Expr (M.Map String Integer -> Maybe Integer) where
-    lit x = something
-    add x y = something
-    mul x y = something
+    lit x m = Just x
+    add x y m = combine x y
+    mul x y m = combine x y
+
+
+--instance HasVars (M.Map String Integer -> Maybe Integer) where
+--  var str map = M.lookup str map
+
+--instance Expr (M.Map String Integer -> Maybe Integer) where
+--  lit int map = Just int
+--  mul f1 f2 map = (*) <$> f1 map <*> f2 map
+--  add f1 f2 map = (+) <$> f1 map <*> f2 map
+
 
 
 -- Note: to write these instances you will need to enable the FlexibleInstances language extension
@@ -361,7 +384,32 @@ withVars vs exp = exp $ M.fromList vs
 -- add (lit 3) (var "x") :: (Expr a, HasVars a) => a
 
 
+-- :t add (lit 3) (lit 3)
+-- :: Expr a => a
+
+-- :t add (lit 3) (lit 3) :: VarExprT
+-- VarExprT :: VarExprT
+
+-- :t add (lit 3) (var "x") :: VarExprT
+-- add (lit 3) (var "x") :: VarExprT :: VarExprT
+
+-- :t add (lit 3) (lit 3) $ M.fromList [("x", 6)]
+-- :: (Num a, Expr (M.Map [Char] a -> t)) => t
+
+-- :t add (lit 3) (var "x") $ M.fromList [("x", 6)]
+--  :: (Num a, HasVars (M.Map [Char] a -> t),
+--      Expr (M.Map [Char] a -> t)) =>
+--     t
+
+
+
 -- START WITH THE END IN MIND
+
+--bexp = add (lit 3) (lit 3) :: Maybe Integer
+-- *Calc> withVars ([("x", 6)]) (add (lit 3) (lit 3))
+-- *Calc> withVars [("x", 6)] $ add (lit 3) (lit 3)
+-- Just 9
+
 -- *Calc> withVars [("x", 6)] $ add (lit 3) (var "x")
 -- Just 9
 
