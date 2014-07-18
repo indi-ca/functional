@@ -24,12 +24,19 @@
 
 -- Translate the above deﬁnition of Fibonacci numbers directly into a
 -- recursive function deﬁnition of type
-
--- fib :: Integer -> Integer
-
 -- so that fib n computes the nth Fibonacci number Fn.
+
+fib :: Integer -> Integer
+fib x
+    | x == 0 = 0
+    | x == 1 = 1
+    | otherwise = fib (x - 1) + fib (x - 2)
+
 -- Now use fib to deﬁne the inﬁnite list of all Fibonacci numbers,
--- fibs1 :: [Integer]
+fibs1 :: [Integer]
+fibs1 = map fib positive_integers
+    where positive_integers = [0..]
+
 
 
 -- (Hint: You can write the list of all positive integers as [0..].)
@@ -38,9 +45,28 @@
 -- fib is ridiculously slow. Although it is a good way to deﬁne the Fi
 -- bonacci numbers, it is not a very good way to compute them—in order
 -- to compute Fn it essentially ends up adding 1 to itself Fn times!
---For example, shown at right is the tree of recursive calls made by evaluat- ing fib 5.
---As you can see, it does a lot of repeated work. In the end, fib has running time
---O(Fn), which (it turns out) is equivalent to O(ro squared) where ro = 1 + root 5 / 2
---is the golden ratio
---That’s right, the running time 2
---is exponential in n. What’s more, all this work is also repeated from each element of the list fibs1 to the next. Surely we can do better.
+
+-- For example, shown at right is the tree of recursive calls made by evaluat- ing fib 5.
+-- As you can see, it does a lot of repeated work. In the end, fib has running time
+-- O(Fn), which (it turns out) is equivalent to O(ro squared) where ro = 1 + root 5 / 2
+-- is the golden ratio
+-- That’s right, the running time is exponential in n.
+-- What’s more, all this work is also repeated from each element of the list fibs1 to the next.
+-- Surely we can do better.
+
+
+
+
+-- EXERCISE 2
+
+-- Your task for this exercise is to come up with more efficient imple- mentation.
+-- Specifically, define the infinite list
+
+-- fibs2 :: [Integer]
+-- so that it has the same elements as fibs1,
+-- but computing the first n elements of fibs2 requires only O(n) addition operations.
+-- Be sure to use standard recursion pattern(s) from the Prelude as appropriate.
+
+
+
+
