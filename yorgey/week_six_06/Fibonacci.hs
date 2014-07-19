@@ -46,20 +46,28 @@ fibs1 = map fib positive_integers
 -- bonacci numbers, it is not a very good way to compute them—in order
 -- to compute Fn it essentially ends up adding 1 to itself Fn times!
 
--- For example, shown at right is the tree of recursive calls made by evaluat- ing fib 5.
+-- For example, shown at right is the tree of recursive calls made by evaluating fib 5.
 -- As you can see, it does a lot of repeated work. In the end, fib has running time
 -- O(Fn), which (it turns out) is equivalent to O(ro squared) where ro = 1 + root 5 / 2
 -- is the golden ratio
 -- That’s right, the running time is exponential in n.
 -- What’s more, all this work is also repeated from each element of the list fibs1 to the next.
--- Surely we can do better.
+
+-- What is this thing?
+-- It is a sequence. It's value is basically the sum of the previous two values.
+-- The initial calculation of it does not use the previous value.
+-- It does everything again.
+-- If there are n items, then it has to do n steps.
+-- Each successive element requires exponential growth.
+
+
 
 
 
 
 -- EXERCISE 2
 
--- Your task for this exercise is to come up with more efficient imple- mentation.
+-- Your task for this exercise is to come up with more efficient implementation.
 -- Specifically, define the infinite list
 
 -- fibs2 :: [Integer]
@@ -67,6 +75,19 @@ fibs1 = map fib positive_integers
 -- but computing the first n elements of fibs2 requires only O(n) addition operations.
 -- Be sure to use standard recursion pattern(s) from the Prelude as appropriate.
 
+-- Ok, use the previous two values
 
+-- Consider a reversed list, take the head and the head of the rest
+nextFib :: [Integer] -> Integer
+nextFib (x:xs) = x + head xs
+
+
+fibber :: [Integer] -> [Integer]
+fibber xs = nextFib xs : xs
+
+
+a = [1, 2, 4]
+
+fibs2 :: [Integer]
 
 

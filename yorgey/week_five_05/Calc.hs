@@ -1,6 +1,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE TypeSynonymInstances #-}
 
+
 module Calc where
 
 import qualified ExprT
@@ -9,14 +10,15 @@ import qualified StackVM
 import qualified Data.Map as M
 
 
+
 -- EXERCISE 1
 
--- This type is capable of representing expressions involving integer constants, addition, and multiplication. For example, the expression (2 + 3) × 4 would be represented by the value
--- Mul (Add (Lit 2) (Lit 3)) (Lit 4)
+-- This type is capable of representing expressions
+-- involving integer constants, addition, and multiplication.
 
--- Write Version 1 of the calculator: an evaluator for ExprT, with the signature
+-- Write Version 1 of the calculator:
+-- an evaluator for ExprT
 -- For example, eval (Mul (Add (Lit 2) (Lit 3)) (Lit 4)) == 20.
-
 
 eval :: ExprT.ExprT -> Integer
 eval (ExprT.Add (ExprT.Lit x) (ExprT.Lit y)) = x + y
@@ -106,9 +108,9 @@ class Expr a where
 -- EXERCISE 4
 
 instance Expr ExprT.ExprT where
-    lit x = ExprT.Lit x
-    add x y = ExprT.Add x y
-    mul x y = ExprT.Mul x y
+    lit = ExprT.Lit
+    add = ExprT.Add
+    mul = ExprT.Mul
 
 
 instance Expr Integer where
@@ -145,16 +147,16 @@ newtype Mod7    = Mod7 Integer deriving (Eq, Show)
 -- “addition” is taken to be the max function,
 -- while “multiplication” is the min function
 instance Expr MinMax where
-    lit x = MinMax x
-    add x y = max x y
-    mul x y = min x y
+    lit = MinMax
+    add = max
+    mul = min
 
 
 -- all values should be in the ranage 0 . . . 6,
 -- and all arithmetic is done modulo 7; for example,
 -- 5 + 3 = 1.
 instance Expr Mod7 where
-    lit x = Mod7 x
+    lit = Mod7
     add (Mod7 x) (Mod7 y) = Mod7 (mod (x + y) 7)
     mul (Mod7 x) (Mod7 y) = Mod7 (mod (x * y) 7)
 
@@ -293,12 +295,12 @@ data VarExprT = Lit Integer
   deriving (Show, Eq)
 
 instance Expr VarExprT where
-    lit x = Lit x
-    add x y = Add x y
-    mul x y = Mul x y
+    lit = Lit
+    add = Add
+    mul = Mul
 
 instance HasVars VarExprT where
-    var x = Var x
+    var = Var
 
 vreify :: VarExprT -> VarExprT
 vreify = id
@@ -332,14 +334,14 @@ bl = [("one", 1), ("two", 2), ("three", 3), ("four", 4)]
 
 doLookup :: String -> M.Map String Integer -> Maybe Integer
 doLookup str map
-    | M.member str map == False = Nothing
-    | M.member str map == True  = Just (map M.! str)
+    | not (M.member str map) = Nothing
+    | M.member str map       = Just (map M.! str)
 
 
 anotherLookup :: Integer -> M.Map String Integer -> Maybe Integer
 anotherLookup int map = Just 99
 
-combine :: (M.Map String Integer -> Maybe Integer) -> (M.Map String Integer -> Maybe Integer) -> (Maybe Integer)
+combine :: (M.Map String Integer -> Maybe Integer) -> (M.Map String Integer -> Maybe Integer) -> Maybe Integer
 combine x y = Just 4
 
 --thirdLookup :: M.Map String Integer -> Maybe Integer -> M.Map String Integer -> Maybe Integer
@@ -349,7 +351,7 @@ combine x y = Just 4
 -- String -> (M.Map String Integer -> Maybe Integer)
 -- basically do a lookup on the map
 instance HasVars (M.Map String Integer -> Maybe Integer) where
-    var x = doLookup x
+    var = doLookup
 
 
 -- The second instance says that these same functions can be interpreted as expressions
