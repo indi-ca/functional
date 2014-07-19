@@ -397,9 +397,7 @@ withVars vs exp = exp $ M.fromList vs
 -- :: (Num a, Expr (M.Map [Char] a -> t)) => t
 
 -- :t add (lit 3) (var "x") $ M.fromList [("x", 6)]
---  :: (Num a, HasVars (M.Map [Char] a -> t),
---      Expr (M.Map [Char] a -> t)) =>
---     t
+--  :: (Num a, HasVars (M.Map [Char] a -> t), Expr (M.Map [Char] a -> t)) => t
 
 
 
