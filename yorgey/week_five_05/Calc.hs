@@ -1,6 +1,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE TypeSynonymInstances #-}
 
+
 module Calc where
 
 import qualified ExprT
@@ -9,14 +10,15 @@ import qualified StackVM
 import qualified Data.Map as M
 
 
+
 -- EXERCISE 1
 
--- This type is capable of representing expressions involving integer constants, addition, and multiplication. For example, the expression (2 + 3) × 4 would be represented by the value
--- Mul (Add (Lit 2) (Lit 3)) (Lit 4)
+-- This type is capable of representing expressions
+-- involving integer constants, addition, and multiplication.
 
--- Write Version 1 of the calculator: an evaluator for ExprT, with the signature
+-- Write Version 1 of the calculator:
+-- an evaluator for ExprT
 -- For example, eval (Mul (Add (Lit 2) (Lit 3)) (Lit 4)) == 20.
-
 
 eval :: ExprT.ExprT -> Integer
 eval (ExprT.Add (ExprT.Lit x) (ExprT.Lit y)) = x + y
