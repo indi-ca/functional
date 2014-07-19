@@ -59,7 +59,7 @@ fibs1 = map fib positive_integers
 
 -- EXERCISE 2
 
--- Your task for this exercise is to come up with more efficient imple- mentation.
+-- Your task for this exercise is to come up with more efficient implementation.
 -- Specifically, define the infinite list
 
 -- fibs2 :: [Integer]
