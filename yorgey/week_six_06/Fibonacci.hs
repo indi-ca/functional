@@ -134,6 +134,7 @@ lbob = foldl' gl []
 -- Define a data type of polymorphic streams, Stream.
 
 data Stream a = a :. Stream a
+
 --data Stream a = InfiniteCons a (Stream a)
 --    deriving (Eq, Ord, Show)
 
@@ -156,8 +157,8 @@ streamToList (x :. y) = x : streamToList y
 -- Deriving Show is in sufficient, because the resulting instance will try to print on when it finishes
 -- Instead, make my own instance of Show
 
---   instance Show a => Show (Stream a) where
---     show ...
+instance Show a => Show (Stream a) where
+    show stream = take 20 (streamToList stream)
 
 -- which works by showing only some prefix of a stream (say, the first 20 elements).
 -- Hint: you may find your streamToList function useful.
