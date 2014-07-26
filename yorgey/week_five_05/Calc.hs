@@ -4,8 +4,8 @@
 
 module Calc where
 
-import qualified ExprT
 import Parser
+import qualified ExprT
 import qualified StackVM
 import qualified Data.Map as M
 
