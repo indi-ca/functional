@@ -158,7 +158,9 @@ streamToList (x :. y) = x : streamToList y
 -- Instead, make my own instance of Show
 
 instance Show a => Show (Stream a) where
-    show stream = take 20 (streamToList stream)
+    show stream = show (take 20 (streamToList stream))
+
+-- show stream = show . foldr (:) [] (streamToList stream)
 
 -- which works by showing only some prefix of a stream (say, the first 20 elements).
 -- Hint: you may find your streamToList function useful.
