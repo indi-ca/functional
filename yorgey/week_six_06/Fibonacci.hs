@@ -171,25 +171,31 @@ instance Show a => Show (Stream a) where
 
 -- EXERCISE 4
 
--- Let’s create some simple tools for working with Streams.
-
--- • Write a function
---    streamRepeat :: a -> Stream a
-
 -- This generates a stream containing infinitely many copies of the given element
+streamRepeat :: a -> Stream a
+streamRepeat x = x :. (streamRepeat x)
 
--- • Write a function
--- streamMap :: (a -> b) -> Stream a -> Stream b
+
 -- which applies a function to every element of a Stream.
+streamMap :: (a -> b) -> Stream a -> Stream b
+streamMap f (x :. y) = f x :. ( streamMap f y)
 
--- • Write a function
---    streamFromSeed :: (a -> a) -> a -> Stream a
+
+-- a seed
+-- the seed is the first element
+-- and a transformation
+-- which generates the new seed
 
 -- which generates a Stream from a “seed” of type a,
 -- this "seed", is the first element of the stream,
 -- and an "unfolding rule" of type a -> a
 -- this specifies how to transform the seed into a new seed
 -- and be used for generating the rest of the stream
+
+streamFromSeed :: (a -> a) -> a -> Stream a
+streamFromSeed f x = x :. (streamFromSeed f (f x))
+
+
 
 
 
@@ -201,17 +207,22 @@ instance Show a => Show (Stream a) where
 
 -- An inifinite list of natural numbers 0, 1, 2, . . .
 -- • Define the stream
---    nats :: Stream Integer
+nats :: Stream Integer
+nats = streamFromSeed (\x -> x + 1) 0
+
 
 
 -- The ruler function
--- 0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,...
+-- 0,1, 0,2, 0,1, 0,3, 0,1, 0,2, 0,1, 0,4, ...
 -- where the nth element in the stream (assuming the first element corresponds to n = 1)
 -- is the largest power of 2 which evenly divides n.
 -- Try to implement this in a clever way that does not do any divisibility testing
 
 -- • Define the stream
---    ruler :: Stream Integer
+-- ruler :: Stream Integer
+
+
+
 
 -- Hint: define a function interleaveStreams which alternates the elements from two streams.
 
