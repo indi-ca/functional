@@ -1,3 +1,5 @@
+import Data.List
+
 -- Fibonacci numbers
 -- TODO: See the Euler problem
 
@@ -80,7 +82,7 @@ fibs1 = map fib positive_integers
 -- Consider a reversed list, take the head and the head of the rest
 
 
-a = [1, 2, 3, 4, 5]
+finite_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 b' = [1, 2, 3, 5, 8]
 b = [8, 5, 3, 2, 1]
 z = []
@@ -89,71 +91,145 @@ z = []
 sumOfFirstTwo :: [Integer] -> Integer
 sumOfFirstTwo (x:xs) = x + head xs
 
-g [] x = [1]
-g [1] x = [2, 1]
-g acc x = sumOfFirstTwo acc : acc
+gl [] x = [1]
+gl [1] x = [2, 1]
+gl acc x = sumOfFirstTwo acc : acc
+
+gr x [] = [1]
+gr x [1] = [2, 1]
+gr x acc = sumOfFirstTwo acc : acc
+
 
 -- This creates a new list for each new number
 -- I just need to produce an infinite list of fib integers
 fibs2 :: [[Integer]]
-fibs2 = scanl g [] positive_integers
+fibs2 = scanl gl [] positive_integers
     where positive_integers = [0..]
 
 
--- Streams
+myFold f z [] = z
+myFold f z (x:xs) = x `f` (myFold f z xs)
 
--- We can be more explicit about infinite lists by defining a type Stream representing lists that must be infinite. (The usual list type represents lists that may be infinite but may also have some finite length.)
--- In particular, streams are like lists but with only a “cons” constructor— whereas the list type has two constructors, [] (the empty list) and
--- (:) (cons), there is no such thing as an empty stream. So a stream is simply defined as an element followed by a stream.
+something = myFold gr []
+bob = foldr gr []
+lbob = foldl' gl []
 
 
--- Exercise 3
--- • Define a data type of polymorphic streams, Stream.
--- • Write a function to convert a Stream to an infinite list,
---    streamToList :: Stream a -> [a]
--- • To test your Stream functions in the succeeding exercises, it will be useful to have an instance of Show for Streams. However, if you put deriving Show after your definition of Stream, as one usually does, the resulting instance will try to print an entire Stream—which,
--- of course, will never finish. Instead, you should make your own instance of Show for Stream,
 
+
+
+-- STREAMS
+
+-- Define a Stream type representing lists that must be infinite
+-- This way we can be more explicit about infinite lists
+-- Usual list type represents both infinite, and finite
+-- In particular, streams are like lists but with only a “cons” constructor
+-- (whereas the list type has two constructors, [] (the empty list) and (:) (cons) )
+-- There is no such thing as an empty stream.
+-- So a stream is simply defined as an element followed by a stream.
+
+
+-- EXERCISE 3
+
+-- Define a data type of polymorphic streams, Stream.
+
+data Stream a = a :. Stream a
+--data Stream a = InfiniteCons a (Stream a)
+--    deriving (Eq, Ord, Show)
+
+-- How do I create the first stream?
+
+--a_stream = 1 :. 2 :. 3
+
+
+
+-- Write a function to convert a Stream to an infinite list,
+
+streamToList :: Stream a -> [a]
+streamToList (x :. y) = x : streamToList y
+-- streamToList (InfiniteCons x y) = x : streamToList y
+
+
+
+-- Have an instance of Show for Streams
+-- This will help test the Stream functions in the succeeding exercises
+-- Deriving Show is in sufficient, because the resulting instance will try to print on when it finishes
+-- Instead, make my own instance of Show
 
 --   instance Show a => Show (Stream a) where
 --     show ...
--- which works by showing only some prefix of a stream (say, the first 20 elements).
 
+-- which works by showing only some prefix of a stream (say, the first 20 elements).
 -- Hint: you may find your streamToList function useful.
 
 
 
--- Exercise 4
+
+
+-- EXERCISE 4
+
 -- Let’s create some simple tools for working with Streams.
+
 -- • Write a function
 --    streamRepeat :: a -> Stream a
--- which generates a stream containing infinitely many copies of the given element.
+
+-- This generates a stream containing infinitely many copies of the given element
+
 -- • Write a function
--- streamMap :: (a -> b) -> Stream a -> Stream b which applies a function to every element of a Stream.
+-- streamMap :: (a -> b) -> Stream a -> Stream b
+-- which applies a function to every element of a Stream.
+
 -- • Write a function
 --    streamFromSeed :: (a -> a) -> a -> Stream a
--- which generates a Stream from a “seed” of type a, which is the first element of the stream, and an “unfolding rule” of type a -> a which specifies how to transform the seed into a new seed, to be used for generating the rest of the stream.
+
+-- which generates a Stream from a “seed” of type a,
+-- this "seed", is the first element of the stream,
+-- and an "unfolding rule" of type a -> a
+-- this specifies how to transform the seed into a new seed
+-- and be used for generating the rest of the stream
 
 
 
--- Exercise 5
--- Now that we have some tools for working with streams, let’s cre-
--- ate a few:
+
+
+-- EXERCISE 5
+
+-- Create a few streams, with the tools we have now
+
+-- An inifinite list of natural numbers 0, 1, 2, . . .
 -- • Define the stream
 --    nats :: Stream Integer
--- which contains the infinite list of natural numbers 0, 1, 2, . . .
+
+
+-- The ruler function
+-- 0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,...
+-- where the nth element in the stream (assuming the first element corresponds to n = 1)
+-- is the largest power of 2 which evenly divides n.
+-- Try to implement this in a clever way that does not do any divisibility testing
+
 -- • Define the stream
 --    ruler :: Stream Integer
--- which corresponds to the ruler function 0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,...
--- where the nth element in the stream (assuming the first element corresponds to n = 1) is the largest power of 2 which evenly divides n.
 
-
--- Hint: define a function interleaveStreams which alternates the elements from two streams. Can you use this function to implement ruler in a clever way that does not have to do any divisibility testing?
+-- Hint: define a function interleaveStreams which alternates the elements from two streams.
 
 
 
--- Fibonacci numbers via generating functions (extra credit)
--- This section is optional but very cool, so if you have time I hope you will try it. We will use streams of Integers to compute the Fibonacci numbers in an astounding way.
+
+
+
+-- FIBONACCI NUMBERS VIA GENERATING FUNCTIONS (EXTRA CREDIT)
+
+-- This section is optional but very cool, so if you have time I hope you will try it.
+-- We will use streams of Integers to compute the Fibonacci numbers in an astounding way.
 -- The essential idea is to work with generating functions of the form a0 +a1x+a2x2 +···+anxn +...
--- where x is just a “formal parameter” (that is, we will never actually substitute any values for x; we just use it as a placeholder) and all the coefficients ai are integers. We will store the coefficients a0, a1, a2, . . . in a Stream Integer.
+-- where x is just a “formal parameter”
+-- (that is, we will never actually substitute any values for x; we just use it as a placeholder)
+-- and all the coefficients ai are integers.
+-- We will store the coefficients a0, a1, a2, . . . in a Stream Integer.
 
+
+-- Exercise 6 (Optional) • First, define
+--   x :: Stream Integer
+-- by noting that x = 0 + 1x + 0x2 + 0x3 + . . . .
+-- • Define an instance of the Num type class for Stream Integer.
+-- Here’s what should go in your Num instance:
