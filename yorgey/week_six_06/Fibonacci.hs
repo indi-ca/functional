@@ -210,39 +210,39 @@ streamFromSeed f x = x :. (streamFromSeed f (f x))
 nats :: Stream Integer
 nats = streamFromSeed (\x -> x + 1) 0
 
-nats_even :: Stream Int
-nats_even = (streamFromSeed (\x -> x + 2) 2)
 
-powers_of_two = streamFromSeed (\x -> x * 2) 2
-first_n n = take n (streamToList powers_of_two)
-reversed n = reverse (first_n n)
-
-self_mul x n = take n (streamToList(streamRepeat x))
-self_mul_sum x n = sum (self_mul x n)
-
-new_self_mul s = streamFromSeed (\x -> x + s) s
-
--- now take n, and see if it exists
-take_n_and_exists n s = n `elem` the_list
-    where the_list = take n (streamToList (new_self_mul s))
-
--- now do this for each power
-robby n = map (\x -> take_n_and_exists n x) (reversed n)
-
-the_value n = length (filter (\x -> x == True) (robby n))
-
-
-the_map = streamMap (\x -> the_value x) (streamFromSeed (\x -> x + 2) 2)
-
--- Hint: define a function interleaveStreams which alternates the elements from two streams.
-interleaveStreams :: Stream a -> Stream a -> Stream a
-interleaveStreams (x :. x') (y :. y') = x :. (y :. interleaveStreams x' y')
 
 -- The ruler function
 -- 0,1, 0,2, 0,1, 0,3, 0,1, 0,2, 0,1, 0,4, ...
 -- where the nth element in the stream (assuming the first element corresponds to n = 1)
 -- is the largest power of 2 which evenly divides n.
 -- Try to implement this in a clever way that does not do any divisibility testing
+
+
+nats_even :: Stream Int
+nats_even = (streamFromSeed (\x -> x + 2) 2)
+
+powers_of_two :: Stream Int
+powers_of_two = streamFromSeed (\x -> x * 2) 2
+
+interleaveStreams :: Stream a -> Stream a -> Stream a
+interleaveStreams (x :. x') (y :. y') = x :. (y :. interleaveStreams x' y')
+
+
+
+first_n n = take n (streamToList powers_of_two)
+reversed n = reverse (first_n n)
+
+
+new_self_mul s = streamFromSeed (\x -> x + s) s
+
+take_n_and_exists n s = n `elem` the_list
+    where the_list = take n (streamToList (new_self_mul s))
+
+the_value n = length (filter (\x -> x == True) (robby n))
+    where robby n = map (\x -> take_n_and_exists n x) (reversed n)
+
+the_map = streamMap (\x -> the_value x) (streamFromSeed (\x -> x + 2) 2)
 
 
 ruler :: Stream Int
