@@ -210,7 +210,33 @@ streamFromSeed f x = x :. (streamFromSeed f (f x))
 nats :: Stream Integer
 nats = streamFromSeed (\x -> x + 1) 0
 
+nats_even :: Stream Int
+nats_even = (streamFromSeed (\x -> x + 2) 2)
 
+powers_of_two = streamFromSeed (\x -> x * 2) 2
+first_n n = take n (streamToList powers_of_two)
+reversed n = reverse (first_n n)
+
+self_mul x n = take n (streamToList(streamRepeat x))
+self_mul_sum x n = sum (self_mul x n)
+
+new_self_mul s = streamFromSeed (\x -> x + s) s
+
+-- now take n, and see if it exists
+take_n_and_exists n s = n `elem` the_list
+    where the_list = take n (streamToList (new_self_mul s))
+
+-- now do this for each power
+robby n = map (\x -> take_n_and_exists n x) (reversed n)
+
+the_value n = length (filter (\x -> x == True) (robby n))
+
+
+the_map = streamMap (\x -> the_value x) (streamFromSeed (\x -> x + 2) 2)
+
+-- Hint: define a function interleaveStreams which alternates the elements from two streams.
+interleaveStreams :: Stream a -> Stream a -> Stream a
+interleaveStreams (x :. x') (y :. y') = x :. (y :. interleaveStreams x' y')
 
 -- The ruler function
 -- 0,1, 0,2, 0,1, 0,3, 0,1, 0,2, 0,1, 0,4, ...
@@ -218,13 +244,13 @@ nats = streamFromSeed (\x -> x + 1) 0
 -- is the largest power of 2 which evenly divides n.
 -- Try to implement this in a clever way that does not do any divisibility testing
 
--- • Define the stream
--- ruler :: Stream Integer
+
+ruler :: Stream Int
+ruler = interleaveStreams odd the_mapped
+    where odd = streamRepeat 0
+          the_mapped = streamMap (\x -> the_value x) nats_even
 
 
-
-
--- Hint: define a function interleaveStreams which alternates the elements from two streams.
 
 
 
@@ -235,6 +261,7 @@ nats = streamFromSeed (\x -> x + 1) 0
 
 -- This section is optional but very cool, so if you have time I hope you will try it.
 -- We will use streams of Integers to compute the Fibonacci numbers in an astounding way.
+
 -- The essential idea is to work with generating functions of the form a0 +a1x+a2x2 +···+anxn +...
 -- where x is just a “formal parameter”
 -- (that is, we will never actually substitute any values for x; we just use it as a placeholder)
@@ -247,3 +274,34 @@ nats = streamFromSeed (\x -> x + 1) 0
 -- by noting that x = 0 + 1x + 0x2 + 0x3 + . . . .
 -- • Define an instance of the Num type class for Stream Integer.
 -- Here’s what should go in your Num instance:
+
+
+-- You should implement the fromInteger function. Note that
+-- n = n+0x+0x2 +0x3 +....
+
+
+-- You should implement negate: to negate a generating function,
+-- negate all its coefficients.
+-- You should implement (+), which works like you would expect: (a0 +a1x+a2x2 +...)+(b0 +b1x+b2x2 +...) = (a0 +b0)+ (a1 +b1)x+(a2 +b2)x2 +...
+
+
+
+-- Multiplication is a bit trickier. Suppose A = a0 + xA′ and
+-- B = b0 + xB′ are two generating functions we wish to multiply. We reason as follows:
+-- AB = (a0 + xA′)B = a0B + xA′B
+-- = a0(b0 + xB′) + xA′B = a0b0 + x(a0B′ + A′B)
+-- That is, the first element of the product AB is the product of the first elements, a0b0; the remainder of the coefficient stream (the part after the x) is formed by multiplying every element in B′ (that is, the tail of B) by a0, and to this adding the result of multiplying A′ (the tail of A) by B.
+
+
+-- Note that there are a few methods of the Num class I have not told you to implement, such as abs and signum. ghc will complain that you haven’t defined them, but don’t worry about it. We won’t need those methods. (To turn off these warnings you can add
+--    {-# OPTIONS_GHC -fno-warn-missing-methods #-}
+-- to the top of your file.)
+-- If you have implemented the above correctly, you should be able
+-- to evaluate things at the ghci prompt such as
+--    *Main> x^4
+--    *Main> (1 + x)^5
+--    *Main> (x^2 + x + 3) * (x - 5)
+
+
+
+
