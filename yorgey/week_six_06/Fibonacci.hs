@@ -180,18 +180,11 @@ streamRepeat x = x :. (streamRepeat x)
 streamMap :: (a -> b) -> Stream a -> Stream b
 streamMap f (x :. y) = f x :. ( streamMap f y)
 
-
--- a seed
--- the seed is the first element
--- and a transformation
--- which generates the new seed
-
 -- which generates a Stream from a “seed” of type a,
 -- this "seed", is the first element of the stream,
 -- and an "unfolding rule" of type a -> a
 -- this specifies how to transform the seed into a new seed
 -- and be used for generating the rest of the stream
-
 streamFromSeed :: (a -> a) -> a -> Stream a
 streamFromSeed f x = x :. (streamFromSeed f (f x))
 
@@ -252,9 +245,21 @@ ruler = interleaveStreams odd the_mapped
 
 
 
+powerMask :: Int -> Stream Int
+powerMask n = streamMap (\x -> x `div` n2 * n) b
+    where b = streamFromSeed (\x -> if x == n2 then 1 else x + 1) 1
+          n2 = 2 ^ n
 
 
+merge :: Int -> Stream Int
+merge 0 = streamRepeat 0
+merge n = interleaveStreams (powerMask n) (merge (n - 1))
 
+zeros = streamRepeat 0
+ones = powerMask 1
+twos = powerMask 2
+
+-- I was thinking stream merge, not interleave
 
 
 -- FIBONACCI NUMBERS VIA GENERATING FUNCTIONS (EXTRA CREDIT)
