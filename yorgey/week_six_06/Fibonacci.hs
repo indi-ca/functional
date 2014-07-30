@@ -115,7 +115,25 @@ bob = foldr gr []
 lbob = foldl' gl []
 
 
+starting = [2, 1]
+next (x:xs) = (x + head xs)
+fib_generator xs = fib_generator(next xs : xs)
 
+
+
+-- try iterating
+fib_append :: Num a => [a] -> [a]
+fib_append (x:xs) =  (x + head xs) : x : xs
+
+fib_reversed = take 5 (iterate fib_append starting)
+
+
+fibs = 1 : 2 : zipWith (+) fibs (tail fibs)
+
+-- [?] How can I get past not having to pass a list into the function, and it returning a list
+-- I can't just return a value
+
+-- [?] What causes something to be displayed on the screen?
 
 
 -- STREAMS
@@ -260,6 +278,7 @@ ones = powerMask 1
 twos = powerMask 2
 
 -- I was thinking stream merge, not interleave
+-- [?] Should I try and consume the parts in between the zeroes
 
 
 -- FIBONACCI NUMBERS VIA GENERATING FUNCTIONS (EXTRA CREDIT)
