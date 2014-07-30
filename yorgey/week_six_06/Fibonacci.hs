@@ -77,47 +77,6 @@ fibs1 = map fib positive_integers
 -- but computing the first n elements of fibs2 requires only O(n) addition operations.
 -- Be sure to use standard recursion pattern(s) from the Prelude as appropriate.
 
--- Ok, use the previous two values
-
--- Consider a reversed list, take the head and the head of the rest
-
-
-finite_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-b' = [1, 2, 3, 5, 8]
-b = [8, 5, 3, 2, 1]
-z = []
-
-
-sumOfFirstTwo :: [Integer] -> Integer
-sumOfFirstTwo (x:xs) = x + head xs
-
-gl [] x = [1]
-gl [1] x = [2, 1]
-gl acc x = sumOfFirstTwo acc : acc
-
-gr x [] = [1]
-gr x [1] = [2, 1]
-gr x acc = sumOfFirstTwo acc : acc
-
-
--- This creates a new list for each new number
--- I just need to produce an infinite list of fib integers
-fibs2 :: [[Integer]]
-fibs2 = scanl gl [] positive_integers
-    where positive_integers = [0..]
-
-
-myFold f z [] = z
-myFold f z (x:xs) = x `f` (myFold f z xs)
-
-something = myFold gr []
-bob = foldr gr []
-lbob = foldl' gl []
-
-
-starting = [2, 1]
-next (x:xs) = (x + head xs)
-fib_generator xs = fib_generator(next xs : xs)
 
 
 
@@ -125,10 +84,19 @@ fib_generator xs = fib_generator(next xs : xs)
 fib_append :: Num a => [a] -> [a]
 fib_append (x:xs) =  (x + head xs) : x : xs
 
+starting = [2, 1]
 fib_reversed = take 5 (iterate fib_append starting)
 
 
-fibs = 1 : 2 : zipWith (+) fibs (tail fibs)
+
+-- This creates a new list for each new number
+-- I just need to produce an infinite list of fib integers
+
+--fibs2 = scanl gl [] positive_integers
+--    where positive_integers = [0..]
+
+fibs2 :: [Integer]
+fibs2 = 1 : 2 : zipWith (+) fibs2 (tail fibs2)
 
 -- [?] How can I get past not having to pass a list into the function, and it returning a list
 -- I can't just return a value
@@ -176,7 +144,7 @@ streamToList (x :. y) = x : streamToList y
 -- Instead, make my own instance of Show
 
 instance Show a => Show (Stream a) where
-    show stream = show (take 20 (streamToList stream))
+    show stream = show (take 50 (streamToList stream))
 
 -- show stream = show . foldr (:) [] (streamToList stream)
 
@@ -236,24 +204,11 @@ nats_even = (streamFromSeed (\x -> x + 2) 2)
 powers_of_two :: Stream Int
 powers_of_two = streamFromSeed (\x -> x * 2) 2
 
+--interleaveStreams :: Stream a -> Stream a -> Stream a
+--interleaveStreams (x :. x') (y :. y') = x :. (y :. interleaveStreams x' y')
+
 interleaveStreams :: Stream a -> Stream a -> Stream a
-interleaveStreams (x :. x') (y :. y') = x :. (y :. interleaveStreams x' y')
-
-
-
-first_n n = take n (streamToList powers_of_two)
-reversed n = reverse (first_n n)
-
-
-new_self_mul s = streamFromSeed (\x -> x + s) s
-
-take_n_and_exists n s = n `elem` the_list
-    where the_list = take n (streamToList (new_self_mul s))
-
-the_value n = length (filter (\x -> x == True) (robby n))
-    where robby n = map (\x -> take_n_and_exists n x) (reversed n)
-
-the_map = streamMap (\x -> the_value x) (streamFromSeed (\x -> x + 2) 2)
+interleaveStreams (x :. xs) y = x :. (interleaveStreams y xs)
 
 
 ruler :: Stream Int
@@ -276,6 +231,31 @@ merge n = interleaveStreams (powerMask n) (merge (n - 1))
 zeros = streamRepeat 0
 ones = powerMask 1
 twos = powerMask 2
+
+
+
+
+
+b = streamMap (\x -> the_value x) nats_even
+c = streamToList b
+collection = take 480 c
+
+nums :: [Int]
+nums = [1..60]
+indexes = map (\x -> x * 8 - 1) nums
+
+
+
+
+
+streams_zero = streamRepeat 0
+streams_ones = streamRepeat 1
+
+river n = interleaveStreams (streamRepeat n) (river (n+1))
+
+
+
+
 
 -- I was thinking stream merge, not interleave
 -- [?] Should I try and consume the parts in between the zeroes
@@ -328,4 +308,16 @@ twos = powerMask 2
 
 
 
+first_n n = take n (streamToList powers_of_two)
+reversed n = reverse (first_n n)
 
+
+new_self_mul s = streamFromSeed (\x -> x + s) s
+
+take_n_and_exists n s = n `elem` the_list
+    where the_list = take n (streamToList (new_self_mul s))
+
+the_value n = length (filter (\x -> x == True) (robby n))
+    where robby n = map (\x -> take_n_and_exists n x) (reversed n)
+
+the_map = streamMap (\x -> the_value x) (streamFromSeed (\x -> x + 2) 2)
