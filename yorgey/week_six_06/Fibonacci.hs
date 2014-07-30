@@ -115,23 +115,16 @@ fibs2 = 1 : 2 : zipWith (+) fibs2 (tail fibs2)
 -- So a stream is simply defined as an element followed by a stream.
 
 
+
+
 -- EXERCISE 3
 
 -- Define a data type of polymorphic streams, Stream.
 
 data Stream a = a :. Stream a
 
---data Stream a = InfiniteCons a (Stream a)
---    deriving (Eq, Ord, Show)
-
--- How do I create the first stream?
-
---a_stream = 1 :. 2 :. 3
-
-
 
 -- Write a function to convert a Stream to an infinite list,
-
 streamToList :: Stream a -> [a]
 streamToList (x :. y) = x : streamToList y
 -- streamToList (InfiniteCons x y) = x : streamToList y
@@ -144,7 +137,7 @@ streamToList (x :. y) = x : streamToList y
 -- Instead, make my own instance of Show
 
 instance Show a => Show (Stream a) where
-    show stream = show (take 50 (streamToList stream))
+    show stream = show (take 20 (streamToList stream))
 
 -- show stream = show . foldr (:) [] (streamToList stream)
 
@@ -185,10 +178,15 @@ streamFromSeed f x = x :. (streamFromSeed f (f x))
 -- Create a few streams, with the tools we have now
 
 -- An inifinite list of natural numbers 0, 1, 2, . . .
--- • Define the stream
 nats :: Stream Integer
 nats = streamFromSeed (\x -> x + 1) 0
 
+--interleaveStreams :: Stream a -> Stream a -> Stream a
+--interleaveStreams (x :. x') (y :. y') = x :. (y :. interleaveStreams x' y')
+
+-- Do not pattern match on both
+interleaveStreams :: Stream a -> Stream a -> Stream a
+interleaveStreams (x :. xs) y = x :. (interleaveStreams y xs)
 
 
 -- The ruler function
@@ -197,70 +195,13 @@ nats = streamFromSeed (\x -> x + 1) 0
 -- is the largest power of 2 which evenly divides n.
 -- Try to implement this in a clever way that does not do any divisibility testing
 
-
-nats_even :: Stream Int
-nats_even = (streamFromSeed (\x -> x + 2) 2)
-
-powers_of_two :: Stream Int
-powers_of_two = streamFromSeed (\x -> x * 2) 2
-
---interleaveStreams :: Stream a -> Stream a -> Stream a
---interleaveStreams (x :. x') (y :. y') = x :. (y :. interleaveStreams x' y')
-
-interleaveStreams :: Stream a -> Stream a -> Stream a
-interleaveStreams (x :. xs) y = x :. (interleaveStreams y xs)
-
-
-ruler :: Stream Int
-ruler = interleaveStreams odd the_mapped
-    where odd = streamRepeat 0
-          the_mapped = streamMap (\x -> the_value x) nats_even
-
-ruler' :: Integer -> Stream Integer
-ruler' n = interleaveStreams (streamRepeat n) (ruler' (n+1))
-
-ruler'' :: Integer -> Stream Integer
-ruler'' = ruler' 0
-
-
-powerMask :: Int -> Stream Int
-powerMask n = streamMap (\x -> x `div` n2 * n) b
-    where b = streamFromSeed (\x -> if x == n2 then 1 else x + 1) 1
-          n2 = 2 ^ n
-
-
-merge :: Int -> Stream Int
-merge 0 = streamRepeat 0
-merge n = interleaveStreams (powerMask n) (merge (n - 1))
-
-zeros = streamRepeat 0
-ones = powerMask 1
-twos = powerMask 2
+ruler :: Stream Integer
+ruler = ruler' 0
+    where ruler' n = interleaveStreams (streamRepeat n) (ruler' (n+1))
 
 
 
 
-
-b = streamMap (\x -> the_value x) nats_even
-c = streamToList b
-collection = take 480 c
-
-nums :: [Int]
-nums = [1..60]
-indexes = map (\x -> x * 8 - 1) nums
-
-
-
-
-
-
-
-
-
-
-
--- I was thinking stream merge, not interleave
--- [?] Should I try and consume the parts in between the zeroes
 
 
 -- FIBONACCI NUMBERS VIA GENERATING FUNCTIONS (EXTRA CREDIT)
@@ -310,16 +251,3 @@ indexes = map (\x -> x * 8 - 1) nums
 
 
 
-first_n n = take n (streamToList powers_of_two)
-reversed n = reverse (first_n n)
-
-
-new_self_mul s = streamFromSeed (\x -> x + s) s
-
-take_n_and_exists n s = n `elem` the_list
-    where the_list = take n (streamToList (new_self_mul s))
-
-the_value n = length (filter (\x -> x == True) (robby n))
-    where robby n = map (\x -> take_n_and_exists n x) (reversed n)
-
-the_map = streamMap (\x -> the_value x) (streamFromSeed (\x -> x + 2) 2)
