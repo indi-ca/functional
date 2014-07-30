@@ -216,6 +216,11 @@ ruler = interleaveStreams odd the_mapped
     where odd = streamRepeat 0
           the_mapped = streamMap (\x -> the_value x) nats_even
 
+ruler' :: Integer -> Stream Integer
+ruler' n = interleaveStreams (streamRepeat n) (ruler' (n+1))
+
+ruler'' :: Integer -> Stream Integer
+ruler'' = ruler' 0
 
 
 powerMask :: Int -> Stream Int
@@ -248,10 +253,7 @@ indexes = map (\x -> x * 8 - 1) nums
 
 
 
-streams_zero = streamRepeat 0
-streams_ones = streamRepeat 1
 
-river n = interleaveStreams (streamRepeat n) (river (n+1))
 
 
 
