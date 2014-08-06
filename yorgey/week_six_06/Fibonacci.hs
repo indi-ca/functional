@@ -1,3 +1,6 @@
+{-# LANGUAGE FlexibleInstances #-}
+{-# OPTIONS_GHC -fno-warn-missing-methods #-}
+
 import Data.List
 
 -- Fibonacci numbers
@@ -209,7 +212,8 @@ ruler = ruler' 0
 -- This section is optional but very cool, so if you have time I hope you will try it.
 -- We will use streams of Integers to compute the Fibonacci numbers in an astounding way.
 
--- The essential idea is to work with generating functions of the form a0 +a1x+a2x2 +···+anxn +...
+-- The essential idea is to work with generating functions of the form
+-- a0 + a1x + a2x2 +···+ anxn +...
 -- where x is just a “formal parameter”
 -- (that is, we will never actually substitute any values for x; we just use it as a placeholder)
 -- and all the coefficients ai are integers.
@@ -219,25 +223,34 @@ ruler = ruler' 0
 -- Exercise 6 (Optional) • First, define
 --   x :: Stream Integer
 -- by noting that x = 0 + 1x + 0x2 + 0x3 + . . . .
+
 -- • Define an instance of the Num type class for Stream Integer.
--- Here’s what should go in your Num instance:
+-- want to define a stream of co-efficients to accompany an Integer
 
 
--- You should implement the fromInteger function. Note that
--- n = n+0x+0x2 +0x3 +....
 
+instance Num (Stream Integer) where
 
--- You should implement negate: to negate a generating function,
--- negate all its coefficients.
--- You should implement (+), which works like you would expect: (a0 +a1x+a2x2 +...)+(b0 +b1x+b2x2 +...) = (a0 +b0)+ (a1 +b1)x+(a2 +b2)x2 +...
+    -- You should implement the fromInteger function. Note that
+    -- n = n + 0x + 0x2 + 0x3 +....
+    fromInteger x = x :. streamRepeat 0
 
+    -- Negate the stream, i.e, negate all the coefficients
+    negate = streamMap (\x -> x * (-1))
+
+    -- You should implement (+), which works like you would expect:
+    -- (a0 +a1x+a2x2 +...)+(b0 +b1x+b2x2 +...) = (a0 +b0)+ (a1 +b1)x+(a2 +b2)x2 +...
+    --(+) x y = streamMap
 
 
 -- Multiplication is a bit trickier. Suppose A = a0 + xA′ and
 -- B = b0 + xB′ are two generating functions we wish to multiply. We reason as follows:
 -- AB = (a0 + xA′)B = a0B + xA′B
 -- = a0(b0 + xB′) + xA′B = a0b0 + x(a0B′ + A′B)
--- That is, the first element of the product AB is the product of the first elements, a0b0; the remainder of the coefficient stream (the part after the x) is formed by multiplying every element in B′ (that is, the tail of B) by a0, and to this adding the result of multiplying A′ (the tail of A) by B.
+-- That is, the first element of the product AB is the product of the first elements, a0b0;
+-- the remainder of the coefficient stream (the part after the x) is formed by
+-- multiplying every element in B′ (that is, the tail of B) by a0,
+-- and to this adding the result of multiplying A′ (the tail of A) by B.
 
 
 -- Note that there are a few methods of the Num class I have not told you to implement, such as abs and signum. ghc will complain that you haven’t defined them, but don’t worry about it. We won’t need those methods. (To turn off these warnings you can add
