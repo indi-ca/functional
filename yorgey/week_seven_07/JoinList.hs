@@ -63,7 +63,69 @@ data JoinList m a = Empty
                 | Append m (JoinList m a) (JoinList m a)
     deriving (Eq, Show)
 
+-- The m parameter will be used to track monoidal annotations to the structure
+-- The idea is that the annotation at the root of a JoinList
+-- will aways be equal to the combinations of all the annotations on the Single nodes
+-- (according to whatever notion of 'combining' is defined for the monoid in question)
+-- Empty nodes do not explicity store an annotation
+-- but we consider them to have an annotation of mempty
+-- (that is, the identiy element for the give monoid)
 
+--example = Append (Product 210)
+--   (Append (Product 30)
+--     (Single (Product 5) 'y')
+--     (Append (Product 6)
+--       (Single (Product 2) 'e')
+--       (Single (Product 3) 'a')))
+--   (Single (Product 7) 'h')
+
+-- The above example is a JoinList
+-- storing four values
+
+-- A multiplicative monoid is being used,
+-- each Append node stores the product of all the annotations below it
+
+-- The point of doing this is that all the subcomputations needed to compute
+-- the product of all the annotations in the join-list are cached
+
+-- If we now change one of the annotations,
+-- we need only recompute the annotations on nodes above it in the tree
+-- the stuff below it have already been cached
+
+-- this means, for balanced join-lists,
+-- it takes only O(log n) time to rebuild the annotations after making an edit
+
+
+-- EXERCISE 1
+
+-- Consider how to write some simple operations on these JoinLists
+-- The most important operation we will consider is how to append two JoinLists
+
+-- We said that the point of JoinLists is to represent append operations as data
+-- but what about annotations?
+
+-- Write an append function for JoinLists that yields a new JoinList
+-- whose monoidal annotation is derived from those of the two arguments
+
+-- (+++) :: Monoid m => JoinList m a -> JoinList m a -> JoinList m a
+
+-- Implementing this helper function may be helpful
+-- that gets the annotation at the root of a JoinList
+-- tag :: Monoid m => JoinList m a -> m
+
+
+
+-- EXERCISE 2
+
+-- The first annotation to try out is one for fast indexing into a JoinList
+-- The idea is to cache the size (number of data elements) of each subtree
+-- This can then be used at each step to determine if the desired index
+-- is in the left or right branch
+
+-- We have provided the Sized module that defines the Size type
+-- which is simply a newtype wrapper around an Int
+-- In order to make Sizes more accessible,
+-- we
 
 
 
