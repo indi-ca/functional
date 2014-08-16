@@ -1,5 +1,6 @@
 import Data.List
 import Data.Monoid
+import Sized
 
 -- What's going on?
 -- I have an bunch of text
@@ -122,7 +123,6 @@ tag Empty = mempty
 tag (Single m _) = m
 tag (Append m _ _) = m
 
-
 instance Monoid Integer where
     mempty = 0
     mappend = (*)
@@ -145,15 +145,74 @@ instance Monoid Integer where
 
 -- EXERCISE 2
 
--- The first annotation to try out is one for fast indexing into a JoinList
--- The idea is to cache the size (number of data elements) of each subtree
--- This can then be used at each step to determine if the desired index
--- is in the left or right branch
+-- Trying out an annotion. The first one is for fast indexing, into a JoinList
+-- Cache the size (number of data elements) of each subtree
+-- Use this cache to determine if the 'desired index' is in the left or right branch
 
 -- We have provided the Sized module that defines the Size type
--- which is simply a newtype wrapper around an Int
--- In order to make Sizes more accessible,
--- we
+-- this is simply a newtype wrapper around an Int
+-- The Sized type class has been defined
+-- to make Sizes more accesible,
+-- by providing a method for obtaining a Size from a value
 
+-- Use the Sized type class to write the following functions.
+
+
+-- 1. Implement the function
+--   indexJ :: (Sized b, Monoid b) => Int -> JoinList b a -> Maybe a
+
+-- indexJ finds the JoinList element at the specified index.
+-- If the index is out of bounds, the function returns Nothing.
+-- By an index in a JoinList we mean the index in the list that it represents.
+-- That is, consider a safe list indexing function
+
+
+-- (!!?) :: [a] -> Int -> Maybe a
+-- []       !!? _         = Nothing
+-- _        !!? i | i < 0 = Nothing
+-- (x:xs)   !!? 0         = Just x
+-- (x:xs)   !!? i         = xs !!? (i-1)
+
+-- which returns Just the ith element in a list (starting at zero)
+-- if such an element exists, or Nothing otherwise.
+
+-- We also consider an updated function for converting join-lists into lists,
+-- just like jlbToList but ignoring the monoidal annotations:
+
+-- jlToList :: JoinList m a -> [a]
+-- jlToList Empty            = []
+-- jlToList (Single _ a)     = [a]
+-- jlToList (Append _ l1 l2) = jlToList l1 ++ jlToList l2
+
+-- We can now specify the desired behavior of indexJ.
+-- For any index i and join-list jl, it should be the case that
+--   (indexJ i jl) == (jlToList jl !!? i)
+
+-- That is, calling indexJ on a join-list is the same as first converting
+-- the join-list to a list and then indexing into the list.
+-- The point, of course, is that indexJ can be more efficient (O(log n) versus O(n), assuming a balanced join-list),
+-- because it gets to use the size annotations to throw away whole parts of the tree at once,
+-- whereas the list indexing operation has to walk over every element.
+
+
+
+-- 2. Implement the function
+-- dropJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
+-- The dropJ function drops the first n elements from a JoinList.
+-- This is analogous to the standard drop function on lists.
+-- Formally, dropJ should behave in such a way that
+-- jlToList (dropJ n jl) == drop n (jlToList jl).
+
+
+
+-- 3. Finally, implement the function
+-- takeJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
+
+-- The takeJ function returns the first n elements of a JoinList, dropping all other elements.
+-- Again, this function works similarly to the standard library take function; that is, it should be the case that
+--    jlToList (takeJ n jl) == take n (jlToList jl).
+
+-- Ensure that your function definitions use the size function from the Sized type class
+-- to make smart decisions about how to descend into the JoinList tree.
 
 
