@@ -127,20 +127,18 @@ instance Monoid Integer where
     mempty = 0
     mappend = (*)
 
---instance Monoid (JoinList m a) where
---    mempty = Empty
---    mappend left right = Append m left right
-
-
 
 -- Write an append function for JoinLists that yields a new JoinList
 -- whose monoidal annotation is derived from those of the two arguments
 
+--(+++) :: Monoid m => JoinList m a -> JoinList m a -> JoinList m a
+--(+++) x@(Single m1 _) y@(Single m2 _) = Append (m1 `mappend` m2) x y
+--(+++) x@(Single m1 _) y@(Append m2 _ _) = Append (m1 `mappend` m2) x y
+--(+++) x@(Append m1 _ _) y@(Single m2 _) = Append (m1 `mappend` m2) x y
+--(+++) x@(Append m1 _ _) y@(Append m2 _ _) = Append (m1 `mappend` m2) x y
+
 (+++) :: Monoid m => JoinList m a -> JoinList m a -> JoinList m a
-(+++) x@(Single m1 _) y@(Single m2 _) = Append (m1 `mappend` m2) x y
-(+++) x@(Single m1 _) y@(Append m2 _ _) = Append (m1 `mappend` m2) x y
-(+++) x@(Append m1 _ _) y@(Single m2 _) = Append (m1 `mappend` m2) x y
-(+++) x@(Append m1 _ _) y@(Append m2 _ _) = Append (m1 `mappend` m2) x y
+(+++) x y = Append (tag x `mappend` tag y) x y
 
 
 
