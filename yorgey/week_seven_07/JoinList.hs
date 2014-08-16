@@ -1,3 +1,7 @@
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE TypeSynonymInstances #-}
+
+
 import Data.List
 import Data.Monoid
 import Sized
@@ -109,11 +113,22 @@ data JoinList m a = Empty
 
 jl_e = Single 2 'e'
 jl_a = Single 3 'a'
-jl_y = Single 5 'e'
+jl_y = Single 5 'y'
 jl_h = Single 7 'h'
 jl_ea = Append 6 jl_e jl_a
 jl_yea = Append 30 jl_y jl_ea
 jl_yeah = Append 210 jl_yea jl_h
+
+fi_e = Single 1 'e'
+fi_a = Single 1 'a'
+fi_y = Single 1 'y'
+fi_h = Single 1 'h'
+fi_ea = Append 2 fi_e fi_a
+fi_yea = Append 3 fi_y fi_ea
+fi_yeah = Append 4 fi_yea fi_h
+
+
+
 
 -- Implementing this helper function may be helpful
 -- that gets the annotation at the root of a JoinList
@@ -190,9 +205,19 @@ instance Monoid Integer where
 
 -- That is, calling indexJ on a join-list is the same as first converting
 -- the join-list to a list and then indexing into the list.
--- The point, of course, is that indexJ can be more efficient (O(log n) versus O(n), assuming a balanced join-list),
+-- The point, of course, is that indexJ can be more efficient (O(log n) versus O(n),
+-- assuming a balanced join-list),
 -- because it gets to use the size annotations to throw away whole parts of the tree at once,
 -- whereas the list indexing operation has to walk over every element.
+
+instance Sized Integer where
+    size x = Size (fromIntegral x :: Int)
+
+indexJ :: (Sized b, Monoid b) => Int -> JoinList b a -> Maybe a
+indexJ i j = Nothing
+
+
+
 
 
 
