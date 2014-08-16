@@ -1,5 +1,5 @@
 import Data.List
-
+import Data.Monoid
 
 -- What's going on?
 -- I have an bunch of text
@@ -104,14 +104,44 @@ data JoinList m a = Empty
 -- We said that the point of JoinLists is to represent append operations as data
 -- but what about annotations?
 
--- Write an append function for JoinLists that yields a new JoinList
--- whose monoidal annotation is derived from those of the two arguments
 
--- (+++) :: Monoid m => JoinList m a -> JoinList m a -> JoinList m a
+
+jl_e = Single 2 'e'
+jl_a = Single 3 'a'
+jl_y = Single 5 'e'
+jl_h = Single 7 'h'
+jl_ea = Append 6 jl_e jl_a
+jl_yea = Append 30 jl_y jl_ea
+jl_yeah = Append 210 jl_yea jl_h
 
 -- Implementing this helper function may be helpful
 -- that gets the annotation at the root of a JoinList
--- tag :: Monoid m => JoinList m a -> m
+
+tag :: Monoid m => JoinList m a -> m
+tag Empty = mempty
+tag (Single m _) = m
+tag (Append m _ _) = m
+
+
+instance Monoid Integer where
+    mempty = 0
+    mappend = (*)
+
+--instance Monoid (JoinList m a) where
+--    mempty = Empty
+--    mappend left right = Append m left right
+
+
+
+-- Write an append function for JoinLists that yields a new JoinList
+-- whose monoidal annotation is derived from those of the two arguments
+
+(+++) :: Monoid m => JoinList m a -> JoinList m a -> JoinList m a
+(+++) x@(Single m1 _) y@(Single m2 _) = Append (m1 `mappend` m2) x y
+(+++) x@(Single m1 _) y@(Append m2 _ _) = Append (m1 `mappend` m2) x y
+(+++) x@(Append m1 _ _) y@(Single m2 _) = Append (m1 `mappend` m2) x y
+(+++) x@(Append m1 _ _) y@(Append m2 _ _) = Append (m1 `mappend` m2) x y
+
 
 
 
