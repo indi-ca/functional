@@ -1,5 +1,6 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE TypeSynonymInstances #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 
 import Data.List
@@ -217,6 +218,8 @@ indexJ :: (Sized b, Monoid b) => Int -> JoinList b a -> Maybe a
 indexJ i j = Nothing
 
 
+--index' search context joinlist =
+
 
 
 
@@ -239,5 +242,74 @@ indexJ i j = Nothing
 
 -- Ensure that your function definitions use the size function from the Sized type class
 -- to make smart decisions about how to descend into the JoinList tree.
+
+
+-- Deriving an instance of Integer for mappend
+-- But I cannot do this, because I've already defined mappend for Integer
+-- to be the product
+
+-- So, I'm going to create a new type
+
+
+newtype AlphaInteger a = AlphaInteger a
+    deriving (Eq, Ord, Num, Show)
+
+getAlpha :: AlphaInteger a -> a
+getAlpha (AlphaInteger a) = a
+
+
+instance Num a => Monoid (AlphaInteger a) where
+    mappend = (+)
+    mempty = AlphaInteger 0
+
+
+lst :: [Integer]
+lst = [1,5,8,23,423,99]
+
+prod ::Integer
+prod = getAlpha . mconcat . map AlphaInteger $ lst
+
+
+
+
+data Range = Range Integer Integer
+    deriving Show
+
+data Contains = ContainsNot | ContainsIn | ContainsPerfect
+    deriving Show
+
+
+-- 1-2 1-4
+-- What going on - dealing with containment
+-- it's either in perfectly, just in, or not
+contains :: Range -> Range -> Contains
+contains (Range x1 x2) (Range y1 y2)
+    | (x1 == y1) && (x2 == y2) = ContainsPerfect
+    | (x1 >= y1) && (x2 < y2) = ContainsIn
+    | (x1 > y1) && (x2 <= y2) = ContainsIn
+    | otherwise = ContainsNot
+
+
+--x = Range 2 3
+--y = Range 1-2 3
+--result = contains x y
+
+
+-- [?] How do I do in depth pattern matching?
+
+theFunction :: Integer -> JoinList m a -> Maybe a
+theFunction _ Empty = Nothing
+theFunction _ (Single m a) = Just a
+theFunction index (Append m x y) = Nothing
+
+
+
+
+
+--Append m (JoinList m a) (JoinList m a)
+
+
+
+
 
 
