@@ -214,12 +214,27 @@ instance Monoid Int where
 instance Sized Int where
     size x = Size x
 
-indexJ :: (Sized b, Monoid b) => Int -> JoinList b a -> Maybe a
-indexJ i j = Nothing
 
+containsLeft :: Int -> Size -> Size -> Bool
+containsLeft index (Size l) (Size r) = 1 <= index && index <= l
 
---index' search context joinlist =
+containsRight :: Int -> Size -> Size -> Bool
+containsRight index (Size l) (Size r) = l + 1 <= index && index <= l + r
 
+decrementIndex :: Int -> Size -> Int
+decrementIndex index (Size x) = index - x
+
+indexJ :: (Sized m, Monoid m) => Int -> JoinList m a -> Maybe a
+indexJ _ Empty = Nothing
+indexJ _ (Single m a) = Just a
+indexJ index (Append m left right)
+    | containsLeft index left_mass right_mass = indexJ index left
+    | containsRight index left_mass right_mass = indexJ new_index right
+    | otherwise = Nothing
+    where
+        left_mass = size $ tag left
+        right_mass = size $ tag right
+        new_index = decrementIndex index (size $ tag left)
 
 
 
@@ -278,10 +293,6 @@ data Range = Range Integer Integer
 data Contains = ContainsNot | ContainsIn | ContainsPerfect
     deriving Show
 
-
--- 1-2 1-4
--- What going on - dealing with containment
--- it's either in perfectly, just in, or not
 contains :: Range -> Range -> Contains
 contains (Range x1 x2) (Range y1 y2)
     | (x1 == y1) && (x2 == y2) = ContainsPerfect
@@ -294,31 +305,7 @@ contains (Range x1 x2) (Range y1 y2)
 
 -- [?] How do I do in depth pattern matching?
 
-containsLeft :: Int -> Size -> Size -> Bool
-containsLeft index (Size l) (Size r) = 1 <= index && index <= l
 
-containsRight :: Int -> Size -> Size -> Bool
-containsRight index (Size l) (Size r) = l + 1 <= index && index <= l + r
-
-decrementIndex :: Int -> Size -> Int
-decrementIndex index (Size x) = index - x
-
-theFunction :: (Sized m, Monoid m) => Int -> JoinList m a -> Maybe a
-theFunction _ Empty = Nothing
-theFunction _ (Single m a) = Just a
-theFunction index (Append m left right)
-    | containsLeft index left_mass right_mass = theFunction index left
-    | containsRight index left_mass right_mass = theFunction new_index right
-    where
-        left_mass = size $ tag left
-        right_mass = size $ tag right
-        new_index = decrementIndex index (size $ tag left)
-
-
-
-
-
---Append m (JoinList m a) (JoinList m a)
 
 
 
