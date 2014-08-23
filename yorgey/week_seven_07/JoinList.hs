@@ -214,15 +214,27 @@ instance Monoid Int where
 instance Sized Int where
     size x = Size x
 
-
 containsLeft :: Int -> Size -> Size -> Bool
 containsLeft index (Size l) (Size r) = 1 <= index && index <= l
 
 containsRight :: Int -> Size -> Size -> Bool
 containsRight index (Size l) (Size r) = l + 1 <= index && index <= l + r
 
+coversLeft :: Int -> Size -> Size -> Bool
+coversLeft index (Size l) (Size r) = 1 + index <= 1 + l
+
+coversRight :: Int -> Size -> Size -> Bool
+coversRight index (Size l) (Size r) = 1 + index > 1 + l
+
+
+containsSplit :: Int -> Size -> Size -> Bool
+containsSplit index x y = (containsLeft index x y) && (containsRight index x y)
+
 decrementIndex :: Int -> Size -> Int
 decrementIndex index (Size x) = index - x
+
+
+-- [!] Issue with zero indexing here
 
 indexJ :: (Sized m, Monoid m) => Int -> JoinList m a -> Maybe a
 indexJ _ Empty = Nothing
@@ -248,6 +260,10 @@ indexJ index (Append m left right)
 
 
 
+
+
+
+
 -- 3. Finally, implement the function
 -- takeJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
 
@@ -258,6 +274,33 @@ indexJ index (Append m left right)
 -- Ensure that your function definitions use the size function from the Sized type class
 -- to make smart decisions about how to descend into the JoinList tree.
 
+-- [?] If I put don't cares around m and a, in the Single deconstruction, and bind a variable, does it make it lazy?
+-- [?] Do guards break on first match?
+
+takeJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
+takeJ 0 _ = Empty
+takeJ _ Empty = Empty
+takeJ _ x@(Single _ _) = x
+takeJ index (Append m left right)
+    | coversRight index left_mass right_mass = Append new_m (takeJ index left) (takeJ new_index right)
+    | coversLeft index left_mass right_mass = takeJ index left
+    | otherwise = Empty
+    where
+        left_mass = size $ tag left
+        right_mass = size $ tag right
+        new_index = decrementIndex index (size $ tag left)
+        new_m = m
+
+
+
+
+
+
+
+
+
+
+-- AN EXCURSION INTO NEW TYPES
 
 -- Deriving an instance of Integer for mappend
 -- But I cannot do this, because I've already defined mappend for Integer
