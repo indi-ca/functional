@@ -120,13 +120,13 @@ jl_ea = Append 6 jl_e jl_a
 jl_yea = Append 30 jl_y jl_ea
 jl_yeah = Append 210 jl_yea jl_h
 
-fi_e = Single 1 'e'
-fi_a = Single 1 'a'
-fi_y = Single 1 'y'
-fi_h = Single 1 'h'
-fi_ea = Append 2 fi_e fi_a
-fi_yea = Append 3 fi_y fi_ea
-fi_yeah = Append 4 fi_yea fi_h
+fi_e = Single (1 :: Int) 'e'
+fi_a = Single (1 :: Int) 'a'
+fi_y = Single (1 :: Int) 'y'
+fi_h = Single (1 :: Int) 'h'
+fi_ea = Append (2 :: Int) fi_e fi_a
+fi_yea = Append (3 :: Int) fi_y fi_ea
+fi_yeah = Append (4 :: Int) fi_yea fi_h
 
 
 
@@ -139,9 +139,9 @@ tag Empty = mempty
 tag (Single m _) = m
 tag (Append m _ _) = m
 
-instance Monoid Integer where
+instance Monoid Int where
     mempty = 0
-    mappend = (*)
+    mappend = (+)
 
 
 -- Write an append function for JoinLists that yields a new JoinList
@@ -211,8 +211,8 @@ instance Monoid Integer where
 -- because it gets to use the size annotations to throw away whole parts of the tree at once,
 -- whereas the list indexing operation has to walk over every element.
 
-instance Sized Integer where
-    size x = Size (fromIntegral x :: Int)
+instance Sized Int where
+    size x = Size x
 
 indexJ :: (Sized b, Monoid b) => Int -> JoinList b a -> Maybe a
 indexJ i j = Nothing
@@ -290,19 +290,34 @@ contains (Range x1 x2) (Range y1 y2)
     | otherwise = ContainsNot
 
 
---x = Range 2 3
---y = Range 1-2 3
---result = contains x y
 
 
 -- [?] How do I do in depth pattern matching?
 
-theFunction :: Integer -> JoinList m a -> Maybe a
+containsLeft :: Int -> Size -> Size -> Bool
+containsLeft index (Size l) (Size r) = 1 <= index && index <= l
+
+containsRight :: Int -> Size -> Size -> Bool
+containsRight index (Size l) (Size r) = l + 1 <= index && index <= l + r
+
+
+
+theFunction :: (Sized m, Monoid m) => Int -> JoinList m a -> Maybe a
 theFunction _ Empty = Nothing
 theFunction _ (Single m a) = Just a
-theFunction index (Append m x y) = Nothing
+theFunction index (Append m left right)
+    | containsLeft index left_mass right_mass = theFunction index left
+    | containsRight index left_mass right_mass = theFunction index right
+    where
+        left_mass = size $ tag left
+        right_mass = size $ tag right
+
+-- new_index = index - (tag left)
 
 
+
+--callIt :: Maybe Char
+--callIt = theFunction (2-1) fi_yeah
 
 
 
