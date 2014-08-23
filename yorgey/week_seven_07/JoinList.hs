@@ -259,6 +259,19 @@ indexJ index (Append m left right)
 -- jlToList (dropJ n jl) == drop n (jlToList jl).
 
 
+dropJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
+dropJ 0 _ = Empty
+dropJ _ Empty = Empty
+dropJ _ x@(Single _ _) = x
+dropJ index (Append m left right)
+    | not (coversRight index left_mass right_mass) = Append new_m (dropJ index left) (dropJ new_index right)
+    | not (coversLeft index left_mass right_mass) = dropJ index left
+    | otherwise = Empty
+    where
+        left_mass = size $ tag left
+        right_mass = size $ tag right
+        new_index = decrementIndex index (size $ tag left)
+        new_m = m
 
 
 
@@ -352,6 +365,25 @@ contains (Range x1 x2) (Range y1 y2)
 
 
 
+-- EXCERCISE 3
 
+-- Hence, the second annotation you decide to implement is one to
+-- cache the ScrabbleTM score for every line in a buffer.
+-- Create a Scrabble module that defines a Score type, a Monoid instance for Score,
+-- and the following functions:
 
+-- score :: Char -> Score
+-- scoreString :: String -> Score
+
+-- The score function should implement the tile scoring values as shown at http://www.thepixiepit.co.uk/scrabble/rules.html;
+-- any characters not mentioned (punctuation, spaces, etc.) should be given zero points.
+-- To test that you have everything working, add the line import Scrabble to the import section of your JoinList module,
+-- and write the following function to test out JoinLists annotated with scores:
+-- scoreLine :: String -> JoinList Score String
+
+-- Example:
+-- *JoinList> scoreLine "yay " +++ scoreLine "haskell!"
+-- Append (Score 23)
+--        (Single (Score 9) "yay ")
+--        (Single (Score 14) "haskell!")
 
