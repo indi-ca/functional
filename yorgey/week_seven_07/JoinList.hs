@@ -300,24 +300,21 @@ containsLeft index (Size l) (Size r) = 1 <= index && index <= l
 containsRight :: Int -> Size -> Size -> Bool
 containsRight index (Size l) (Size r) = l + 1 <= index && index <= l + r
 
-
+decrementIndex :: Int -> Size -> Int
+decrementIndex index (Size x) = index - x
 
 theFunction :: (Sized m, Monoid m) => Int -> JoinList m a -> Maybe a
 theFunction _ Empty = Nothing
 theFunction _ (Single m a) = Just a
 theFunction index (Append m left right)
     | containsLeft index left_mass right_mass = theFunction index left
-    | containsRight index left_mass right_mass = theFunction index right
+    | containsRight index left_mass right_mass = theFunction new_index right
     where
         left_mass = size $ tag left
         right_mass = size $ tag right
-
--- new_index = index - (tag left)
-
+        new_index = decrementIndex index (size $ tag left)
 
 
---callIt :: Maybe Char
---callIt = theFunction (2-1) fi_yeah
 
 
 
