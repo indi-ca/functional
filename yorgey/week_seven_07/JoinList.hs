@@ -120,15 +120,17 @@ jl_ea = Append 6 jl_e jl_a
 jl_yea = Append 30 jl_y jl_ea
 jl_yeah = Append 210 jl_yea jl_h
 
-fi_e = Single 1 'e'
-fi_a = Single 1 'a'
-fi_y = Single 1 'y'
-fi_h = Single 1 'h'
-fi_ea = Append 2 fi_e fi_a
-fi_yea = Append 3 fi_y fi_ea
-fi_yeah = Append 4 fi_yea fi_h
+fi_e = Single (1 :: Int) 'e'
+fi_a = Single (1 :: Int) 'a'
+fi_y = Single (1 :: Int) 'y'
+fi_h = Single (1 :: Int) 'h'
+fi_ea = Append (2 :: Int) fi_e fi_a
+fi_yea = Append (3 :: Int) fi_y fi_ea
+fi_yeah = Append (4 :: Int) fi_yea fi_h
 
 
+sLeft = Size 1
+sRight = Size 2
 
 
 -- Implementing this helper function may be helpful
@@ -139,9 +141,9 @@ tag Empty = mempty
 tag (Single m _) = m
 tag (Append m _ _) = m
 
-instance Monoid Integer where
+instance Monoid Int where
     mempty = 0
-    mappend = (*)
+    mappend = (+)
 
 
 -- Write an append function for JoinLists that yields a new JoinList
@@ -211,15 +213,60 @@ instance Monoid Integer where
 -- because it gets to use the size annotations to throw away whole parts of the tree at once,
 -- whereas the list indexing operation has to walk over every element.
 
-instance Sized Integer where
-    size x = Size (fromIntegral x :: Int)
+instance Sized Int where
+    size x = Size x
 
-indexJ :: (Sized b, Monoid b) => Int -> JoinList b a -> Maybe a
-indexJ i j = Nothing
+containsLeft :: Int -> Size -> Size -> Bool
+containsLeft index (Size l) (Size r) = 1 <= index && index <= l
+
+containsRight :: Int -> Size -> Size -> Bool
+containsRight index (Size l) (Size r) = l + 1 <= index && index <= l + r
+
+coversLeft :: Int -> Size -> Size -> Bool
+coversLeft index (Size l) (Size r) = 1 + index <= 1 + l
+
+coversRight :: Int -> Size -> Size -> Bool
+coversRight index (Size l) (Size r) = 1 + index > 1 + l
+
+containsSplit :: Int -> Size -> Size -> Bool
+containsSplit index x y = (containsLeft index x y) && (containsRight index x y)
+
+decrementIndex :: Int -> Size -> Int
+decrementIndex index (Size x) = index - x
 
 
---index' search context joinlist =
+leftNone :: Int -> Size -> Size -> Bool
+leftNone index (Size l) (Size r) = index == 0
 
+leftPartial :: Int -> Size -> Size -> Bool
+leftPartial index (Size l) (Size r) = index < l
+
+leftComplete :: Int -> Size -> Size -> Bool
+leftComplete index (Size l) (Size r) = index >= l
+
+rightNone :: Int -> Size -> Size -> Bool
+rightNone index (Size l) (Size r) = index <= l
+
+rightPartial :: Int -> Size -> Size -> Bool
+rightPartial index (Size l) (Size r) = (index > l) && (index < l + r)
+
+rightComplete :: Int -> Size -> Size -> Bool
+rightComplete index (Size l) (Size r) = index >= l + r
+
+
+-- [!] Issue with zero indexing here
+
+indexJ :: (Sized m, Monoid m) => Int -> JoinList m a -> Maybe a
+indexJ _ Empty = Nothing
+indexJ _ (Single m a) = Just a
+indexJ j (Append m left right)
+    | (rightComplete j x r) || (rightPartial j x r) = indexJ new_index right
+    | (leftComplete j x r) || (leftPartial j x r) = indexJ j left
+    | otherwise = Nothing
+    where
+        x = size $ tag left
+        r = size $ tag right
+        new_index = decrementIndex j (size $ tag left)
 
 
 
@@ -230,6 +277,26 @@ indexJ i j = Nothing
 -- This is analogous to the standard drop function on lists.
 -- Formally, dropJ should behave in such a way that
 -- jlToList (dropJ n jl) == drop n (jlToList jl).
+
+
+dropJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
+dropJ 0 x = x
+dropJ _ Empty = Empty
+dropJ _ x@(Single _ _) = Empty
+dropJ j (Append m left right)
+    | rightComplete j x r = Empty
+    | (leftComplete j x r) && (rightNone j x r) = right
+    | (leftComplete j x r) && (rightPartial j x r) = dropJ new_j right
+    | (leftPartial j x r) && (rightNone j x r) = Append new_m (dropJ j left) right
+    | (leftPartial j x r) && (rightPartial j x r) = Append new_m (dropJ j left) (dropJ new_j right)
+    | otherwise = Empty
+    where
+        x = size $ tag left
+        r = size $ tag right
+        new_j = decrementIndex j (size $ tag left)
+        new_m = m
+
+
 
 
 
@@ -243,6 +310,33 @@ indexJ i j = Nothing
 -- Ensure that your function definitions use the size function from the Sized type class
 -- to make smart decisions about how to descend into the JoinList tree.
 
+-- [?] If I put don't cares around m and a, in the Single deconstruction, and bind a variable, does it make it lazy?
+-- [?] Do guards break on first match?
+
+takeJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
+takeJ 0 _ = Empty
+takeJ _ Empty = Empty
+takeJ _ x@(Single _ _) = x
+takeJ index (Append m left right)
+    | coversRight index left_mass right_mass = Append new_m (takeJ index left) (takeJ new_index right)
+    | coversLeft index left_mass right_mass = takeJ index left
+    | otherwise = Empty
+    where
+        left_mass = size $ tag left
+        right_mass = size $ tag right
+        new_index = decrementIndex index (size $ tag left)
+        new_m = m
+
+
+
+
+
+
+
+
+
+
+-- AN EXCURSION INTO NEW TYPES
 
 -- Deriving an instance of Integer for mappend
 -- But I cannot do this, because I've already defined mappend for Integer
@@ -278,10 +372,6 @@ data Range = Range Integer Integer
 data Contains = ContainsNot | ContainsIn | ContainsPerfect
     deriving Show
 
-
--- 1-2 1-4
--- What going on - dealing with containment
--- it's either in perfectly, just in, or not
 contains :: Range -> Range -> Contains
 contains (Range x1 x2) (Range y1 y2)
     | (x1 == y1) && (x2 == y2) = ContainsPerfect
@@ -290,26 +380,33 @@ contains (Range x1 x2) (Range y1 y2)
     | otherwise = ContainsNot
 
 
---x = Range 2 3
---y = Range 1-2 3
---result = contains x y
 
 
 -- [?] How do I do in depth pattern matching?
 
-theFunction :: Integer -> JoinList m a -> Maybe a
-theFunction _ Empty = Nothing
-theFunction _ (Single m a) = Just a
-theFunction index (Append m x y) = Nothing
 
 
 
 
+-- EXCERCISE 3
 
+-- Hence, the second annotation you decide to implement is one to
+-- cache the ScrabbleTM score for every line in a buffer.
+-- Create a Scrabble module that defines a Score type, a Monoid instance for Score,
+-- and the following functions:
 
+-- score :: Char -> Score
+-- scoreString :: String -> Score
 
+-- The score function should implement the tile scoring values as shown at http://www.thepixiepit.co.uk/scrabble/rules.html;
+-- any characters not mentioned (punctuation, spaces, etc.) should be given zero points.
+-- To test that you have everything working, add the line import Scrabble to the import section of your JoinList module,
+-- and write the following function to test out JoinLists annotated with scores:
+-- scoreLine :: String -> JoinList Score String
 
-
-
-
+-- Example:
+-- *JoinList> scoreLine "yay " +++ scoreLine "haskell!"
+-- Append (Score 23)
+--        (Single (Score 9) "yay ")
+--        (Single (Score 14) "haskell!")
 
