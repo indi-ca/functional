@@ -236,22 +236,22 @@ decrementIndex index (Size x) = index - x
 
 
 leftNone :: Int -> Size -> Size -> Bool
-leftNone index (Size l) (Size r) = index <= 1
+leftNone index (Size l) (Size r) = index == 0
 
 leftPartial :: Int -> Size -> Size -> Bool
-leftPartial index (Size l) (Size r) = (index < 1) && (index < 1 + l)
+leftPartial index (Size l) (Size r) = index < l
 
 leftComplete :: Int -> Size -> Size -> Bool
-leftComplete index (Size l) (Size r) = index >= 1 + l
+leftComplete index (Size l) (Size r) = index >= l
 
 rightNone :: Int -> Size -> Size -> Bool
-rightNone index (Size l) (Size r) = index <= 1 + l
+rightNone index (Size l) (Size r) = index <= l
 
 rightPartial :: Int -> Size -> Size -> Bool
-rightPartial index (Size l) (Size r) = (index > 1 + l) && (index < 1 + l + r)
+rightPartial index (Size l) (Size r) = (index > l) && (index < l + r)
 
 rightComplete :: Int -> Size -> Size -> Bool
-rightComplete index (Size l) (Size r) = index >= 1 + l + r
+rightComplete index (Size l) (Size r) = index >= l + r
 
 
 -- [!] Issue with zero indexing here
@@ -280,18 +280,20 @@ indexJ index (Append m left right)
 
 
 dropJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
-dropJ 0 _ = Empty
+dropJ 0 x = x
 dropJ _ Empty = Empty
 dropJ _ x@(Single _ _) = x
-dropJ index (Append m left right)
-    | rightComplete index left_mass right_mass = Empty
-    | leftComplete index left_mass right_mass = right
-    | leftPartial index left_mass right_mass = Append new_m (dropJ index left) (dropJ new_index right)
+dropJ i (Append m left right)
+    | rightComplete i l r = Empty
+    | (leftComplete i l r) && (rightNone i l r) = right
+    | (leftComplete i l r) && (rightPartial i l r) = dropJ new_i right
+    | (leftPartial i l r) && (rightNone i l r) = Append new_m (dropJ i left) right
+    | (leftPartial i l r) && (rightPartial i l r) = Append new_m (dropJ i left) (dropJ new_i right)
     | otherwise = Empty
     where
-        left_mass = size $ tag left
-        right_mass = size $ tag right
-        new_index = decrementIndex index (size $ tag left)
+        l = size $ tag left
+        r = size $ tag right
+        new_i = decrementIndex i (size $ tag left)
         new_m = m
 
 
