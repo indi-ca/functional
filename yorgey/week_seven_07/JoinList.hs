@@ -241,13 +241,13 @@ indexJ :: (Sized m, Monoid m) => Int -> JoinList m a -> Maybe a
 indexJ _ Empty = Nothing
 indexJ _ (Single m a) = Just a
 indexJ j (Append m left right)
-    | (rightComplete j x r) || (rightPartial j x r) = indexJ new_index right
+    | (rightComplete j x r) || (rightPartial j x r) = indexJ jn right
     | (leftComplete j x r) || (leftPartial j x r) = indexJ j left
     | otherwise = Nothing
     where
         x = size $ tag left
         r = size $ tag right
-        new_index = decrementIndex j (size $ tag left)
+        jn = decrementIndex j (size $ tag left)
 
 
 
@@ -267,14 +267,14 @@ dropJ _ x@(Single _ _) = Empty
 dropJ j (Append m left right)
     | rightComplete j x r = Empty
     | (leftComplete j x r) && (rightNone j x r) = right
-    | (leftComplete j x r) && (rightPartial j x r) = dropJ new_j right
+    | (leftComplete j x r) && (rightPartial j x r) = dropJ jn right
     | (leftPartial j x r) && (rightNone j x r) = Append new_m (dropJ j left) right
-    | (leftPartial j x r) && (rightPartial j x r) = Append new_m (dropJ j left) (dropJ new_j right)
+    | (leftPartial j x r) && (rightPartial j x r) = Append new_m (dropJ j left) (dropJ jn right)
     | otherwise = Empty
     where
         x = size $ tag left
         r = size $ tag right
-        new_j = decrementIndex j (size $ tag left)
+        jn = decrementIndex j (size $ tag left)
         new_m = m
 
 
@@ -300,14 +300,14 @@ takeJ _ Empty = Empty
 takeJ _ x@(Single _ _) = x
 takeJ j p@(Append m left right)
     | rightComplete j x r = p
-    | rightPartial j x r = Append new_m (takeJ j left) (takeJ new_index right)
+    | rightPartial j x r = Append new_m (takeJ j left) (takeJ jn right)
     | leftComplete j x r = left
     | leftPartial j x r = takeJ j left
     | otherwise = Empty
     where
         x = size $ tag left
         r = size $ tag right
-        new_index = decrementIndex j (size $ tag left)
+        jn = decrementIndex j (size $ tag left)
         new_m = m
 
 
