@@ -393,7 +393,8 @@ contains (Range x1 x2) (Range y1 y2)
 -- score :: Char -> Score
 -- scoreString :: String -> Score
 
--- The score function should implement the tile scoring values as shown at http://www.thepixiepit.co.uk/scrabble/rules.html;
+-- The score function should implement the tile scoring values as shown at
+-- http://www.thepixiepit.co.uk/scrabble/rules.html
 -- any characters not mentioned (punctuation, spaces, etc.) should be given zero points.
 -- To test that you have everything working, add the line import Scrabble to the import section of your JoinList module,
 -- and write the following function to test out JoinLists annotated with scores:
