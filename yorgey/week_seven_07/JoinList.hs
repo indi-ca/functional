@@ -7,6 +7,19 @@ import Data.List
 import Data.Monoid
 import Sized
 
+
+-- NEXT
+-- Read: Monoids and Finger Trees
+-- Put my magic hat on and rethink the take drop
+-- Focus on simple operations
+-- Then I will be able to fold it perhaps
+-- How do I recalculate the cache?
+-- Implement the scrabble
+-- Collect and formulate questions
+-- Function composition and application
+
+
+
 -- What's going on?
 -- I have an bunch of text
 -- and I want to make a calculation of the text
@@ -252,13 +265,12 @@ indexJ j (Append m left right)
 
 
 
--- 2. Implement the function
--- dropJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
+-- 2. dropJ
 -- The dropJ function drops the first n elements from a JoinList.
 -- This is analogous to the standard drop function on lists.
--- Formally, dropJ should behave in such a way that
--- jlToList (dropJ n jl) == drop n (jlToList jl).
 
+-- What's the core pattern?
+-- If there is a partial on the one side, then have to do an append
 
 dropJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
 dropJ 0 x = x
