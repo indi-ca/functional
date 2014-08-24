@@ -129,6 +129,8 @@ fi_yea = Append (3 :: Int) fi_y fi_ea
 fi_yeah = Append (4 :: Int) fi_yea fi_h
 
 
+sLeft = Size 1
+sRight = Size 2
 
 
 -- Implementing this helper function may be helpful
@@ -226,12 +228,30 @@ coversLeft index (Size l) (Size r) = 1 + index <= 1 + l
 coversRight :: Int -> Size -> Size -> Bool
 coversRight index (Size l) (Size r) = 1 + index > 1 + l
 
-
 containsSplit :: Int -> Size -> Size -> Bool
 containsSplit index x y = (containsLeft index x y) && (containsRight index x y)
 
 decrementIndex :: Int -> Size -> Int
 decrementIndex index (Size x) = index - x
+
+
+leftNone :: Int -> Size -> Size -> Bool
+leftNone index (Size l) (Size r) = index <= 1
+
+leftPartial :: Int -> Size -> Size -> Bool
+leftPartial index (Size l) (Size r) = (index < 1) && (index < 1 + l)
+
+leftComplete :: Int -> Size -> Size -> Bool
+leftComplete index (Size l) (Size r) = index >= 1 + l
+
+rightNone :: Int -> Size -> Size -> Bool
+rightNone index (Size l) (Size r) = index <= 1 + l
+
+rightPartial :: Int -> Size -> Size -> Bool
+rightPartial index (Size l) (Size r) = (index > 1 + l) && (index < 1 + l + r)
+
+rightComplete :: Int -> Size -> Size -> Bool
+rightComplete index (Size l) (Size r) = index >= 1 + l + r
 
 
 -- [!] Issue with zero indexing here
@@ -264,8 +284,9 @@ dropJ 0 _ = Empty
 dropJ _ Empty = Empty
 dropJ _ x@(Single _ _) = x
 dropJ index (Append m left right)
-    | not (coversRight index left_mass right_mass) = Append new_m (dropJ index left) (dropJ new_index right)
-    | not (coversLeft index left_mass right_mass) = dropJ index left
+    | rightComplete index left_mass right_mass = Empty
+    | leftComplete index left_mass right_mass = right
+    | leftPartial index left_mass right_mass = Append new_m (dropJ index left) (dropJ new_index right)
     | otherwise = Empty
     where
         left_mass = size $ tag left
