@@ -129,9 +129,6 @@ fi_yea = Append (3 :: Int) fi_y fi_ea
 fi_yeah = Append (4 :: Int) fi_yea fi_h
 
 
-sLeft = Size 1
-sRight = Size 2
-
 
 -- Implementing this helper function may be helpful
 -- that gets the annotation at the root of a JoinList
@@ -216,24 +213,8 @@ instance Monoid Int where
 instance Sized Int where
     size x = Size x
 
-containsLeft :: Int -> Size -> Size -> Bool
-containsLeft index (Size l) (Size r) = 1 <= index && index <= l
-
-containsRight :: Int -> Size -> Size -> Bool
-containsRight index (Size l) (Size r) = l + 1 <= index && index <= l + r
-
-coversLeft :: Int -> Size -> Size -> Bool
-coversLeft index (Size l) (Size r) = 1 + index <= 1 + l
-
-coversRight :: Int -> Size -> Size -> Bool
-coversRight index (Size l) (Size r) = 1 + index > 1 + l
-
-containsSplit :: Int -> Size -> Size -> Bool
-containsSplit index x y = (containsLeft index x y) && (containsRight index x y)
-
 decrementIndex :: Int -> Size -> Int
 decrementIndex index (Size x) = index - x
-
 
 leftNone :: Int -> Size -> Size -> Bool
 leftNone index (Size l) (Size r) = index == 0
@@ -317,14 +298,16 @@ takeJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
 takeJ 0 _ = Empty
 takeJ _ Empty = Empty
 takeJ _ x@(Single _ _) = x
-takeJ index (Append m left right)
-    | coversRight index left_mass right_mass = Append new_m (takeJ index left) (takeJ new_index right)
-    | coversLeft index left_mass right_mass = takeJ index left
+takeJ j p@(Append m left right)
+    | rightComplete j x r = p
+    | rightPartial j x r = Append new_m (takeJ j left) (takeJ new_index right)
+    | leftComplete j x r = left
+    | leftPartial j x r = takeJ j left
     | otherwise = Empty
     where
-        left_mass = size $ tag left
-        right_mass = size $ tag right
-        new_index = decrementIndex index (size $ tag left)
+        x = size $ tag left
+        r = size $ tag right
+        new_index = decrementIndex j (size $ tag left)
         new_m = m
 
 
