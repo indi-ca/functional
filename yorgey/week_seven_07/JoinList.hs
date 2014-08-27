@@ -7,6 +7,19 @@ import Data.List
 import Data.Monoid
 import Sized
 
+
+-- NEXT
+-- Read: Monoids and Finger Trees
+-- Put my magic hat on and rethink the take drop
+-- Focus on simple operations
+-- Then I will be able to fold it perhaps
+-- How do I recalculate the cache?
+-- Implement the scrabble
+-- Collect and formulate questions
+-- Function composition and application
+
+
+
 -- What's going on?
 -- I have an bunch of text
 -- and I want to make a calculation of the text
@@ -129,9 +142,6 @@ fi_yea = Append (3 :: Int) fi_y fi_ea
 fi_yeah = Append (4 :: Int) fi_yea fi_h
 
 
-sLeft = Size 1
-sRight = Size 2
-
 
 -- Implementing this helper function may be helpful
 -- that gets the annotation at the root of a JoinList
@@ -210,9 +220,6 @@ instance Monoid Int where
 instance Sized Int where
     size x = Size x
 
-
-
-
 indexJ :: (Sized b, Monoid b) => Int -> JoinList b a -> Maybe a
 indexJ _ Empty = Nothing
 indexJ 0 (Single m a) = Just a
@@ -226,12 +233,9 @@ indexJ i (Append v m n)
 
 
 
--- 2. Implement the function
--- dropJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
+-- 2. dropJ
 -- The dropJ function drops the first n elements from a JoinList.
 -- This is analogous to the standard drop function on lists.
--- Formally, dropJ should behave in such a way that
--- jlToList (dropJ n jl) == drop n (jlToList jl).
 
 dropJ:: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
 dropJ _ Empty = Empty
@@ -242,7 +246,6 @@ dropJ i l@(Append v m n)
   | i >= split = (dropJ (i - split) n)
   | otherwise = (dropJ i m) +++ n
   where split = getSize . size . tag $ m
-
 
 
 
@@ -342,7 +345,8 @@ contains (Range x1 x2) (Range y1 y2)
 -- score :: Char -> Score
 -- scoreString :: String -> Score
 
--- The score function should implement the tile scoring values as shown at http://www.thepixiepit.co.uk/scrabble/rules.html;
+-- The score function should implement the tile scoring values as shown at
+-- http://www.thepixiepit.co.uk/scrabble/rules.html
 -- any characters not mentioned (punctuation, spaces, etc.) should be given zero points.
 -- To test that you have everything working, add the line import Scrabble to the import section of your JoinList module,
 -- and write the following function to test out JoinLists annotated with scores:
