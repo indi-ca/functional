@@ -137,9 +137,9 @@ sRight = Size 2
 -- that gets the annotation at the root of a JoinList
 
 tag :: Monoid m => JoinList m a -> m
-tag Empty = mempty
-tag (Single m _) = m
+tag (Single m a) = m
 tag (Append m _ _) = m
+
 
 instance Monoid Int where
     mempty = 0
@@ -155,10 +155,11 @@ instance Monoid Int where
 --(+++) x@(Append m1 _ _) y@(Single m2 _) = Append (m1 `mappend` m2) x y
 --(+++) x@(Append m1 _ _) y@(Append m2 _ _) = Append (m1 `mappend` m2) x y
 
+
 (+++) :: Monoid m => JoinList m a -> JoinList m a -> JoinList m a
-(+++) x y = Append (tag x `mappend` tag y) x y
-
-
+(+++) Empty jl = jl
+(+++) jl Empty = jl
+(+++) x y = Append (tag x <> tag y) x y
 
 
 -- EXERCISE 2
@@ -216,57 +217,10 @@ instance Monoid Int where
 instance Sized Int where
     size x = Size x
 
-containsLeft :: Int -> Size -> Size -> Bool
-containsLeft index (Size l) (Size r) = 1 <= index && index <= l
-
-containsRight :: Int -> Size -> Size -> Bool
-containsRight index (Size l) (Size r) = l + 1 <= index && index <= l + r
-
-coversLeft :: Int -> Size -> Size -> Bool
-coversLeft index (Size l) (Size r) = 1 + index <= 1 + l
-
-coversRight :: Int -> Size -> Size -> Bool
-coversRight index (Size l) (Size r) = 1 + index > 1 + l
-
-containsSplit :: Int -> Size -> Size -> Bool
-containsSplit index x y = (containsLeft index x y) && (containsRight index x y)
-
-decrementIndex :: Int -> Size -> Int
-decrementIndex index (Size x) = index - x
 
 
-leftNone :: Int -> Size -> Size -> Bool
-leftNone index (Size l) (Size r) = index == 0
+--indexJ :: (Sized m, Monoid m) => Int -> JoinList m a -> Maybe a
 
-leftPartial :: Int -> Size -> Size -> Bool
-leftPartial index (Size l) (Size r) = index < l
-
-leftComplete :: Int -> Size -> Size -> Bool
-leftComplete index (Size l) (Size r) = index >= l
-
-rightNone :: Int -> Size -> Size -> Bool
-rightNone index (Size l) (Size r) = index <= l
-
-rightPartial :: Int -> Size -> Size -> Bool
-rightPartial index (Size l) (Size r) = (index > l) && (index < l + r)
-
-rightComplete :: Int -> Size -> Size -> Bool
-rightComplete index (Size l) (Size r) = index >= l + r
-
-
--- [!] Issue with zero indexing here
-
-indexJ :: (Sized m, Monoid m) => Int -> JoinList m a -> Maybe a
-indexJ _ Empty = Nothing
-indexJ _ (Single m a) = Just a
-indexJ index (Append m left right)
-    | containsLeft index left_mass right_mass = indexJ index left
-    | containsRight index left_mass right_mass = indexJ new_index right
-    | otherwise = Nothing
-    where
-        left_mass = size $ tag left
-        right_mass = size $ tag right
-        new_index = decrementIndex index (size $ tag left)
 
 
 
@@ -279,22 +233,7 @@ indexJ index (Append m left right)
 -- jlToList (dropJ n jl) == drop n (jlToList jl).
 
 
-dropJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
-dropJ 0 x = x
-dropJ _ Empty = Empty
-dropJ _ x@(Single _ _) = x
-dropJ i (Append m left right)
-    | rightComplete i l r = Empty
-    | (leftComplete i l r) && (rightNone i l r) = right
-    | (leftComplete i l r) && (rightPartial i l r) = dropJ new_i right
-    | (leftPartial i l r) && (rightNone i l r) = Append new_m (dropJ i left) right
-    | (leftPartial i l r) && (rightPartial i l r) = Append new_m (dropJ i left) (dropJ new_i right)
-    | otherwise = Empty
-    where
-        l = size $ tag left
-        r = size $ tag right
-        new_i = decrementIndex i (size $ tag left)
-        new_m = m
+
 
 
 
@@ -313,19 +252,7 @@ dropJ i (Append m left right)
 -- [?] If I put don't cares around m and a, in the Single deconstruction, and bind a variable, does it make it lazy?
 -- [?] Do guards break on first match?
 
-takeJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
-takeJ 0 _ = Empty
-takeJ _ Empty = Empty
-takeJ _ x@(Single _ _) = x
-takeJ index (Append m left right)
-    | coversRight index left_mass right_mass = Append new_m (takeJ index left) (takeJ new_index right)
-    | coversLeft index left_mass right_mass = takeJ index left
-    | otherwise = Empty
-    where
-        left_mass = size $ tag left
-        right_mass = size $ tag right
-        new_index = decrementIndex index (size $ tag left)
-        new_m = m
+
 
 
 
