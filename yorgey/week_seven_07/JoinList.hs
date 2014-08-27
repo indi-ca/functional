@@ -149,13 +149,6 @@ instance Monoid Int where
 -- Write an append function for JoinLists that yields a new JoinList
 -- whose monoidal annotation is derived from those of the two arguments
 
---(+++) :: Monoid m => JoinList m a -> JoinList m a -> JoinList m a
---(+++) x@(Single m1 _) y@(Single m2 _) = Append (m1 `mappend` m2) x y
---(+++) x@(Single m1 _) y@(Append m2 _ _) = Append (m1 `mappend` m2) x y
---(+++) x@(Append m1 _ _) y@(Single m2 _) = Append (m1 `mappend` m2) x y
---(+++) x@(Append m1 _ _) y@(Append m2 _ _) = Append (m1 `mappend` m2) x y
-
-
 (+++) :: Monoid m => JoinList m a -> JoinList m a -> JoinList m a
 (+++) Empty jl = jl
 (+++) jl Empty = jl
@@ -219,8 +212,16 @@ instance Sized Int where
 
 
 
---indexJ :: (Sized m, Monoid m) => Int -> JoinList m a -> Maybe a
 
+indexJ :: (Sized b, Monoid b) => Int -> JoinList b a -> Maybe a
+indexJ _ Empty = Nothing
+indexJ 0 (Single m a) = Just a
+indexJ _ (Single m a) = Nothing
+indexJ i (Append v m n)
+  | i < 0 = Nothing
+  | i < split = indexJ i m
+  | otherwise = indexJ (i - split) n
+  where split = getSize . size . tag $ m
 
 
 
@@ -232,7 +233,15 @@ instance Sized Int where
 -- Formally, dropJ should behave in such a way that
 -- jlToList (dropJ n jl) == drop n (jlToList jl).
 
-
+dropJ:: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
+dropJ _ Empty = Empty
+dropJ 0 jl = jl
+dropJ _ (Single _ _) = Empty
+dropJ i l@(Append v m n)
+  | i <= 0 = l
+  | i >= split = (dropJ (i - split) n)
+  | otherwise = (dropJ i m) +++ n
+  where split = getSize . size . tag $ m
 
 
 
@@ -252,7 +261,15 @@ instance Sized Int where
 -- [?] If I put don't cares around m and a, in the Single deconstruction, and bind a variable, does it make it lazy?
 -- [?] Do guards break on first match?
 
-
+takeJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
+takeJ 0 _ = Empty
+takeJ _ Empty = Empty
+takeJ _ s@(Single _ _) = s
+takeJ i l@(Append v m n)
+  | i <= 0 = Empty
+  | i >= split = m +++ (takeJ (i - split) n)
+  | otherwise = (takeJ i m)
+  where split = getSize . size . tag $ m
 
 
 
