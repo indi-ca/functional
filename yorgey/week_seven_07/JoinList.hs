@@ -224,11 +224,11 @@ indexJ :: (Sized b, Monoid b) => Int -> JoinList b a -> Maybe a
 indexJ _ Empty = Nothing
 indexJ 0 (Single m a) = Just a
 indexJ _ (Single m a) = Nothing
-indexJ i (Append v m n)
+indexJ i (Append v left right)
   | i < 0 = Nothing
-  | i < split = indexJ i m
-  | otherwise = indexJ (i - split) n
-  where split = getSize . size . tag $ m
+  | i < split = indexJ i left
+  | otherwise = indexJ (i - split) right
+  where split = getSize . size . tag $ left
 
 
 
@@ -241,11 +241,11 @@ dropJ:: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
 dropJ _ Empty = Empty
 dropJ 0 jl = jl
 dropJ _ (Single _ _) = Empty
-dropJ i l@(Append v m n)
+dropJ i l@(Append v left right)
   | i <= 0 = l
-  | i >= split = (dropJ (i - split) n)
-  | otherwise = (dropJ i m) +++ n
-  where split = getSize . size . tag $ m
+  | i >= split = (dropJ (i - split) right)
+  | otherwise = (dropJ i left) +++ right
+  where split = getSize . size . tag $ left
 
 
 
@@ -268,11 +268,11 @@ takeJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
 takeJ 0 _ = Empty
 takeJ _ Empty = Empty
 takeJ _ s@(Single _ _) = s
-takeJ i l@(Append v m n)
+takeJ i l@(Append v left right)
   | i <= 0 = Empty
-  | i >= split = m +++ (takeJ (i - split) n)
-  | otherwise = (takeJ i m)
-  where split = getSize . size . tag $ m
+  | i >= split = left +++ (takeJ (i - split) right)
+  | otherwise = (takeJ i left)
+  where split = getSize . size . tag $ left
 
 
 
