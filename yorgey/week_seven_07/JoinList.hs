@@ -151,11 +151,6 @@ tag (Single m a) = m
 tag (Append m _ _) = m
 
 
-instance Monoid Int where
-    mempty = 0
-    mappend = (+)
-
-
 -- Write an append function for JoinLists that yields a new JoinList
 -- whose monoidal annotation is derived from those of the two arguments
 
@@ -163,6 +158,14 @@ instance Monoid Int where
 (+++) Empty jl = jl
 (+++) jl Empty = jl
 (+++) x y = Append (tag x <> tag y) x y
+
+
+instance Monoid Int where
+    mempty = 0
+    mappend = (+)
+
+instance Sized Int where
+    size x = Size x
 
 
 -- EXERCISE 2
@@ -217,8 +220,6 @@ instance Monoid Int where
 -- because it gets to use the size annotations to throw away whole parts of the tree at once,
 -- whereas the list indexing operation has to walk over every element.
 
-instance Sized Int where
-    size x = Size x
 
 indexJ :: (Sized b, Monoid b) => Int -> JoinList b a -> Maybe a
 indexJ _ Empty = Nothing
