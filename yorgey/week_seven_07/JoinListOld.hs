@@ -7,19 +7,6 @@ import Data.List
 import Data.Monoid
 import Sized
 
-
--- NEXT
--- Read: Monoids and Finger Trees
--- Put my magic hat on and rethink the take drop
--- Focus on simple operations
--- Then I will be able to fold it perhaps
--- How do I recalculate the cache?
--- Implement the scrabble
--- Collect and formulate questions
--- Function composition and application
-
-
-
 -- What's going on?
 -- I have an bunch of text
 -- and I want to make a calculation of the text
@@ -142,14 +129,17 @@ fi_yea = Append (3 :: Int) fi_y fi_ea
 fi_yeah = Append (4 :: Int) fi_yea fi_h
 
 
+sLeft = Size 1
+sRight = Size 2
+
 
 -- Implementing this helper function may be helpful
 -- that gets the annotation at the root of a JoinList
 
 tag :: Monoid m => JoinList m a -> m
-tag (Single m a) = m
+tag Empty = mempty
+tag (Single m _) = m
 tag (Append m _ _) = m
-
 
 instance Monoid Int where
     mempty = 0
@@ -159,10 +149,16 @@ instance Monoid Int where
 -- Write an append function for JoinLists that yields a new JoinList
 -- whose monoidal annotation is derived from those of the two arguments
 
+--(+++) :: Monoid m => JoinList m a -> JoinList m a -> JoinList m a
+--(+++) x@(Single m1 _) y@(Single m2 _) = Append (m1 `mappend` m2) x y
+--(+++) x@(Single m1 _) y@(Append m2 _ _) = Append (m1 `mappend` m2) x y
+--(+++) x@(Append m1 _ _) y@(Single m2 _) = Append (m1 `mappend` m2) x y
+--(+++) x@(Append m1 _ _) y@(Append m2 _ _) = Append (m1 `mappend` m2) x y
+
 (+++) :: Monoid m => JoinList m a -> JoinList m a -> JoinList m a
-(+++) Empty jl = jl
-(+++) jl Empty = jl
-(+++) x y = Append (tag x <> tag y) x y
+(+++) x y = Append (tag x `mappend` tag y) x y
+
+
 
 
 -- EXERCISE 2
@@ -220,32 +216,85 @@ instance Monoid Int where
 instance Sized Int where
     size x = Size x
 
-indexJ :: (Sized b, Monoid b) => Int -> JoinList b a -> Maybe a
+containsLeft :: Int -> Size -> Size -> Bool
+containsLeft index (Size l) (Size r) = 1 <= index && index <= l
+
+containsRight :: Int -> Size -> Size -> Bool
+containsRight index (Size l) (Size r) = l + 1 <= index && index <= l + r
+
+coversLeft :: Int -> Size -> Size -> Bool
+coversLeft index (Size l) (Size r) = 1 + index <= 1 + l
+
+coversRight :: Int -> Size -> Size -> Bool
+coversRight index (Size l) (Size r) = 1 + index > 1 + l
+
+containsSplit :: Int -> Size -> Size -> Bool
+containsSplit index x y = (containsLeft index x y) && (containsRight index x y)
+
+decrementIndex :: Int -> Size -> Int
+decrementIndex index (Size x) = index - x
+
+
+leftNone :: Int -> Size -> Size -> Bool
+leftNone index (Size l) (Size r) = index == 0
+
+leftPartial :: Int -> Size -> Size -> Bool
+leftPartial index (Size l) (Size r) = index < l
+
+leftComplete :: Int -> Size -> Size -> Bool
+leftComplete index (Size l) (Size r) = index >= l
+
+rightNone :: Int -> Size -> Size -> Bool
+rightNone index (Size l) (Size r) = index <= l
+
+rightPartial :: Int -> Size -> Size -> Bool
+rightPartial index (Size l) (Size r) = (index > l) && (index < l + r)
+
+rightComplete :: Int -> Size -> Size -> Bool
+rightComplete index (Size l) (Size r) = index >= l + r
+
+
+-- [!] Issue with zero indexing here
+
+indexJ :: (Sized m, Monoid m) => Int -> JoinList m a -> Maybe a
 indexJ _ Empty = Nothing
-indexJ 0 (Single m a) = Just a
-indexJ _ (Single m a) = Nothing
-indexJ i (Append v m n)
-  | i < 0 = Nothing
-  | i < split = indexJ i m
-  | otherwise = indexJ (i - split) n
-  where split = getSize . size . tag $ m
+indexJ _ (Single m a) = Just a
+indexJ index (Append m left right)
+    | containsLeft index left_mass right_mass = indexJ index left
+    | containsRight index left_mass right_mass = indexJ new_index right
+    | otherwise = Nothing
+    where
+        left_mass = size $ tag left
+        right_mass = size $ tag right
+        new_index = decrementIndex index (size $ tag left)
 
 
 
 
--- 2. dropJ
+-- 2. Implement the function
+-- dropJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
 -- The dropJ function drops the first n elements from a JoinList.
 -- This is analogous to the standard drop function on lists.
+-- Formally, dropJ should behave in such a way that
+-- jlToList (dropJ n jl) == drop n (jlToList jl).
 
-dropJ:: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
+
+dropJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
+dropJ 0 x = x
 dropJ _ Empty = Empty
-dropJ 0 jl = jl
-dropJ _ (Single _ _) = Empty
-dropJ i l@(Append v m n)
-  | i <= 0 = l
-  | i >= split = (dropJ (i - split) n)
-  | otherwise = (dropJ i m) +++ n
-  where split = getSize . size . tag $ m
+dropJ _ x@(Single _ _) = x
+dropJ i (Append m left right)
+    | rightComplete i l r = Empty
+    | (leftComplete i l r) && (rightNone i l r) = right
+    | (leftComplete i l r) && (rightPartial i l r) = dropJ new_i right
+    | (leftPartial i l r) && (rightNone i l r) = Append new_m (dropJ i left) right
+    | (leftPartial i l r) && (rightPartial i l r) = Append new_m (dropJ i left) (dropJ new_i right)
+    | otherwise = Empty
+    where
+        l = size $ tag left
+        r = size $ tag right
+        new_i = decrementIndex i (size $ tag left)
+        new_m = m
 
 
 
@@ -267,12 +316,16 @@ dropJ i l@(Append v m n)
 takeJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
 takeJ 0 _ = Empty
 takeJ _ Empty = Empty
-takeJ _ s@(Single _ _) = s
-takeJ i l@(Append v m n)
-  | i <= 0 = Empty
-  | i >= split = m +++ (takeJ (i - split) n)
-  | otherwise = (takeJ i m)
-  where split = getSize . size . tag $ m
+takeJ _ x@(Single _ _) = x
+takeJ index (Append m left right)
+    | coversRight index left_mass right_mass = Append new_m (takeJ index left) (takeJ new_index right)
+    | coversLeft index left_mass right_mass = takeJ index left
+    | otherwise = Empty
+    where
+        left_mass = size $ tag left
+        right_mass = size $ tag right
+        new_index = decrementIndex index (size $ tag left)
+        new_m = m
 
 
 
@@ -334,4 +387,26 @@ contains (Range x1 x2) (Range y1 y2)
 
 
 
+
+-- EXCERCISE 3
+
+-- Hence, the second annotation you decide to implement is one to
+-- cache the ScrabbleTM score for every line in a buffer.
+-- Create a Scrabble module that defines a Score type, a Monoid instance for Score,
+-- and the following functions:
+
+-- score :: Char -> Score
+-- scoreString :: String -> Score
+
+-- The score function should implement the tile scoring values as shown at http://www.thepixiepit.co.uk/scrabble/rules.html;
+-- any characters not mentioned (punctuation, spaces, etc.) should be given zero points.
+-- To test that you have everything working, add the line import Scrabble to the import section of your JoinList module,
+-- and write the following function to test out JoinLists annotated with scores:
+-- scoreLine :: String -> JoinList Score String
+
+-- Example:
+-- *JoinList> scoreLine "yay " +++ scoreLine "haskell!"
+-- Append (Score 23)
+--        (Single (Score 9) "yay ")
+--        (Single (Score 14) "haskell!")
 
