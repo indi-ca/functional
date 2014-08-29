@@ -1,4 +1,4 @@
-
+import Data.Monoid
 
 
 
@@ -43,7 +43,19 @@ data IndexTree m a = Empty
     deriving (Show, Eq)
 
 
--- Now sequentiall add the items into the Index Tree
+-- A helper function
+tag :: Monoid m => IndexTree m a -> m
+tag (Single m _) = m
+tag (Append m _ _) = m
+
+
+--- +++ operator
+(+++) :: Monoid m => IndexTree m a -> IndexTree m a -> IndexTree m a
+(+++) Empty tree = tree
+(+++) tree Empty = tree
+(+++) left right = Append (tag left <> tag right) left right
+
+-- Now sequentially add the items into the Index Tree
 
 
 
