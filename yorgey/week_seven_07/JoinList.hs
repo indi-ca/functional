@@ -314,18 +314,6 @@ prod = getAlpha . mconcat . map AlphaInteger $ lst
 
 
 
-data Range = Range Integer Integer
-    deriving Show
-
-data Contains = ContainsNot | ContainsIn | ContainsPerfect
-    deriving Show
-
-contains :: Range -> Range -> Contains
-contains (Range x1 x2) (Range y1 y2)
-    | (x1 == y1) && (x2 == y2) = ContainsPerfect
-    | (x1 >= y1) && (x2 < y2) = ContainsIn
-    | (x1 > y1) && (x2 <= y2) = ContainsIn
-    | otherwise = ContainsNot
 
 
 

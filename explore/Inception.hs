@@ -1,3 +1,7 @@
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE TypeSynonymInstances #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+
 import Data.Monoid
 
 
@@ -55,7 +59,29 @@ tag (Append m _ _) = m
 (+++) tree Empty = tree
 (+++) left right = Append (tag left <> tag right) left right
 
+
 -- Now sequentially add the items into the Index Tree
+insertNode :: (Monoid m, Num m) => a -> IndexTree m a -> IndexTree m a
+insertNode node Empty = Single 1 node
+insertNode node x@(Single _ _) = (Single 1 node) +++ x
+insertNode node x@(Append _ _ _) = (Single 1 node) +++ x
+
+
+instance Monoid Int where
+    mempty = 0
+    mappend = (+)
+
+
+
+
+
+doSomething :: (Monoid m, Num m) => IndexTree m (Nugget)
+doSomething = insertNode n1 Empty
+
+
+
+
+
 
 
 
