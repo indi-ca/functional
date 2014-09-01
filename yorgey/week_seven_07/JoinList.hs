@@ -215,6 +215,16 @@ instance Sized Int where
 -- whereas the list indexing operation has to walk over every element.
 
 
+--indexJ :: (Sized b, Monoid b) => Int -> JoinList b a -> Maybe a
+--indexJ _ Empty = Nothing
+--indexJ 0 (Single m a) = Just a
+--indexJ _ (Single m a) = Nothing
+--indexJ i (Append v left right)
+--  | i < 0 = Nothing
+--  | i < split = indexJ i left
+--  | otherwise = indexJ (i - split) right
+--  where split = getSize . size . tag $ left
+
 indexJ :: (Sized b, Monoid b) => Int -> JoinList b a -> Maybe a
 indexJ _ Empty = Nothing
 indexJ 0 (Single m a) = Just a
@@ -330,7 +340,7 @@ scoreLine xs = Single (scoreString xs) xs
 --  mappend (a1, b1) (a2, b2) = (mempty, mempty)
 
 
-instance Buffer (JoinList (Size, Score) String) where
+instance Buffer (JoinList (Score, Size) String) where
   toString jl = "yoda"
   fromString str = getInitialBuffer str
   line n jl = indexJ n jl
@@ -340,8 +350,8 @@ instance Buffer (JoinList (Size, Score) String) where
 
 
 
-getInitialBuffer :: String -> JoinList (Size, Score) String
-getInitialBuffer str = Single ( (Size (length $ words str)), (scoreString str) ) str
+getInitialBuffer :: String -> JoinList (Score, Size) String
+getInitialBuffer str = Single ((scoreString str), (Size (length $ words str)) ) str
 
 --getInitialBuffer str = foldr1 (+++) $ map (\x -> Single ((Size 1),(scoreString x)) x) (words str)
 
@@ -350,6 +360,11 @@ main = runEditor editor $ getInitialBuffer "yo bob this is really kewl"
 
 --something str = foldr1 (+++) $ map (\x -> Single ((Size 1),(scoreString x)) x) (words str)
 --a = something "yo bob this is really kewl"
+
+
+
+a = getInitialBuffer "yo bob"
+
 
 
 -- AN EXCURSION INTO NEW TYPES
