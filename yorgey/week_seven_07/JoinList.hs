@@ -2,22 +2,15 @@
 {-# LANGUAGE TypeSynonymInstances #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
-
 import Data.List
+import Data.Maybe
 import Data.Monoid
+
+import Buffer
+import Editor
 import Scrabble
 import Sized
 
-
--- NEXT
--- Read: Monoids and Finger Trees
--- Put my magic hat on and rethink the take drop
--- Focus on simple operations
--- Then I will be able to fold it perhaps
--- How do I recalculate the cache?
--- Implement the scrabble
--- Collect and formulate questions
--- Function composition and application
 
 
 
@@ -307,14 +300,21 @@ scoreLine xs = Single (scoreString xs) xs
 --    mappend (a1,b1) (a2,b2) = (mappend a1 a2, mappend b1 b2)
 
 -- (This instance is defined in Data.Monoid.)
+
 -- This means that join-lists can track more than one type of annotation at once,
 -- in parallel, simply by using a pair type.
+
 -- Since we want to track both the size and score of a buffer,
 -- you should provide a Buffer instance for the type
 -- JoinList (Score, Size) String.
 
+--instance Buffer (Score, Size) where
+--  toString = "bob"
+
+
 -- Due to the use of the Sized type class,
 -- this type will continue to work with your functions such as indexJ.
+
 -- Finally, make a main function to run the editor interface using your
 -- join-list backend in place of the slow String backend
 -- (see StringBufEditor.hs for an example of how to do this).
@@ -324,10 +324,26 @@ scoreLine xs = Single (scoreString xs) xs
 -- does not exhibit delays when showing the prompt.
 
 
+instance Buffer (JoinList (Size, Score) String) where
+  toString jl = "yoda"
+  fromString str = Single ((Size 1), (Score 1)) "bob"
+  line n jl = Just "bobobobo"
+  replaceLine n str jl = jl
+  numLines jl = 3
+  value jl = 5
 
 
 
+getInitialBuffer :: String -> JoinList (Size, Score) String
+--getInitialBuffer str = Empty
+getInitialBuffer str = Single ((Size 1), (Score 1)) "bob"
 
+main = runEditor editor $ getInitialBuffer "bob"
+
+
+something str = foldr1 (+++) temp
+  where temp = map (\x -> Single ((Size 1),(scoreString x)) x) (words str)
+a = something "yo bob this is really kewl"
 
 
 -- AN EXCURSION INTO NEW TYPES
