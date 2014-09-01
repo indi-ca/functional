@@ -324,10 +324,16 @@ scoreLine xs = Single (scoreString xs) xs
 -- does not exhibit delays when showing the prompt.
 
 
+
+--instance Monoid (Size, Score) where
+--  mempty = (mempty, mempty)
+--  mappend (a1, b1) (a2, b2) = (mempty, mempty)
+
+
 instance Buffer (JoinList (Size, Score) String) where
   toString jl = "yoda"
-  fromString str = Single ((Size 1), (Score 1)) "bob"
-  line n jl = Just "bobobobo"
+  fromString str = getInitialBuffer str
+  line n jl = indexJ n jl
   replaceLine n str jl = jl
   numLines jl = 3
   value jl = 5
@@ -335,15 +341,15 @@ instance Buffer (JoinList (Size, Score) String) where
 
 
 getInitialBuffer :: String -> JoinList (Size, Score) String
---getInitialBuffer str = Empty
-getInitialBuffer str = Single ((Size 1), (Score 1)) "bob"
+getInitialBuffer str = Single ( (Size (length $ words str)), (scoreString str) ) str
 
-main = runEditor editor $ getInitialBuffer "bob"
+--getInitialBuffer str = foldr1 (+++) $ map (\x -> Single ((Size 1),(scoreString x)) x) (words str)
+
+main = runEditor editor $ getInitialBuffer "yo bob this is really kewl"
 
 
-something str = foldr1 (+++) temp
-  where temp = map (\x -> Single ((Size 1),(scoreString x)) x) (words str)
-a = something "yo bob this is really kewl"
+--something str = foldr1 (+++) $ map (\x -> Single ((Size 1),(scoreString x)) x) (words str)
+--a = something "yo bob this is really kewl"
 
 
 -- AN EXCURSION INTO NEW TYPES

@@ -11,8 +11,21 @@ import Data.Monoid
 -- Create a Scrabble module that defines a Score type, a Monoid instance for Score,
 
 -- a Score type
-data Score = Score Int
-    deriving (Show)
+newtype Score = Score Int
+    deriving (Eq, Ord, Show)
+
+getScore :: Score -> Int
+getScore (Score i) = i
+
+class Scored a where
+  score :: a -> Score
+
+instance Scored Score where
+  score = id
+
+instance Scored b => Scored (a,b) where
+  score = score . snd
+
 
 instance Monoid Score where
     mempty = Score 0
@@ -27,16 +40,17 @@ instance Monoid Score where
 -- http://www.thepixiepit.co.uk/scrabble/rules.html
 -- any characters not mentioned (punctuation, spaces, etc.) should be given zero points.
 
-score :: Char -> Score
-score x
-    | not $ isLetter x = Score 0
-    | otherwise = Score (fromJust $ lookup (toUpper x) (zip letters points))
-    where
-        letters = ['A'..'Z']
-        points = [1, 3, 3, 2, 1, 4, 2, 4,
-                  1, 8, 5, 1, 3, 1, 1, 3,
-                  10, 1, 1, 1, 1, 4, 4, 8,
-                  4, 10]
+
+instance Scored Char where
+    score x
+        | not $ isLetter x = Score 0
+        | otherwise = Score (fromJust $ lookup (toUpper x) (zip letters points))
+        where
+            letters = ['A'..'Z']
+            points = [1, 3, 3, 2, 1, 4, 2, 4,
+                      1, 8, 5, 1, 3, 1, 1, 3,
+                      10, 1, 1, 1, 1, 4, 4, 8,
+                      4, 10]
 
 scoreString :: String -> Score
 scoreString = mconcat . map score
