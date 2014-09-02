@@ -292,8 +292,12 @@ instance Buffer (JoinList (Score, Size) String) where
   fromString str = makeBuffer str
   line n jl = indexJ n jl
   replaceLine n str jl = jl
-  numLines jl = 3
-  value jl = 5
+
+  numLines Empty = 0
+  numLines jl = getSize . snd . tag $ jl
+
+  value Empty = 0
+  value jl = getScore . fst . tag $ jl
 
 
 
@@ -302,7 +306,7 @@ makeBuffer str = Single ((scoreString str), (Size 1)) str
 --makeBuffer str = foldr1 (+++) $ map (\x -> Single ((Size 1),(scoreString x)) x) (words str)
 
 
-getInitialBuffer = makeBuffer "yo bob this is really kewl" +++ makeBuffer "this is line two" +++ makeBuffer "this is line three"
+getInitialBuffer = makeBuffer "yo bob this is really kewl" +++ makeBuffer "this is line two" +++ makeBuffer "this is line three" +++ makeBuffer "this is line four"
 
 main = runEditor editor $ getInitialBuffer
 
@@ -312,7 +316,7 @@ main = runEditor editor $ getInitialBuffer
 
 
 
-a = makeBuffer "yo bob"
+a = getInitialBuffer
 
 
 
