@@ -23,8 +23,8 @@ class Scored a where
 instance Scored Score where
   score = id
 
-instance Scored b => Scored (a,b) where
-  score = score . snd
+instance Scored a => Scored (a,b) where
+  score = score . fst
 
 
 instance Monoid Score where
