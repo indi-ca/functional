@@ -1,3 +1,5 @@
+{-# LANGUAGE GeneralizedNewtypeDeriving, FlexibleInstances #-}
+
 module Scrabble where
 
 import Data.Char (toUpper, isLetter)
@@ -12,7 +14,8 @@ import Data.Monoid
 
 -- a Score type
 newtype Score = Score Int
-    deriving (Eq, Ord, Show)
+    deriving (Eq, Ord, Show, Num)
+
 
 getScore :: Score -> Int
 getScore (Score i) = i

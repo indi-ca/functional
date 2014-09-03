@@ -15,6 +15,7 @@ import Sized
 -- Monoidally Annotated Join-Lists
 -- For this assignment, I am going to use:
 
+-- [?] How do I do in depth pattern matching?
 
 data JoinList m a = Empty
                 | Single m a
@@ -280,16 +281,21 @@ scoreLine xs = Single (scoreString xs) xs
 
 
 
---instance Monoid (Size, Score) where
---  mempty = (mempty, mempty)
---  mappend (a1, b1) (a2, b2) = (mempty, mempty)
+
+
+makeBuffer :: String -> JoinList (Score, Size) String
+makeBuffer str = Single ((scoreString str), (Size 1)) str
+--makeBuffer str = foldr1 (+++) $ map (\x -> Single ((Size 1),(scoreString x)) x) (words str)
+
 
 
 instance Buffer (JoinList (Score, Size) String) where
   toString Empty = ""
   toString (Single _ a) = a
   toString (Append _ left right) = toString left ++ toString right
+
   fromString str = makeBuffer str
+
   line n jl = indexJ n jl
   replaceLine n str jl = jl
 
@@ -301,51 +307,14 @@ instance Buffer (JoinList (Score, Size) String) where
 
 
 
-makeBuffer :: String -> JoinList (Score, Size) String
-makeBuffer str = Single ((scoreString str), (Size 1)) str
---makeBuffer str = foldr1 (+++) $ map (\x -> Single ((Size 1),(scoreString x)) x) (words str)
-
 
 getInitialBuffer = makeBuffer "yo bob this is really kewl" +++ makeBuffer "this is line two" +++ makeBuffer "this is line three" +++ makeBuffer "this is line four"
-
 main = runEditor editor $ getInitialBuffer
-
-
---something str = foldr1 (+++) $ map (\x -> Single ((Size 1),(scoreString x)) x) (words str)
---a = something "yo bob this is really kewl"
-
-
 
 a = getInitialBuffer
 
 
 
--- AN EXCURSION INTO NEW TYPES
-
--- Deriving an instance of Integer for mappend
--- But I cannot do this, because I've already defined mappend for Integer
--- to be the product
-
--- So, I'm going to create a new type
-
-
-newtype AlphaInteger a = AlphaInteger a
-    deriving (Eq, Ord, Num, Show)
-
-getAlpha :: AlphaInteger a -> a
-getAlpha (AlphaInteger a) = a
-
-
-instance Num a => Monoid (AlphaInteger a) where
-    mappend = (+)
-    mempty = AlphaInteger 0
-
-
-lst :: [Integer]
-lst = [1,5,8,23,423,99]
-
-prod ::Integer
-prod = getAlpha . mconcat . map AlphaInteger $ lst
 
 
 
@@ -354,7 +323,6 @@ prod = getAlpha . mconcat . map AlphaInteger $ lst
 
 
 
--- [?] How do I do in depth pattern matching?
 
 
 
