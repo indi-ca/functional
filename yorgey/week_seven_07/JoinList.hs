@@ -297,7 +297,7 @@ instance Buffer (JoinList (Score, Size) String) where
   fromString str = makeBuffer str
 
   line n jl = indexJ n jl
-  replaceLine n str jl = jl
+  replaceLine n str jl = takeJ (n-1) jl +++ (fromString str) +++ dropJ n jl
 
   numLines Empty = 0
   numLines jl = getSize . snd . tag $ jl
@@ -312,6 +312,9 @@ getInitialBuffer = makeBuffer "yo bob this is really kewl" +++ makeBuffer "this 
 main = runEditor editor $ getInitialBuffer
 
 a = getInitialBuffer
+
+
+-- Don't need the scored in a typeclass
 
 
 
