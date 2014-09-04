@@ -53,12 +53,17 @@ import Data.Monoid
 
 
 
+-- EXERCISE 1.2
+-- A Monoid instance for GuestList.2 (How is the Monoid instance supposed to work, you ask? You figure it out!)
 
 
 
+-- EXERCISE 1.3
+-- moreFun :: GuestList -> GuestList -> GuestList
 
-
-
+-- which takes two GuestLists and returns whichever one of them is more fun,
+-- i.e. has the higher fun score.
+-- (If the scores are equal it does not matter which is returned.)
 
 
 
