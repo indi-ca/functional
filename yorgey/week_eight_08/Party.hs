@@ -2,7 +2,7 @@
 module Party where
 
 import Data.Monoid
-
+import Employee
 
 -- maximise the amount of fun
 -- determine who to invite
@@ -45,13 +45,21 @@ import Data.Monoid
 
 -- which adds an Employee to the GuestList
 -- (updating the cached Fun score appropriately).
+
 -- Of course, in general this is impossible:
 -- the updated fun score should depend on whether the Employee being added is already in the list,
--- or if any of their direct subor- dinates are in the list, and so on.
+-- or if any of their direct subordinates are in the list, and so on.
 -- For our purposes, though, you may assume that none of these special cases will hold:
--- that is, glCons should simply add the new Employee and add their fun score without doing any kind of checks.
+-- that is, glCons should simply add the new Employee and
+-- add their fun score without doing any kind of checks.
 
+emp_a = Emp "Stan" 9
+emp_b = Emp "Sarah" 17
 
+glEmpty = GL [] 0
+
+glCons :: Employee -> GuestList -> GuestList
+glCons x@(Emp name f1) (GL xs f2) = GL (x : xs) (f1 + f2)
 
 -- EXERCISE 1.2
 -- A Monoid instance for GuestList.2 (How is the Monoid instance supposed to work, you ask? You figure it out!)
