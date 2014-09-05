@@ -2,6 +2,7 @@
 module Party where
 
 import Data.Monoid
+import Data.Tree(flatten)
 import Employee
 
 -- maximise the amount of fun
@@ -59,10 +60,15 @@ emp_b = Emp "Sarah" 17
 glEmpty = GL [] 0
 
 glCons :: Employee -> GuestList -> GuestList
-glCons x@(Emp name f1) (GL xs f2) = GL (x : xs) (f1 + f2)
+glCons x@(Emp _ f1) (GL xs f2) = GL (x : xs) (f1 + f2)
+
+
+something = foldr glCons (flatten testCompany) glEmpty
+
 
 -- EXERCISE 1.2
--- A Monoid instance for GuestList.2 (How is the Monoid instance supposed to work, you ask? You figure it out!)
+-- A Monoid instance for GuestList.
+-- (How is the Monoid instance supposed to work, you ask? You figure it out!)
 
 
 
