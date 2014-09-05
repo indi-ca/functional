@@ -25,22 +25,32 @@ myEntityB = Entity "Goashes"
 entities = [myEntity, myEntityB]
 
 something :: [Entity] -> Handle -> IO ()
-something entities handle = hPutStrLn handle $ doTheStringThing . renderEntities $ entities
+something entities handle = hPutStrLn handle $ renderEntitiesCSV $ entities
 
---renderJValue $ renderEntity myEntity
 
 
 -- I've got an entity, and I want to turn it into a JObject
 -- I'm going to have a list of entities, and I'll want to turn it into an JArray
 
 
-renderEntity :: Entity -> JValue
-renderEntity entity = JObject [("firstName", JString $ firstName entity)]
+renderEntityJSON :: Entity -> JValue
+renderEntityJSON entity = JObject [("firstName", JString $ firstName entity)]
+
+renderEntitiesJSON :: [Entity] -> String
+renderEntitiesJSON xs = renderJValue $ JArray (map renderEntityJSON xs)
 
 
-renderEntities :: [Entity] -> JValue
-renderEntities xs = JArray (map renderEntity xs)
 
 
-doTheStringThing :: JValue -> String
-doTheStringThing j = renderJValue j
+renderEntityCSV :: Entity -> String
+renderEntityCSV entity = firstName entity
+
+renderEntitiesCSV :: [Entity] -> String
+renderEntitiesCSV xs = foldr1 (++) $ map (\x -> renderEntityCSV x ++ "\n") xs
+
+
+
+
+
+
+
