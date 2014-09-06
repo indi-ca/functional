@@ -63,12 +63,18 @@ glCons :: Employee -> GuestList -> GuestList
 glCons x@(Emp _ f1) (GL xs f2) = GL (x : xs) (f1 + f2)
 
 
-something = foldr glCons (flatten testCompany) glEmpty
+--something = foldr glCons (flatten testCompany) glEmpty
 
 
 -- EXERCISE 1.2
 -- A Monoid instance for GuestList.
 -- (How is the Monoid instance supposed to work, you ask? You figure it out!)
+
+
+instance Monoid GuestList where
+    mempty = GL [] 0
+    mappend x@(GL l1 f1) y@(GL l2 f2) = GL (l1 ++ l2) (f1 + f2)
+
 
 
 
