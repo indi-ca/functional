@@ -1,19 +1,43 @@
 import System.IO
+import Data.String(lines)
 
 import SimpleJSON
 import PutJSON
 
+
+
 main :: IO ()
 main = do
     putStrLn "hello"
-    inputHandle <- openFile "input.txt" ReadMode
+    inputHandle <- openFile "output.txt" ReadMode
+
+    --bob <- hGetLine inputHandle
+    bob <- hGetContents inputHandle
+    putStrLn bob
+
+    -- Unnecessary to close, because it is automatically closed for me
+    --hClose inputHandle
+
+
+
     outputHandle <- openFile "output.txt" WriteMode
     --inpStr <- getLine
     something entities outputHandle
-    hClose inputHandle
+
     hClose outputHandle
     putStrLn "done"
 
+
+
+
+--someLoop :: Handle -> IO String
+--someLoop inh =
+--    do  ineof <- hIsEOF inh
+--        if ineof
+--            then return ()
+--            else do inpStr <- hGetLine inh
+--                    return inpStr
+--                    someLoop inh
 
 
 data Entity = Entity { firstName :: String }
@@ -49,7 +73,8 @@ renderEntitiesCSV :: [Entity] -> String
 renderEntitiesCSV xs = foldr1 (++) $ map (\x -> renderEntityCSV x ++ "\n") xs
 
 
-
+readCSV :: String -> [Entity]
+readCSV str = map (\x -> Entity x) $ lines str
 
 
 
