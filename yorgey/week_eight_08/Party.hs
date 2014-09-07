@@ -5,6 +5,12 @@ import Data.Monoid
 import Data.Tree(flatten)
 import Employee
 
+
+-- [?] My monoid was too simple
+-- [?] Should I not be deriving Ord to order?
+
+
+
 -- maximise the amount of fun
 -- determine who to invite
 
@@ -63,6 +69,9 @@ glCons :: Employee -> GuestList -> GuestList
 glCons x@(Emp _ f1) (GL xs f2) = GL (x : xs) (f1 + f2)
 
 
+glA = glCons emp_a glEmpty
+glB = glCons emp_b glEmpty
+
 --something = foldr glCons (flatten testCompany) glEmpty
 
 
@@ -70,10 +79,19 @@ glCons x@(Emp _ f1) (GL xs f2) = GL (x : xs) (f1 + f2)
 -- A Monoid instance for GuestList.
 -- (How is the Monoid instance supposed to work, you ask? You figure it out!)
 
+-- 2 Note that this requires creating an
+-- “orphan instance” (a type class instance instance C T which is defined in a
+-- module which is distinct from both the
+-- modules where C and T are defined),
+-- which GHC will warn you about.
+-- You can ignore the warning, or add
+-- {-# OPTIONS_GHC -fno-warn-orphans #-} to the top of your file.
 
 instance Monoid GuestList where
     mempty = GL [] 0
     mappend x@(GL l1 f1) y@(GL l2 f2) = GL (l1 ++ l2) (f1 + f2)
+
+
 
 
 
@@ -86,8 +104,29 @@ instance Monoid GuestList where
 -- (If the scores are equal it does not matter which is returned.)
 
 
+--instance Ord GuestList where
+
+moreFun :: GuestList -> GuestList -> GuestList
+moreFun x@(GL l1 f1) y@(GL l2 f2) = if f1 > f2 then x else y
 
 
 
+-- EXERCISE 2
+
+-- The Data.Tree module from the standard Haskell libraries defines
+-- the type of “rose trees”, where each node stores a data element and
+-- has any number of children (i.e. a list of subtrees):
+
+-- data Tree a = Node {
+--          rootLabel :: a,         -- label value
+--          subForest :: [Tree a]   -- zero or more child trees
+-- }
+-- Strangely, Data.Tree does not define a fold for this type!
+-- Rectify the situation by implementing
+
+-- treeFold :: ... -> Tree a -> b
+-- (See if you can figure out what type(s) should replace the dots in the type of treeFold.
+-- If you are stuck, look back at the lecture notes from Week 7,
+-- or infer the proper type(s) from the remainder of this assignment.)
 
 
