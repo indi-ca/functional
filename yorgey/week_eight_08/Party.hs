@@ -130,3 +130,44 @@ moreFun x@(GL l1 f1) y@(GL l2 f2) = if f1 > f2 then x else y
 -- or infer the proper type(s) from the remainder of this assignment.)
 
 
+
+
+-- THE ALGORITHM
+
+-- Now let’s actually derive an algorithm to solve this problem.
+-- Clearly there must be some sort of recursion involved—in fact,
+-- it seems that we should be able to do it with a fold.
+-- This makes sense though— starting from the bottom of the tree and
+-- working our way up,
+-- we compute the best guest list for each subtree and somehow combine
+-- these to decide on the guest list for the next level up, and so on.
+-- So we need to write a combining function
+
+-- combineGLs :: Employee -> [GuestList] -> GuestList
+
+-- which takes an employee (the boss of some division) and
+-- the optimal guest list for each subdivision under him,
+-- and somehow combines this information to compute the best guest list
+-- for the entire division.
+
+
+-- However, this obvious first attempt fails!
+-- The problem is that we don’t get enough information from the recursive calls.
+-- If the best guest list for some subtree involves inviting that subtree’s boss,
+-- then we are stuck, since we might want to consider inviting the boss
+-- of the entire tree—in which case we don’t want to invite any of
+-- the subtree bosses (since they wouldn’t have any fun anyway).
+-- But we might be able to do better than just taking the best possible
+-- guest list for each subtree and then excluding their bosses.
+
+-- The solution is to generalize the recursion to compute more information,
+-- in such a way that we can actually make the recursive step.
+-- In particular, instead of just computing the best guest list for a given tree,
+-- we will compute two guest lists:
+
+-- 1. the best possible guest list we can create if we invite the boss
+-- (that is, the Employee at the root of the tree); and
+-- 2. the best possible guest list we can create if we don’t invite the boss.
+
+-- It turns out that this gives us enough information at each step to
+-- compute the optimal two guest lists for the next level up.
