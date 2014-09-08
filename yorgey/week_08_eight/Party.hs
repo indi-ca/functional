@@ -155,7 +155,7 @@ moreFun x@(GL l1 f1) y@(GL l2 f2) = if f1 > f2 then x else y
 -- The problem is that we don’t get enough information from the recursive calls.
 -- If the best guest list for some subtree involves inviting that subtree’s boss,
 -- then we are stuck, since we might want to consider inviting the boss
--- of the entire tree—in which case we don’t want to invite any of
+-- of the entire tree— in which case we don’t want to invite any of
 -- the subtree bosses (since they wouldn’t have any fun anyway).
 -- But we might be able to do better than just taking the best possible
 -- guest list for each subtree and then excluding their bosses.
