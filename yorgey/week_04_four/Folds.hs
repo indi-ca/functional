@@ -1,10 +1,11 @@
 -- CIS 194 Homework 4
+
 module Folds where
 import Data.List
 
 
 
-
+-- [?] What is the hailstone function?
 
 -- EXERCISE 1
 
@@ -205,12 +206,16 @@ xor = foldl (\x acc -> if x then not acc else acc) False
 
 
 
+
+
+
 -- EXERCISE 3.2: More Folds
 -- implement map as a fold
 map' :: (a -> b) -> [a] -> [b]
 map' f = foldr (\x acc -> f x : acc) []
 
 -- can do something like this: \x -> : . f
+
 
 -- EXERCISE 3.3: Implement foldl using foldr..
 
