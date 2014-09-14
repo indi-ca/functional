@@ -1,9 +1,12 @@
 import System.IO
-import System.Network
-
+--import Network.Socket
+import Network.Socket
 
 
 
 main :: IO ()
-    do
+main = withSocketsDo $ do
+    putStrLn "Going to accept from a network connection"
 
+    -- Now I need a handle
+    listenOn $ PortNumber port

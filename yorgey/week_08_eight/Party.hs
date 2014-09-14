@@ -2,7 +2,7 @@
 module Party where
 
 import Data.Monoid
-import Data.Tree(flatten)
+import Data.Tree as Tree
 import Employee
 
 
@@ -195,13 +195,40 @@ moreFun x@(GL l1 f1) y@(GL l2 f2) = if f1 > f2 then x else y
 
 
 
--- EXERCISE 4
+rumi :: GuestList -> GuestList -> (GuestList -> GuestList) -> GuestList
+rumi glA glB f = moreFun (f glA) glB
 
--- Finally, put all of this together to define
--- maxFun :: Tree Employee -> GuestList
+tempfn :: [(GuestList, GuestList)] -> (GuestList -> GuestList) -> GuestList
+tempfn xs f = mconcat (map (\x -> rumi (fst x) (snd x) f) xs)
+
+
+pop :: GuestList -> GuestList
+pop (GL [] f) = GL [] f
+pop (GL (x:xs) f) = GL xs (f - empFun x)
+
+
+nextLevel :: Employee -> [(GuestList, GuestList)] -> (GuestList, GuestList)
+nextLevel employee xs = (theFirst, theSecond)
+    where
+        bgl = GL [employee] (empFun employee)
+        theFirst = bgl <> tempfn xs pop
+        theSecond = tempfn xs id
+
+
+
+-- EXERCISE 4
 
 -- which takes a company hierarchy as input and outputs a fun-maximizing guest list.
 -- You can test your function on testCompany, provided in Employee.hs.
+
+recursiveTree :: Tree Employee -> (GuestList, GuestList)
+recursiveTree (Node x []) = (GL [x] (empFun x), GL [] 0)
+recursiveTree (Node x subordinates) = nextLevel x $ map recursiveTree subordinates
+
+maxFun :: Tree Employee -> GuestList
+maxFun tree = moreFun (fst final) (snd final)
+    where
+        final = recursiveTree tree
 
 
 
@@ -215,20 +242,21 @@ moreFun x@(GL l1 f1) y@(GL l2 f2) = if f1 > f2 then x else y
 
 -- EXERCISE 5
 
--- Implement main :: IO () so that it reads your company’s hierar-
--- chy from the file company.txt, and then prints out a formatted guest list, sorted by first name, which looks like
+-- Implement main :: IO () so that it reads your company’s hierarchy from the
+-- file company.txt, and then prints out a formatted guest list,
+-- sorted by first name, which looks like
 
---Total fun: 23924
+-- Total fun: 23924
 -- Adam Debergues
 -- Adeline Anselme
 -- ...
 
 -- (Note: the above is just an example of the format; it is not the correct output!)
 -- You will probably find the readFile and putStrLn functions useful.
--- As much as possible, try to separate out the “pure” computation from the IO computation.
--- In other words, your main function should actually be fairly short, calling out to helper functions
--- (whose types do not involve IO) to do most of the work. If you find IO “infecting” all your function types,
--- you are Doing It Wrong.
+
+-- In other words, your main function should actually be fairly short,
+-- calling out to helper functions (whose types do not involve IO) to do most of the work.
+-- If you find IO “infecting” all your function types, you are Doing It Wrong.
 
 
 
