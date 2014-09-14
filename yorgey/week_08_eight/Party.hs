@@ -2,7 +2,7 @@
 module Party where
 
 import Data.Monoid
-import Data.Tree(flatten)
+import Data.Tree as Tree
 import Employee
 
 
@@ -236,12 +236,29 @@ nextLevel employee xs = (theFirst, theSecond)
 -- EXERCISE 4
 
 -- Finally, put all of this together to define
--- maxFun :: Tree Employee -> GuestList
+
 
 -- which takes a company hierarchy as input and outputs a fun-maximizing guest list.
 -- You can test your function on testCompany, provided in Employee.hs.
 
 
+
+recursiveTree :: Tree Employee -> (GuestList, GuestList)
+recursiveTree (Node x []) = (GL [x] (empFun x), GL [] 0)
+recursiveTree (Node x ys) = ret
+    where
+        theList = map recursiveTree ys
+        ret = nextLevel x theList
+
+
+sampleTree = Node "bob" []
+
+
+
+--maxFun :: Tree Employee -> GuestList
+maxFun tree = moreFun (fst ret) (snd ret)
+    where
+        ret = recursiveTree tree
 
 -- The whole company
 
