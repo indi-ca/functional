@@ -196,27 +196,11 @@ moreFun x@(GL l1 f1) y@(GL l2 f2) = if f1 > f2 then x else y
 
 
 
-reduce :: GuestList -> GuestList -> GuestList
-reduce glA glB = moreFun (pop glA) glB
+rumi :: GuestList -> GuestList -> (GuestList -> GuestList) -> GuestList
+rumi glA glB f = moreFun (f glA) glB
 
-raja :: GuestList -> GuestList -> GuestList
-raja glA glB = moreFun (glA) glB
-
-yomega :: (GuestList, GuestList) -> GuestList
-yomega x = reduce (fst x) (snd x)
-
-yellow :: (GuestList, GuestList) -> GuestList
-yellow x = raja (fst x) (snd x)
-
-
-
-piscina :: [(GuestList, GuestList)] -> GuestList
-piscina xs = mconcat (map yomega xs)
-
-puerta :: [(GuestList, GuestList)] -> GuestList
-puerta xs = mconcat (map yellow xs)
-
-sampleGuestList = [(GL [Emp "A1" 10] 10, GL [Emp "A1" 1] 1), (GL [] 0, GL [Emp "A2" 2] 2), (GL [] 0, GL [Emp "A3" 1] 3)]
+tempfn :: [(GuestList, GuestList)] -> (GuestList -> GuestList) -> GuestList
+tempfn xs f = mconcat (map (\x -> rumi (fst x) (snd x) f) xs)
 
 
 pop :: GuestList -> GuestList
@@ -228,20 +212,15 @@ nextLevel :: Employee -> [(GuestList, GuestList)] -> (GuestList, GuestList)
 nextLevel employee xs = (theFirst, theSecond)
     where
         bgl = GL [employee] (empFun employee)
-        theFirst = bgl <> piscina xs
-        theSecond = puerta xs
+        theFirst = bgl <> tempfn xs pop
+        theSecond = tempfn xs id
 
 
 
 -- EXERCISE 4
 
--- Finally, put all of this together to define
-
-
 -- which takes a company hierarchy as input and outputs a fun-maximizing guest list.
 -- You can test your function on testCompany, provided in Employee.hs.
-
-
 
 recursiveTree :: Tree Employee -> (GuestList, GuestList)
 recursiveTree (Node x []) = (GL [x] (empFun x), GL [] 0)
@@ -251,6 +230,7 @@ maxFun :: Tree Employee -> GuestList
 maxFun tree = moreFun (fst final) (snd final)
     where
         final = recursiveTree tree
+
 
 
 -- The whole company
