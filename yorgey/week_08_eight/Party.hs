@@ -245,20 +245,13 @@ nextLevel employee xs = (theFirst, theSecond)
 
 recursiveTree :: Tree Employee -> (GuestList, GuestList)
 recursiveTree (Node x []) = (GL [x] (empFun x), GL [] 0)
-recursiveTree (Node x ys) = ret
+recursiveTree (Node x subordinates) = nextLevel x $ map recursiveTree subordinates
+
+maxFun :: Tree Employee -> GuestList
+maxFun tree = moreFun (fst final) (snd final)
     where
-        theList = map recursiveTree ys
-        ret = nextLevel x theList
+        final = recursiveTree tree
 
-
-sampleTree = Node "bob" []
-
-
-
---maxFun :: Tree Employee -> GuestList
-maxFun tree = moreFun (fst ret) (snd ret)
-    where
-        ret = recursiveTree tree
 
 -- The whole company
 
@@ -279,8 +272,12 @@ maxFun tree = moreFun (fst ret) (snd ret)
 -- Adeline Anselme
 -- ...
 
--- (Note: the above is just an example of the format; it is not the correct output!) You will probably find the readFile and putStrLn functions useful.
--- As much as possible, try to separate out the “pure” computation from the IO computation. In other words, your main function should actually be fairly short, calling out to helper functions (whose types do not involve IO) to do most of the work. If you find IO “infecting” all your function types, you are Doing It Wrong.
+-- (Note: the above is just an example of the format; it is not the correct output!)
+-- You will probably find the readFile and putStrLn functions useful.
+-- As much as possible, try to separate out the “pure” computation from the IO computation.
+-- In other words, your main function should actually be fairly short,
+-- calling out to helper functions (whose types do not involve IO) to do most of the work.
+-- If you find IO “infecting” all your function types, you are Doing It Wrong.
 
 
 
