@@ -97,17 +97,16 @@ instance Monoid GuestList where
 
 
 -- EXERCISE 1.3
--- moreFun :: GuestList -> GuestList -> GuestList
 
--- which takes two GuestLists and returns whichever one of them is more fun,
--- i.e. has the higher fun score.
+-- takes two GuestLists and returns whichever one of them is more fun,
 -- (If the scores are equal it does not matter which is returned.)
 
-
---instance Ord GuestList where
-
+-- instance Ord GuestList is defined in Employee.hs
+-- seems to have no effect on moreFun
 moreFun :: GuestList -> GuestList -> GuestList
 moreFun x@(GL l1 f1) y@(GL l2 f2) = if f1 > f2 then x else y
+
+
 
 
 
@@ -224,8 +223,12 @@ moreFun x@(GL l1 f1) y@(GL l2 f2) = if f1 > f2 then x else y
 -- Adeline Anselme
 -- ...
 
--- (Note: the above is just an example of the format; it is not the correct output!) You will probably find the readFile and putStrLn functions useful.
--- As much as possible, try to separate out the “pure” computation from the IO computation. In other words, your main function should actually be fairly short, calling out to helper functions (whose types do not involve IO) to do most of the work. If you find IO “infecting” all your function types, you are Doing It Wrong.
+-- (Note: the above is just an example of the format; it is not the correct output!)
+-- You will probably find the readFile and putStrLn functions useful.
+-- As much as possible, try to separate out the “pure” computation from the IO computation.
+-- In other words, your main function should actually be fairly short, calling out to helper functions
+-- (whose types do not involve IO) to do most of the work. If you find IO “infecting” all your function types,
+-- you are Doing It Wrong.
 
 
 
