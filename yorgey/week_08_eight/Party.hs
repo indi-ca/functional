@@ -196,6 +196,43 @@ moreFun x@(GL l1 f1) y@(GL l2 f2) = if f1 > f2 then x else y
 
 
 
+reduce :: GuestList -> GuestList -> GuestList
+reduce glA glB = moreFun (pop glA) glB
+
+raja :: GuestList -> GuestList -> GuestList
+raja glA glB = moreFun (glA) glB
+
+yomega :: (GuestList, GuestList) -> GuestList
+yomega x = reduce (fst x) (snd x)
+
+yellow :: (GuestList, GuestList) -> GuestList
+yellow x = raja (fst x) (snd x)
+
+
+
+piscina :: [(GuestList, GuestList)] -> GuestList
+piscina xs = mconcat (map yomega xs)
+
+puerta :: [(GuestList, GuestList)] -> GuestList
+puerta xs = mconcat (map yellow xs)
+
+sampleGuestList = [(GL [Emp "A1" 10] 10, GL [Emp "A1" 1] 1), (GL [] 0, GL [Emp "A2" 2] 2), (GL [] 0, GL [Emp "A3" 1] 3)]
+
+
+pop :: GuestList -> GuestList
+pop (GL [] f) = GL [] f
+pop (GL (x:xs) f) = GL xs (f - empFun x)
+
+
+nextLevel :: Employee -> [(GuestList, GuestList)] -> (GuestList, GuestList)
+nextLevel employee xs = (theFirst, theSecond)
+    where
+        bgl = GL [employee] (empFun employee)
+        theFirst = bgl <> piscina xs
+        theSecond = puerta xs
+
+
+
 -- EXERCISE 4
 
 -- Finally, put all of this together to define
@@ -216,10 +253,11 @@ moreFun x@(GL l1 f1) y@(GL l2 f2) = if f1 > f2 then x else y
 
 -- EXERCISE 5
 
--- Implement main :: IO () so that it reads your company’s hierar-
--- chy from the file company.txt, and then prints out a formatted guest list, sorted by first name, which looks like
+-- Implement main :: IO () so that it reads your company’s hierarchy from the
+-- file company.txt, and then prints out a formatted guest list,
+-- sorted by first name, which looks like
 
---Total fun: 23924
+-- Total fun: 23924
 -- Adam Debergues
 -- Adeline Anselme
 -- ...
