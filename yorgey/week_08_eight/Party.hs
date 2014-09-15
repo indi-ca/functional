@@ -60,19 +60,11 @@ import Employee
 -- that is, glCons should simply add the new Employee and
 -- add their fun score without doing any kind of checks.
 
-emp_a = Emp "Stan" 9
-emp_b = Emp "Sarah" 17
-
 glEmpty = GL [] 0
 
 glCons :: Employee -> GuestList -> GuestList
 glCons x@(Emp _ f1) (GL xs f2) = GL (x : xs) (f1 + f2)
 
-
-glA = glCons emp_a glEmpty
-glB = glCons emp_b glEmpty
-
---something = foldr glCons (flatten testCompany) glEmpty
 
 
 -- EXERCISE 1.2
