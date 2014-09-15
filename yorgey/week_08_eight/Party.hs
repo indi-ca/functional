@@ -62,8 +62,14 @@ import Employee
 
 glEmpty = GL [] 0
 
+
 glCons :: Employee -> GuestList -> GuestList
 glCons x@(Emp _ f1) (GL xs f2) = GL (x : xs) (f1 + f2)
+
+
+glPop :: GuestList -> GuestList
+glPop (GL [] _) = GL [] 0
+glPop (GL (x:xs) f) = GL xs (f - empFun x)
 
 
 
@@ -86,8 +92,6 @@ instance Monoid GuestList where
 
 
 
-
-
 -- EXERCISE 1.3
 
 -- takes two GuestLists and returns whichever one of them is more fun,
@@ -95,6 +99,7 @@ instance Monoid GuestList where
 
 -- instance Ord GuestList is defined in Employee.hs
 -- seems to have no effect on moreFun
+
 moreFun :: GuestList -> GuestList -> GuestList
 moreFun x@(GL l1 f1) y@(GL l2 f2) = if f1 > f2 then x else y
 
@@ -188,24 +193,10 @@ treeFold z f (Node x ys) = f x ( map (treeFold z f) ys )
 -- nextLevel should then compute the overall best guest list that includes Bob,
 -- and the overall best guest list that doesn’t include Bob.
 
-
-
-rumi :: GuestList -> GuestList -> (GuestList -> GuestList) -> GuestList
-rumi glA glB f = moreFun (f glA) glB
-
-tempfn :: [(GuestList, GuestList)] -> (GuestList -> GuestList) -> GuestList
-tempfn xs f = mconcat (map (\x -> rumi (fst x) (snd x) f) xs)
-
-
-glPop :: GuestList -> GuestList
-glPop (GL [] _) = GL [] 0
-glPop (GL (x:xs) f) = GL xs (f - empFun x)
-
-
 nextLevel :: Employee -> [(GuestList, GuestList)] -> (GuestList, GuestList)
-nextLevel boss xs = (glCons boss $ ff glPop, ff id)
+nextLevel boss xs = (glCons boss $ h glPop xs, h id xs)
     where
-        ff = tempfn xs
+        h f = mconcat . map (\x -> moreFun (f $ fst x) (snd x))
 
 
 
