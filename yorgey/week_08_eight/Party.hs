@@ -123,7 +123,10 @@ moreFun x@(GL l1 f1) y@(GL l2 f2) = if f1 > f2 then x else y
 -- Strangely, Data.Tree does not define a fold for this type!
 -- Rectify the situation by implementing
 
--- treeFold :: ... -> Tree a -> b
+treeFold :: (a -> b) -> (a -> [b] -> b) -> Tree a -> b
+treeFold z f (Node x []) = z x
+treeFold z f (Node x ys) = f x ( map (treeFold z f) ys )
+
 -- (See if you can figure out what type(s) should replace the dots in the type of treeFold.
 -- If you are stuck, look back at the lecture notes from Week 7,
 -- or infer the proper type(s) from the remainder of this assignment.)
@@ -202,16 +205,16 @@ tempfn :: [(GuestList, GuestList)] -> (GuestList -> GuestList) -> GuestList
 tempfn xs f = mconcat (map (\x -> rumi (fst x) (snd x) f) xs)
 
 
-pop :: GuestList -> GuestList
-pop (GL [] f) = GL [] f
-pop (GL (x:xs) f) = GL xs (f - empFun x)
+glPop :: GuestList -> GuestList
+glPop (GL [] f) = GL [] f
+glPop (GL (x:xs) f) = GL xs (f - empFun x)
 
 
 nextLevel :: Employee -> [(GuestList, GuestList)] -> (GuestList, GuestList)
 nextLevel employee xs = (theFirst, theSecond)
     where
         bgl = GL [employee] (empFun employee)
-        theFirst = bgl <> tempfn xs pop
+        theFirst = bgl <> tempfn xs glPop
         theSecond = tempfn xs id
 
 
@@ -221,14 +224,11 @@ nextLevel employee xs = (theFirst, theSecond)
 -- which takes a company hierarchy as input and outputs a fun-maximizing guest list.
 -- You can test your function on testCompany, provided in Employee.hs.
 
-recursiveTree :: Tree Employee -> (GuestList, GuestList)
-recursiveTree (Node x []) = (GL [x] (empFun x), GL [] 0)
-recursiveTree (Node x subordinates) = nextLevel x $ map recursiveTree subordinates
-
 maxFun :: Tree Employee -> GuestList
 maxFun tree = moreFun (fst final) (snd final)
     where
-        final = recursiveTree tree
+        final = treeFold (\x -> (GL [x] (empFun x), GL [] 0)) nextLevel tree
+
 
 
 
@@ -257,6 +257,20 @@ maxFun tree = moreFun (fst final) (snd final)
 -- In other words, your main function should actually be fairly short,
 -- calling out to helper functions (whose types do not involve IO) to do most of the work.
 -- If you find IO “infecting” all your function types, you are Doing It Wrong.
+
+
+
+--readCompany = something <- readFile "company.txt"
+
+main :: IO ()
+main = do
+    something <- readFile "company.txt"
+    putStrLn "done"
+
+
+--something <- readFile "company.txt"
+--let company :: Tree Employee
+--    company = read something
 
 
 
