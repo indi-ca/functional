@@ -211,11 +211,9 @@ glPop (GL (x:xs) f) = GL xs (f - empFun x)
 
 
 nextLevel :: Employee -> [(GuestList, GuestList)] -> (GuestList, GuestList)
-nextLevel employee xs = (theFirst, theSecond)
+nextLevel boss xs = (glCons boss $ ff glPop, ff id)
     where
-        bgl = GL [employee] (empFun employee)
-        theFirst = bgl <> tempfn xs glPop
-        theSecond = tempfn xs id
+        ff = tempfn xs
 
 
 
