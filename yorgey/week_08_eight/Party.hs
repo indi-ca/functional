@@ -215,8 +215,9 @@ nextLevel boss xs = (glCons boss $ ff glPop, ff id)
 -- You can test your function on testCompany, provided in Employee.hs.
 
 maxFun :: Tree Employee -> GuestList
-maxFun tree = uncurry moreFun $ treeFold (\x -> (glCons x glEmpty, glEmpty)) nextLevel tree
-
+maxFun tree = uncurry moreFun $ treeFold z nextLevel tree
+    where
+        z x = (glCons x glEmpty, glEmpty)
 
 
 -- The whole company
