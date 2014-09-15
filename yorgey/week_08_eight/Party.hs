@@ -206,7 +206,7 @@ tempfn xs f = mconcat (map (\x -> rumi (fst x) (snd x) f) xs)
 
 
 glPop :: GuestList -> GuestList
-glPop (GL [] f) = GL [] f
+glPop (GL [] _) = GL [] 0
 glPop (GL (x:xs) f) = GL xs (f - empFun x)
 
 
@@ -225,10 +225,7 @@ nextLevel employee xs = (theFirst, theSecond)
 -- You can test your function on testCompany, provided in Employee.hs.
 
 maxFun :: Tree Employee -> GuestList
-maxFun tree = moreFun (fst final) (snd final)
-    where
-        final = treeFold (\x -> (GL [x] (empFun x), GL [] 0)) nextLevel tree
-
+maxFun tree = uncurry moreFun $ treeFold (\x -> (glCons x glEmpty, glEmpty)) nextLevel tree
 
 
 
