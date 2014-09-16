@@ -1,8 +1,11 @@
 
 module Party where
 
+import Data.List
 import Data.Monoid
 import Data.Tree as Tree
+import System.IO
+
 import Employee
 
 
@@ -223,18 +226,19 @@ maxFun tree = uncurry moreFun $ treeFold z nextLevel tree
 
 
 
---readCompany = something <- readFile "company.txt"
+renderGuestList :: GuestList -> [String]
+renderGuestList (GL xs _) = sort $ map (\x -> empName x) xs
 
 main :: IO ()
 main = do
-    something <- readFile "company.txt"
-    putStrLn "done"
-
-
---something <- readFile "company.txt"
---let company :: Tree Employee
---    company = read something
-
+    companyString <- readFile "company.txt"
+    outputHandle <- openFile "guestlist.txt" WriteMode
+    let company :: Tree Employee
+        company = read companyString
+        guestlist = maxFun company
+    hPutStrLn outputHandle ("Total fun: " ++ (\(GL _ f) -> show f) guestlist)
+    mapM_ (hPutStrLn outputHandle) (renderGuestList (maxFun company))
+    hClose outputHandle
 
 
 
