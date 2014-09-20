@@ -1,10 +1,13 @@
 --import Network          (PortID(PortNumber), withSocketsDo, listenOn, accept)
 import Network
+
 import Network.Socket   (Socket, SocketOption(KeepAlive), close, setSocketOption)
---import Network.Socket
 
 --import System.IO        (Handle, hPutStrLn, hGetLine, hFlush, hClose)
 import System.IO
+
+
+import Aesyon (getEncodedNuggets)
 
 
 host = "127.0.0.100"
@@ -40,7 +43,8 @@ listen :: Handle -> IO ()
 listen h = forever $ do
     s <- hGetLine h
     putStrLn s
-    hPutStrLn h "{\"results\" : [\"one\", \"two\", \"three\", \"four\", \"five\"]}"
+    --hPutStrLn h "{\"results\" : [\"one\", \"two\", \"three\", \"four\", \"five\"]}"
+    hPutStrLn h getEncodedNuggets
   where
     forever a = do a; forever a
 
