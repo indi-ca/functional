@@ -7,7 +7,7 @@ import Network.Socket   (Socket, SocketOption(KeepAlive), close, setSocketOption
 import System.IO
 
 
-import Aesyon (getEncodedNuggets)
+import Aesyon (getEncodedNuggets, reMapNuggets)
 
 
 host = "127.0.0.100"
@@ -43,19 +43,8 @@ listen :: Handle -> IO ()
 listen h = forever $ do
     s <- hGetLine h
     putStrLn s
-    --hPutStrLn h "{\"results\" : [\"one\", \"two\", \"three\", \"four\", \"five\"]}"
-    hPutStrLn h getEncodedNuggets
+    --hPutStrLn h getEncodedNuggets
+    nuggets <- reMapNuggets
+    hPutStrLn h nuggets
   where
     forever a = do a; forever a
-
-
--- server
---server = do
---    sock <- listenOn (PortNumber port)
---    putStrLn "Awaiting connection."
---    (h,host,port) <- accept sock
---    putStrLn $ "Received connection from " ++ host ++ ":" ++ show port
---    hSetBuffering h LineBuffering
---    while2 (receive h) (send h)
---    hClose h
---    sClose sock

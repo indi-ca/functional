@@ -7,7 +7,7 @@ import Control.Applicative ((<$>), (<*>), empty)
 --import Data.Aeson(encode, ToJSON, object)
 import Data.Aeson
 
-import Data.ByteString.Lazy.Char8(unpack)
+import Data.ByteString.Lazy.Char8(pack, unpack)
 
 
 data Nugget = Nugget {
@@ -17,7 +17,11 @@ data Nugget = Nugget {
     lastModified :: Int
 } deriving (Show)
 
-
+data Action = Action {
+    action  :: String,
+    hashi   :: String,
+    text    :: String
+} deriving (Show)
 
 
 instance FromJSON Nugget where
@@ -29,9 +33,17 @@ instance FromJSON Nugget where
     -- A non-Object value is of the wrong type, so fail.
     parseJSON _          = empty
 
-
 instance ToJSON Nugget where
     toJSON (Nugget index hash content lastModified) = object ["index" .= index, "hash" .= hash, "content" .= content, "lastModified" .= lastModified]
+
+
+instance FromJSON Action where
+    parseJSON (Object v) =  Action <$>
+                            v .: "action" <*>
+                            v .: "hash" <*>
+                            v .: "text"
+    -- A non-Object value is of the wrong type, so fail.
+    parseJSON _          = empty
 
 
 n1 = Nugget {
@@ -59,13 +71,18 @@ n3 = Nugget {
 nuggets = [n1, n2, n3]
 
 
---strictToLazy strict = BL.fromChunks [strict]
---lazyToStrict lazy = B.concat $ BL.toChunks lazy
---lazyToStrict lazy = BLC.concat $ BLC.toChunks lazy
-
 getEncodedNuggets :: String
 getEncodedNuggets = unpack $ encode nuggets
---getEncodedNuggets = BLC.unpack $ encode nuggets
---getEncodedNuggets = BLC.unpack $ lazyToStrict $ encode nuggets
---getEncodedNuggets = BC.unpack $ encode nuggets
+
+
+reMapNuggets :: IO String
+reMapNuggets = do
+    contents <- readFile "sample.json"
+    let req = decode (pack contents) :: Maybe [Nugget]
+    let ret = unpack $ encode req
+    return ret
+
+
+
+
 
