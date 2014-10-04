@@ -20,16 +20,13 @@ data Nugget = Nugget {
     lastModified :: Int
 } deriving (Show)
 
+
+-- [?] How do I have two value constructors with the same name?
 data Action = Action {
-    action  :: String,
-    hashi   :: String,
-    text    :: String
+    a_kind  :: String,
+    a_hash  :: String,
+    a_text  :: String
 } deriving (Show)
-
-
--- Cannot do this because Nugget has kind *, not * -> *
---instance Functor Nugget where
---    fmap f (Nugget i h c l) = Nugget i h (f c) l
 
 
 
@@ -51,10 +48,9 @@ instance ToJSON Nugget where
 
 instance FromJSON Action where
     parseJSON (Object v) =  Action <$>
-                            v .: "action" <*>
-                            v .: "hash" <*>
-                            v .: "text"
-    -- A non-Object value is of the wrong type, so fail.
+                            v .: "a_kind" <*>
+                            v .: "a_hash" <*>
+                            v .: "a_text"
     parseJSON _          = empty
 
 

@@ -10,4 +10,4 @@ def run_command(command):
 
 
 while True:
-    run_command('cabal run')
+    run_command('cabal run hd')
