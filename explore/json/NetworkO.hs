@@ -5,7 +5,7 @@ import Network.Socket   (Socket, SocketOption(KeepAlive), close, setSocketOption
 
 --import System.IO        (Handle, hPutStrLn, hGetLine, hFlush, hClose)
 import System.IO
-import Aesyon (reMapNuggets)
+import Aesyon (respond)
 
 import System.Log.Logger
 import System.Log.Handler.Syslog
@@ -30,9 +30,7 @@ main = withSocketsDo $ do
 
     errorM "MyApp.Component" "This is going to stderr and syslog."
 
-
     putStrLn "Going to accept from a network connection..."
-    --sock <- listenOn $ PortNumber port
     putStrLn host
     putStrLn (show port)
 
@@ -56,11 +54,10 @@ main = withSocketsDo $ do
 
 listen :: Handle -> IO ()
 listen h = forever $ do
-    s <- hGetLine h
-    putStrLn s
-    warningM "MyApp.Component2" $ "Got request: " ++  s
-    --hPutStrLn h getEncodedNuggets
-    nuggets <- reMapNuggets s
+    action <- hGetLine h
+    putStrLn action
+    warningM "MyApp.Component2" $ "Got request: " ++  action
+    nuggets <- respond action
     hPutStrLn h nuggets
   where
     forever a = do a; forever a

@@ -25,7 +25,7 @@ data Nugget = Nugget {
 data Action = Action {
     a_kind  :: String,
     a_hash  :: String,
-    a_text  :: String
+    a_title  :: String
 } deriving (Show)
 
 
@@ -50,31 +50,35 @@ instance FromJSON Action where
     parseJSON (Object v) =  Action <$>
                             v .: "a_kind" <*>
                             v .: "a_hash" <*>
-                            v .: "a_text"
+                            v .: "a_title"
     parseJSON _          = empty
 
 
 
-
 -- TODO: Rather return Nothing, than Just []
-search :: String -> Maybe [Nugget] -> Maybe [Nugget]
-search _ Nothing = Nothing
-search str (Just nuggets) = Just (filter (\x -> compare (content x) str) nuggets)
+-- Just [] implies that there was no failure though
+search :: String -> [Nugget] -> [Nugget]
+search str nuggets = filter (\x -> compare (content x) str) nuggets
     where
         compare x y = toLower (x!!0) == toLower (y!!0)
 
---getEncodedNuggets :: String
---getEncodedNuggets = unpack $ encode nuggets
 
-reMapNuggets :: String -> IO String
-reMapNuggets str = do
+
+get_results :: Maybe Action -> Maybe [Nugget] -> Maybe [Nugget]
+get_results Nothing _ = Just []
+get_results _ Nothing = Just []
+get_results (Just action) (Just nuggets) = Just (search (a_title action) nuggets)
+
+
+
+respond :: String -> IO String
+respond req = do
     contents <- readFile "data/data.json"
-    let req = decode (pack contents) :: Maybe [Nugget]
-    let filtered = search str req
-    let ret = unpack $ encode filtered
+    let action = decode (pack req) :: Maybe Action
+        nuggets = decode (pack contents) :: Maybe [Nugget]
+        filtered = get_results action nuggets
+        ret = unpack $ encode filtered
     return ret
-
-
 
 
 
