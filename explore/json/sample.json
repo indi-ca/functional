@@ -2,18 +2,24 @@
     {
         "hash": "1",
         "content": "Content one",
+        "title": "Content one",
+        "kind": "text",
         "index": 1,
         "lastModified": 1
     },
     {
         "hash": "2",
         "content": "Content two",
+        "title": "Content two",
+        "kind": "text",
         "index": 2,
         "lastModified": 1
     },
     {
         "hash": "3",
         "content": "Content three",
+        "title": "Content three",
+        "kind": "text",
         "index": 3,
         "lastModified": 1
     }

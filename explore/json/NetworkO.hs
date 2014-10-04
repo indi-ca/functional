@@ -5,9 +5,13 @@ import Network.Socket   (Socket, SocketOption(KeepAlive), close, setSocketOption
 
 --import System.IO        (Handle, hPutStrLn, hGetLine, hFlush, hClose)
 import System.IO
+import Aesyon (reMapNuggets)
 
-
-import Aesyon (getEncodedNuggets, reMapNuggets)
+import System.Log.Logger
+import System.Log.Handler.Syslog
+import System.Log.Handler.Simple
+import System.Log.Handler (setFormatter)
+import System.Log.Formatter
 
 
 host = "127.0.0.100"
@@ -16,6 +20,17 @@ port   = 62005
 
 main :: IO ()
 main = withSocketsDo $ do
+
+    debugM "MyApp.Component"  "This is a debug message -- never to be seen"
+    warningM "MyApp.Component2" "Something Bad is about to happen."
+
+    -- Copy everything to syslog from here on out.
+    s <- openlog "SyslogStuff" [PID] USER DEBUG
+    updateGlobalLogger rootLoggerName (addHandler s)
+
+    errorM "MyApp.Component" "This is going to stderr and syslog."
+
+
     putStrLn "Going to accept from a network connection..."
     --sock <- listenOn $ PortNumber port
     putStrLn host
@@ -43,8 +58,9 @@ listen :: Handle -> IO ()
 listen h = forever $ do
     s <- hGetLine h
     putStrLn s
+    warningM "MyApp.Component2" $ "Got request: " ++  s
     --hPutStrLn h getEncodedNuggets
-    nuggets <- reMapNuggets
+    nuggets <- reMapNuggets s
     hPutStrLn h nuggets
   where
     forever a = do a; forever a
