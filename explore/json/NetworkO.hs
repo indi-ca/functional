@@ -22,7 +22,7 @@ main :: IO ()
 main = withSocketsDo $ do
 
     debugM "MyApp.Component"  "This is a debug message -- never to be seen"
-    warningM "MyApp.Component2" "Something Bad is about to happen."
+    warningM "MyApp.Component2" "This is a warning message."
 
     -- Copy everything to syslog from here on out.
     s <- openlog "SyslogStuff" [PID] USER DEBUG

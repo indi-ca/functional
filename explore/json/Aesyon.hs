@@ -9,6 +9,7 @@ import Data.Aeson
 import Data.ByteString.Lazy.Char8(pack, unpack)
 import Data.Char(toLower)
 
+import Text.EditDistance(levenshteinDistance, defaultEditCosts)
 
 
 data Nugget = Nugget {
@@ -23,6 +24,7 @@ data Nugget = Nugget {
 
 -- [?] How do I have two value constructors with the same name?
 data Action = Action {
+    a_action  :: String,
     a_kind  :: String,
     a_hash  :: String,
     a_title  :: String
@@ -48,6 +50,7 @@ instance ToJSON Nugget where
 
 instance FromJSON Action where
     parseJSON (Object v) =  Action <$>
+                            v .: "a_action" <*>
                             v .: "a_kind" <*>
                             v .: "a_hash" <*>
                             v .: "a_title"
