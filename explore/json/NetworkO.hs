@@ -15,7 +15,7 @@ import System.Log.Formatter
 
 
 host = "127.0.0.100"
-port   = 62005
+port = 62005
 
 
 main :: IO ()

@@ -11,7 +11,7 @@ build-type:         Simple
 
 
 Library
-  Build-Depends:    base, aeson, hashable, bytestring, network, hslogger, edit-distance
+  Build-Depends:    base, aeson, aeson-pretty, hashable, bytestring, network, hslogger, edit-distance
 
 
 executable "hd"
@@ -25,9 +25,3 @@ executable "aesyon"
         base >= 4 && < 5
     default-language: Haskell2010
     main-is: Aesyon.hs
-
-executable "search"
-    build-depends:
-        base >= 4 && < 5
-    default-language: Haskell2010
-    main-is: SearchO.hs
