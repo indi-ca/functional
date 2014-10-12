@@ -57,3 +57,17 @@ posInt = Parser f
 ------------------------------------------------------------
 -- Your code goes below here
 ------------------------------------------------------------
+
+-- EXERCISE 1
+-- First, you’ll need to implement a Functor instance for Parser.
+-- Hint: You may find it useful to implement a function
+
+-- first :: (a -> b) -> (a,c) -> (b,c)
+
+
+
+
+
+
+
+
