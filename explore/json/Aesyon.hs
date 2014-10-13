@@ -6,9 +6,22 @@ import Control.Applicative ((<$>), (<*>), empty)
 
 --import Data.Aeson(encode, ToJSON, object)
 import Data.Aeson
+import Data.Aeson.Encode.Pretty(encodePretty)
 import Data.ByteString.Lazy.Char8(pack, unpack)
 import Data.Char(toLower)
 
+import Text.EditDistance(levenshteinDistance, defaultEditCosts)
+
+import System.IO(hPutStrLn, openFile, IOMode( WriteMode ))
+
+import System.Log.Logger
+import System.Log.Handler.Syslog
+import System.Log.Handler.Simple
+import System.Log.Handler (setFormatter)
+import System.Log.Formatter
+
+-- Hidden packages!
+-- import System.Random
 
 
 data Nugget = Nugget {
@@ -23,6 +36,7 @@ data Nugget = Nugget {
 
 -- [?] How do I have two value constructors with the same name?
 data Action = Action {
+    a_action  :: String,
     a_kind  :: String,
     a_hash  :: String,
     a_title  :: String
@@ -48,6 +62,7 @@ instance ToJSON Nugget where
 
 instance FromJSON Action where
     parseJSON (Object v) =  Action <$>
+                            v .: "a_action" <*>
                             v .: "a_kind" <*>
                             v .: "a_hash" <*>
                             v .: "a_title"
@@ -63,11 +78,19 @@ search str nuggets = filter (\x -> compare (content x) str) nuggets
         compare x y = toLower (x!!0) == toLower (y!!0)
 
 
+create :: String -> Nugget
+create keyword = Nugget 10 "10" "text" keyword keyword 1
 
-get_results :: Maybe Action -> Maybe [Nugget] -> Maybe [Nugget]
-get_results Nothing _ = Just []
-get_results _ Nothing = Just []
-get_results (Just action) (Just nuggets) = Just (search (a_title action) nuggets)
+-- TODO: I should be able to create on an empty list
+decide_what :: Maybe Action -> Maybe [Nugget] -> Maybe [Nugget]
+decide_what Nothing _ = Just []
+decide_what _ Nothing = Just []
+decide_what (Just action) (Just nuggets)
+    | action_type == "create" = Just ((create $ a_title action) : nuggets)
+    | action_type == "search" = Just (search (a_title action) nuggets)
+    | action_type == "execute" = Just (search (a_title action) nuggets)
+    where
+        action_type = a_action action
 
 
 
@@ -76,8 +99,10 @@ respond req = do
     contents <- readFile "data/data.json"
     let action = decode (pack req) :: Maybe Action
         nuggets = decode (pack contents) :: Maybe [Nugget]
-        filtered = get_results action nuggets
+        filtered = decide_what action nuggets
         ret = unpack $ encode filtered
+        pretty_ret = unpack $ encodePretty filtered
+    length contents `seq` (writeFile "data/data.json" $ pretty_ret)
     return ret
 
 
