@@ -180,6 +180,10 @@ treeFold z f (Node x ys) = f x ( map (treeFold z f) ys )
 -- nextLevel should then compute the overall best guest list that includes Bob,
 -- and the overall best guest list that doesn’t include Bob.
 
+
+
+
+
 nextLevel :: Employee -> [(GuestList, GuestList)] -> (GuestList, GuestList)
 nextLevel boss xs = (glCons boss $ h glPop xs, h id xs)
     where
