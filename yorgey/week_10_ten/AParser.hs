@@ -62,8 +62,17 @@ posInt = Parser f
 -- First, you’ll need to implement a Functor instance for Parser.
 -- Hint: You may find it useful to implement a function
 
--- first :: (a -> b) -> (a,c) -> (b,c)
+first :: (a -> b) -> (a,c) -> (b,c)
+first g (x, y) = (g x, y)
 
+
+-- remember: fmap :: (a -> b) -> fa -> fb
+-- why would I need a functor for Parser?
+-- remember Maybe. Maybe is the context, and it takes different types
+-- now Parser is the context,
+
+--instance Functor Parser where
+--  fmap =
 
 
 
