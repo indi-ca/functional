@@ -35,12 +35,14 @@ char c = satisfy (== c)
 
 {- For example:
 
-*Parser> runParser (satisfy isUpper) "ABC"
-Just ('A',"BC")
-*Parser> runParser (satisfy isUpper) "abc"
-Nothing
-*Parser> runParser (char 'x') "xyz"
-Just ('x',"yz")
+  *Parser> runParser (satisfy isUpper) "ABC"
+  Just ('A',"BC")
+
+  *Parser> runParser (satisfy isUpper) "abc"
+  Nothing
+
+  *Parser> runParser (char 'x') "xyz"
+  Just ('x',"yz")
 
 -}
 
@@ -71,8 +73,69 @@ first g (x, y) = (g x, y)
 -- remember Maybe. Maybe is the context, and it takes different types
 -- now Parser is the context,
 
---instance Functor Parser where
---  fmap =
+
+-- What are the different value Parser can take?
+-- Maybe takes on Nothing | Just a
+-- Parser takes on only String -> Maybe (a, String)
+
+
+-- Can I pattern match on a function?
+
+-- Parser is a type. But it's members are functions?
+
+-- instance Functor Parser where
+--   fmap g Nothing = Parser { }
+
+newtype D = C
+  {
+    yo :: String -> Int
+  }
+
+
+
+-- EXERCISE 2
+-- Implement an Applicative instance for Parser
+
+-- • pure a represents the parser which consumes no input and successfully returns a result of a.
+-- • p1 <*> p2 represents the parser
+
+-- which first runs p1
+-- (which will consume some input and produce a function),
+
+-- then passes the remaining input to p2
+-- (which consumes more input and produces some value),
+
+-- then returns the result of applying the function to the value.
+-- However, if either p1 or p2 fails then the whole thing should also fail
+-- (put another way, p1 <*> p2 only succeeds if both p1 and p2 succeed).
+
+
+-- How is this useful?
+
+-- type Name = String
+-- data Employee = Emp { name :: Name, phone :: String }
+
+-- we could now use the Applicative instance for Parser to make an
+-- employee parser from name and phone parsers.
+-- That is, if
+
+-- parseName  :: Parser Name
+-- parsePhone :: Parser String
+
+-- then
+-- Emp <$> parseName <*> parsePhone :: Parser Employee
+
+
+-- is a parser which first reads a name from the input,
+-- then a phone number, and returns them combined into an Employee record.
+-- Of course, this assumes that the name and phone number are right next to each other in the input,
+-- with no intervening separators.
+-- We’ll see later how to make parsers that can throw away extra stuff that doesn’t directly
+-- correspond to information you want to parse.
+
+
+
+
 
 
 
