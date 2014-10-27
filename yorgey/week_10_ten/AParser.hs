@@ -68,28 +68,13 @@ first :: (a -> b) -> (a,c) -> (b,c)
 first g (x, y) = (g x, y)
 
 
--- remember: fmap :: (a -> b) -> fa -> fb
--- why would I need a functor for Parser?
--- remember Maybe. Maybe is the context, and it takes different types
--- now Parser is the context,
+-- a Double FMAP?
+instance Functor Parser where
+  fmap g fn = fmap mk fn
+    where mk = fmap (first g)
 
 
--- What are the different value Parser can take?
--- Maybe takes on Nothing | Just a
--- Parser takes on only String -> Maybe (a, String)
 
-
--- Can I pattern match on a function?
-
--- Parser is a type. But it's members are functions?
-
--- instance Functor Parser where
---   fmap g Nothing = Parser { }
-
-newtype D = C
-  {
-    yo :: String -> Int
-  }
 
 
 
