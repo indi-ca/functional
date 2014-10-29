@@ -68,15 +68,9 @@ first :: (a -> b) -> (a,c) -> (b,c)
 first g (x, y) = (g x, y)
 
 
-mkc :: (a -> b) -> Maybe (a, String) -> Maybe (b, String)
-mkc _ Nothing = Nothing
-mkc g' (Just x) = Just (first g' x)
-
-
--- a Double FMAP?
 instance Functor Parser where
   fmap g pa = Parser (fmap mk fn)
-    where mk = mkc g
+    where mk = fmap $ first g
           fn = runParser pa
 
 
