@@ -82,6 +82,19 @@ instance Functor Parser where
 -- • pure a represents the parser which consumes no input and successfully returns a result of a.
 -- • p1 <*> p2 represents the parser
 
+
+-- I need to yield something of type: String -> Maybe(b, String)
+-- I think the first String is the original String
+-- And b is just the second type that I want to parse [?]
+-- Or it is the
+instance Applicative Parser where
+  p1 <*> p2 = p2
+
+
+sndFunction :: (String -> Maybe(b, String)) -> Maybe(a, String) -> Maybe(b, String)
+sndFunction _ Nothing = Nothing
+sndFunction fn2 (Just(x, str)) = fn2 str
+
 -- which first runs p1
 -- (which will consume some input and produce a function),
 
@@ -118,9 +131,26 @@ instance Functor Parser where
 
 
 
+-- EXERCISE 3
+
+-- We can also test your Applicative instance using other simple
+-- applications of functions to multiple parsers.
+-- You should implement each of the following exercises using the Applicative interface
+-- to put together simpler parsers into more complex ones.
+-- Do not implement them using the low-level definition of a Parser!
+-- In other words, pretend that you do not have access to the Parser constructor
+-- or even know how the Parser type is defined.
 
 
 
+-- • Create a parser
+-- abParser :: Parser (Char, Char)
+-- which expects to see the characters ’a’ and ’b’ and returns them
+-- as a pair. That is,
+--   *AParser> runParser abParser "abcdef"
+--   Just ((’a’,’b’),"cdef")
+--   *AParser> runParser abParser "aebcdf"
+--   Nothing
 
 
 

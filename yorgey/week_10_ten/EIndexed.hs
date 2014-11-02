@@ -44,3 +44,12 @@ first g (x, y) = (g x, y)
 mm :: (a -> b) -> Maybe (a, String) -> Maybe (b, String)
 mm _ Nothing = Nothing
 mm g (Just x) = Just (first g x)
+
+
+
+data Employee = Emp { name :: String, phone :: String}
+
+
+sndFunction :: (String -> Maybe(b, String)) -> Maybe(a, String) -> Maybe(b, String)
+sndFunction _ Nothing = Nothing
+sndFunction fn2 (Just(x, str)) = fn2 str
