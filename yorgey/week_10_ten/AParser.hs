@@ -87,8 +87,7 @@ instance Functor Parser where
 instance Applicative Parser where
 
   pure x = Parser f
-    where
-      f xs = Just(x, xs)
+    where f xs = Just(x, xs)
 
   p1 <*> p2 = Parser f3
     where f3 xs = case s of Nothing -> Nothing
@@ -107,21 +106,33 @@ instance Applicative Parser where
 -- (put another way, p1 <*> p2 only succeeds if both p1 and p2 succeed).
 
 
+
+
 -- How is this useful?
 
--- type Name = String
--- data Employee = Emp { name :: Name, phone :: String }
+type Name = String
+data Employee = Emp { name :: Name, phone :: String }
+  deriving Show
 
 -- we could now use the Applicative instance for Parser to make an
 -- employee parser from name and phone parsers.
 -- That is, if
 
--- parseName  :: Parser Name
--- parsePhone :: Parser String
+parseName  :: Parser Name
+parseName = Parser f
+  where
+    f [] = Nothing
+    f (x:xs) = Just(x : "", xs)
+
+parsePhone :: Parser String
+parsePhone = Parser f
+  where
+    f [] = Nothing
+    f xs = Just(xs, [])
 
 -- then
--- Emp <$> parseName <*> parsePhone :: Parser Employee
-
+parseEmp :: Parser Employee
+parseEmp = Emp <$> parseName <*> parsePhone
 
 -- is a parser which first reads a name from the input,
 -- then a phone number, and returns them combined into an Employee record.
