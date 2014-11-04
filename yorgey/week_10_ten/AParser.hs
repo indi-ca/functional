@@ -84,25 +84,17 @@ instance Functor Parser where
 -- p1 :: String -> Maybe((a->b), String)
 -- p2 :: String -> Maybe(a, String)
 
---instance Applicative Parser where
---  p1 <*> p2 = Parser f3
---    where
---      f3 xs
---        | s == Nothing = Nothing
---        | s == Just(atob, str) = fmap atob $ (runParser p2 $ str)
---        where
---          s = runParser p1 $ xs
-
 instance Applicative Parser where
-  p1 <*> p2 = Parser f3
+
+  pure x = Parser f
     where
-      f3 xs = someFunction (runParser p2) (runParser p1 $ xs)
+      f xs = Just(x, xs)
 
-
-someFunction :: (String -> Maybe(a, String)) -> Maybe((a->b), String) -> Maybe(b, String)
-someFunction _ Nothing = Nothing
-someFunction g (Just(atob, str)) = fmap (first atob) $ g str
-
+  p1 <*> p2 = Parser f3
+    where f3 xs = case s of Nothing -> Nothing
+                            Just(atob, str) -> runParser (fmap atob p2) str
+                  where
+                    s = runParser p1 $ xs
 
 -- which first runs p1
 -- (which will consume some input and produce a function),
