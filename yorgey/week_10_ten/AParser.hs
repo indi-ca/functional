@@ -147,23 +147,60 @@ parseEmp = Emp <$> parseName <*> parsePhone
 
 -- We can also test your Applicative instance using other simple
 -- applications of functions to multiple parsers.
--- You should implement each of the following exercises using the Applicative interface
+
+-- You should implement each of the following exercises using
+-- the Applicative interface
 -- to put together simpler parsers into more complex ones.
+
 -- Do not implement them using the low-level definition of a Parser!
 -- In other words, pretend that you do not have access to the Parser constructor
 -- or even know how the Parser type is defined.
 
 
 
--- • Create a parser
+-- • Create a parser: abParser
 -- abParser :: Parser (Char, Char)
--- which expects to see the characters ’a’ and ’b’ and returns them
--- as a pair. That is,
---   *AParser> runParser abParser "abcdef"
---   Just ((’a’,’b’),"cdef")
---   *AParser> runParser abParser "aebcdf"
---   Nothing
 
+--    expects the characters ’a’ and ’b’
+--    returns them as a pair
+
+--   *AParser> runParser abParser "abcdef"
+--      Just ((’a’,’b’),"cdef")
+--   *AParser> runParser abParser "aebcdf"
+--      Nothing
+
+makePair :: Char -> Char -> (Char, Char)
+makePair x y = (x, y)
+
+abParser :: Parser (Char, Char)
+abParser = makePair <$> char 'a' <*> char 'b'
+
+-- • Now create a parser: abParser_
+--   abParser_ :: Parser ()
+
+-- acts in the same way as abParser
+-- but return () instead of
+
+--   *AParser> runParser abParser_ "abcdef"
+--      Just ((),"cdef")
+--   *AParser> runParser abParser_ "aebcdf"
+--      Nothing
+
+makeEmpty :: Char -> Char -> ()
+makeEmpty _ _ = ()
+
+abParser_ :: Parser ()
+abParser_ = makeEmpty <$> char 'a' <*> char 'b'
+
+
+
+-- • Create a parser intPair
+-- which reads two integer values separated by a space and
+-- returns the integer values in a list.
+
+-- You should use the provided posInt to parse the integer values.
+--     *Parser> runParser intPair "12 34"
+--       Just ([12,34],"")
 
 
 
