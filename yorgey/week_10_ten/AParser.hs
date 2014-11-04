@@ -202,6 +202,11 @@ abParser_ = makeEmpty <$> char 'a' <*> char 'b'
 --     *Parser> runParser intPair "12 34"
 --       Just ([12,34],"")
 
+makeIntPair :: Integer -> Char -> Integer -> [Integer]
+makeIntPair x _ y = [x, y]
+
+intPair :: Parser [Integer]
+intPair = makeIntPair <$> posInt <*> char ' ' <*> posInt
 
 
 
