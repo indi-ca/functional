@@ -210,3 +210,27 @@ intPair = makeIntPair <$> posInt <*> char ' ' <*> posInt
 
 
 
+-- EXERCISE 4
+
+-- Applicative by itself can be used to make parsers for simple, fixed formats.
+-- But for any format involving choice
+-- (e.g. “. . . after the colon there can be a number or a word or parentheses. . . ”)
+-- Applicative is not quite enough.
+-- To handle choice we turn to the Alternative class, defined (essentially) as follows:
+
+-- class Applicative f => Alternative f where
+--    empty :: f a
+--    (<|>) :: f a -> f a -> f a
+
+-- (<|>) is intended to represent choice: that is, f1 <|> f2 represents a choice between f1 and f2.
+-- empty should be the identity element for (<|>), and often represents failure.
+
+
+-- • empty represents the parser which always fails.
+-- • p1 <|> p2 represents the parser which first tries running p1.
+-- If p1 succeeds then p2 is ignored and the result of p1 is returned.
+-- Otherwise, if p1 fails, then p2 is tried instead.
+
+
+-- Hint: there is already an Alternative instance for Maybe which you may find useful.
+
