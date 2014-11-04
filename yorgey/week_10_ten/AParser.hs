@@ -234,3 +234,19 @@ intPair = makeIntPair <$> posInt <*> char ' ' <*> posInt
 
 -- Hint: there is already an Alternative instance for Maybe which you may find useful.
 
+
+
+-- EXERCISE 5
+
+-- intOrUppercase :: Parser ()
+
+-- Implement a parser
+-- which parses either an integer value or an uppercase character,
+-- and fails otherwise.
+
+-- *Parser> runParser intOrUppercase "342abcd"
+--   Just ((), "abcd")
+-- *Parser> runParser intOrUppercase "XYZ"
+--   Just ((), "YZ")
+-- *Parser> runParser intOrUppercase "foo"
+--   Nothing
