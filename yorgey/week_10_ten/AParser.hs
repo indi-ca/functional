@@ -75,53 +75,25 @@ instance Functor Parser where
 
 
 
-
 -- EXERCISE 2
 -- Implement an Applicative instance for Parser
 
 -- • pure a represents the parser which consumes no input and successfully returns a result of a.
 -- • p1 <*> p2 represents the parser
 
-
--- I need to yield something of type: String -> Maybe(b, String)
--- I think the first String is the original String
--- And b is just the second type that I want to parse [?]
--- Or it is the
-
 -- p1 :: String -> Maybe((a->b), String)
 -- p2 :: String -> Maybe(a, String)
 
 instance Applicative Parser where
-  p1 <*> p2 = Parser (nice)
+  p1 <*> p2 = Parser f3
     where
-      rp1 = runParser p1
-      rp2 = runParser p2
-      semi = fnq rp2
-      nice = semi rp1
+      f3 xs
+        | s == Nothing = Nothing
+        | s == (Just(atob, str)) = fmap atob $ (runParser p2 $ str)
+        where
+          s = runParser p1 $ xs
 
 
-runTwo :: (String -> Maybe(b, String)) -> Maybe(a, String) -> Maybe(b, String)
-runTwo _ Nothing = Nothing
-runTwo rp2 (Just(x, str)) = rp2 str
-
-fnq :: (String -> Maybe(b, String)) -> (String -> Maybe(a, String)) -> Maybe(b, String)
-fnq _ _ Nothing = Nothing
-fnq rp2 _ (Just(x, str)) = rp2 str
-
-
-something :: String -> Maybe(c, String) -> Maybe(a, String)
-something str _ = Nothing
-
-other :: (c -> a) -> Maybe(c, String) -> Maybe(a, String)
-other g Nothing = Nothing
-other g (Just(x, str1)) = Just(g x, str1)
-
-
-
-
-sndFunction :: (String -> Maybe(b, String)) -> Maybe(a, String) -> Maybe(b, String)
-sndFunction _ Nothing = Nothing
-sndFunction fn2 (Just(x, str)) = fn2 str
 
 
 
