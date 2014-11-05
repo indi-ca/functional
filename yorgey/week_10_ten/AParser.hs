@@ -218,6 +218,18 @@ intPair = makeIntPair <$> posInt <*> char ' ' <*> posInt
 -- Applicative is not quite enough.
 -- To handle choice we turn to the Alternative class, defined (essentially) as follows:
 
+-- (<|>) is intended to represent choice: that is, f1 <|> f2 represents a choice between f1 and f2.
+-- empty should be the identity element for (<|>), and often represents failure.
+
+
+-- • empty represents the parser which always fails.
+-- • p1 <|> p2 represents the parser which first tries running p1.
+-- If p1 succeeds then p2 is ignored and the result of p1 is returned.
+-- Otherwise, if p1 fails, then p2 is tried instead.
+
+-- Hint: there is already an Alternative instance for Maybe which you may find useful.
+
+
 class Applicative f => Alternative f where
   empty :: f a
   (<|>) :: f a -> f a -> f a
@@ -225,9 +237,7 @@ class Applicative f => Alternative f where
 
 instance AParser.Alternative Parser where
 
-  empty = Parser f3
-    where
-      f3 _ = Nothing
+  empty = Parser (const Nothing)
 
   p1 <|> p2 = Parser f3
     where
@@ -244,23 +254,36 @@ abEitherParser = char 'a' AParser.<|> char 'b'
 
 
 
--- (<|>) is intended to represent choice: that is, f1 <|> f2 represents a choice between f1 and f2.
--- empty should be the identity element for (<|>), and often represents failure.
-
-
--- • empty represents the parser which always fails.
--- • p1 <|> p2 represents the parser which first tries running p1.
--- If p1 succeeds then p2 is ignored and the result of p1 is returned.
--- Otherwise, if p1 fails, then p2 is tried instead.
-
-
--- Hint: there is already an Alternative instance for Maybe which you may find useful.
 
 
 
 -- EXERCISE 5
 
--- intOrUppercase :: Parser ()
+
+isUpperAlphanum :: Char -> Bool
+isUpperAlphanum c = (c `elem` ['A'..'Z'])
+
+uppercase :: Parser Char
+uppercase = Parser f
+  where
+    f [] = Nothing
+    f (x:xs)
+      | isUpperAlphanum x = Just(x, xs)
+      | otherwise = Nothing
+
+
+eliminate :: Integer -> Char -> ()
+eliminate _ _ = ()
+
+intOrUppercase :: Parser ()
+--intOrUppercase = (\_ -> ()) <$> (fmap (\_ -> ()) posInt) AParser.<|> (fmap (\_ -> ()) uppercase)
+
+intOrUppercase = (\_ -> ()) <$> (fmap (const ()) posInt) AParser.<|> (fmap (const ()) uppercase)
+
+
+
+
+--intOrUppercase = eliminate <$> posInt AParser.<|> uppercase
 
 -- Implement a parser
 -- which parses either an integer value or an uppercase character,
@@ -272,3 +295,20 @@ abEitherParser = char 'a' AParser.<|> char 'b'
 --   Just ((), "YZ")
 -- *Parser> runParser intOrUppercase "foo"
 --   Nothing
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
