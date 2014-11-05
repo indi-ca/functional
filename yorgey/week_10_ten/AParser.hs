@@ -218,9 +218,31 @@ intPair = makeIntPair <$> posInt <*> char ' ' <*> posInt
 -- Applicative is not quite enough.
 -- To handle choice we turn to the Alternative class, defined (essentially) as follows:
 
--- class Applicative f => Alternative f where
---    empty :: f a
---    (<|>) :: f a -> f a -> f a
+class Applicative f => Alternative f where
+  empty :: f a
+  (<|>) :: f a -> f a -> f a
+
+
+instance AParser.Alternative Parser where
+
+  empty = Parser f3
+    where
+      f3 _ = Nothing
+
+  p1 <|> p2 = Parser f3
+    where
+      f3 xs = case s1 of Just(a, xs1) -> Just(a, xs1)
+                         Nothing -> case s2 of Just(b, xs2) -> Just(b, xs2)
+                                               Nothing -> Nothing
+        where
+          s1 = runParser p1 $ xs
+          s2 = runParser p2 $ xs
+
+
+abEitherParser :: Parser Char
+abEitherParser = char 'a' AParser.<|> char 'b'
+
+
 
 -- (<|>) is intended to represent choice: that is, f1 <|> f2 represents a choice between f1 and f2.
 -- empty should be the identity element for (<|>), and often represents failure.
