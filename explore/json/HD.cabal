@@ -1,17 +1,17 @@
-Name:       HD
-Version:    1.1.1
-Cabal-Version:  >= 1.2
-License:    MIT
-License-File:   LICENSE
-Author:     Indika Piyasena
-Homepage:   http://hd.sourceforge.net/
-Category:   Testing
-Synopsis:   A unit testing framework for Haskell
+Name:               HD
+Version:            1.1.1
+Cabal-Version:      >= 1.2
+License:            MIT
+License-File:       LICENSE
+Author:             Indika Piyasena
+Homepage:           http://hd.sourceforge.net/
+Category:           Testing
+Synopsis:           Learning framework
 build-type:         Simple
 
 
 Library
-  Build-Depends:    base, aeson, aeson-pretty, hashable, bytestring, network, hslogger, edit-distance
+  Build-Depends:    base, aeson, aeson-pretty, hashable, bytestring, network, hslogger, edit-distance, hedis
 
 
 executable "hd"
@@ -25,3 +25,10 @@ executable "aesyon"
         base >= 4 && < 5
     default-language: Haskell2010
     main-is: Aesyon.hs
+
+executable "learn_hedis"
+    build-depends:
+        base >= 4 && < 5
+    default-language: Haskell2010
+    main-is: LearnHedis.hs
+
