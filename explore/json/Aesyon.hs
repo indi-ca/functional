@@ -95,9 +95,9 @@ decide_what (Just action) (Just nuggets)
 
 
 respond :: String -> IO String
-respond req = do
+respond request = do
     contents <- readFile "data/data.json"
-    let action = decode (pack req) :: Maybe Action
+    let action = decode (pack request) :: Maybe Action
         nuggets = decode (pack contents) :: Maybe [Nugget]
         filtered = decide_what action nuggets
         ret = unpack $ encode filtered
