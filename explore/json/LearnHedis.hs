@@ -17,19 +17,34 @@ main = do
 
     -- connects to localhost:6379
     conn <- connect defaultConnectInfo
-    runRedis conn $ do
-        set "yo" "yo"
-        ret <- incr "ia:count"
-        liftIO $ print (ret)
-        set "yo" "yo"
+    --runRedis conn $ do
+    --    set "yo" "yo"
+    --    ret <- incr "ia:count"
+    --    liftIO $ print (ret)
+    --    set "yo" "yo"
 
-    doRedisCreate conn
+    --doRedisCreate conn
+    ret <- doIt conn (pack "hello")
+    liftIO $ putStrLn (show ret)
 
     putStrLn "Done"
 
 
 render :: [Integer] -> String
 render (x:xs) = show x
+
+
+doIt :: Connection -> ByteString -> IO (Bool)
+doIt conn value = runRedis conn $ do
+    ret <- incr "ia:count"
+    case ret of (Left _) -> return False
+                (Right x) -> liftIO $ doRedisSet' conn (createKey x) value
+
+doRedisSet' :: Connection -> ByteString -> ByteString -> IO (Bool)
+doRedisSet' conn key value = runRedis conn $ do
+    ret <- set key value
+    case ret of (Left _) -> return False
+                (Right _) -> return True
 
 
 doRedisCreate :: Connection -> IO (Either Reply Status)
@@ -54,6 +69,8 @@ doRedisSet conn key value = runRedis conn $ do
     ret <- set key value
     return ret
 
+
+
 createKey :: Integer -> ByteString
 createKey x = pack ("ia:" ++ show x )
 
@@ -67,13 +84,3 @@ theThingThatCalls :: Connection -> IO (Bool)
 theThingThatCalls conn = do
     return True
 
--- What do I want?
--- I want to combine two IO functions
--- Call the second, if the first one succeeds, and return True
--- Or just return False
-
-
-
-
---makeKey :: Int -> String
---makeKey index = "ia" ++ ":" ++ index
