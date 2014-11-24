@@ -82,11 +82,20 @@ fetchIndexes' conn index = runRedis conn $ do
     case items of (Left _) -> return []
                   (Right x) -> return $ map unpack x
 
+-- What am I doing?
+-- I'm taking a list of indexes, and i'm returning a list of fragment contents
+
+-- what's the plan
+-- map the indeces, onto keys
+-- map the keys onto fetches
+-- but it's complicated, because each result of a fetch is an either
+
 -- Remember, there is an IO map
 --fetchItems :: Connection -> [String] -> IO ([String])
 
 
-
+fetchOneItem :: Connection -> ByteString -> IO (Either Reply Integer)
+fetchOneItem conn
 
 
 
