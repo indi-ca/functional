@@ -267,17 +267,17 @@ uppercase = Parser f
       | otherwise = Nothing
 
 
+
+
 eliminate :: Integer -> Char -> ()
 eliminate _ _ = ()
 
 intOrUppercase :: Parser ()
---intOrUppercase = (\_ -> ()) <$> (fmap (\_ -> ()) posInt) <|> (fmap (\_ -> ()) uppercase)
-
 intOrUppercase = (\_ -> ()) <$> (fmap (const ()) posInt) <|> (fmap (const ()) uppercase)
 
 
 
-
+--intOrUppercase = (\_ -> ()) <$> (fmap (\_ -> ()) posInt) <|> (fmap (\_ -> ()) uppercase)
 --intOrUppercase = eliminate <$> posInt AParser.<|> uppercase
 
 -- Implement a parser
@@ -293,10 +293,11 @@ intOrUppercase = (\_ -> ()) <$> (fmap (const ()) posInt) <|> (fmap (const ()) up
 
 
 
+b = char 'b'
+c = char 'c'
 
 
-
-
+bc = makePair <$> b <*> c
 
 
 
