@@ -13,47 +13,18 @@ import Data.Char (isUpper)
 --  1. Parsing repetitions
 ------------------------------------------------------------
 
+-- Hint: To parse one or more occurrences of p,
+-- run p once and then parse zero or more occurrences of p.
+-- To parse zero or more occurrences of p, try parsing one or more;
+-- if that fails, return the empty list.
+
+
 zeroOrMore :: Parser a -> Parser [a]
-zeroOrMore p = undefined
-
-
--- No Parser data constructor
-
--- I can see something flowing inside.
--- By simply combining two parsers together,
--- I'm expecting them both the satisfy, otherwise the entire thing
--- is Nothing
-
-
-
---makeList :: a -> a -> [a]
---makeList x y = [x, y]
-
-makeList :: a -> [a]
-makeList x = [x]
-
-
-
-zeroOrMore' :: Parser a -> Parser [a]
-zeroOrMore' p = makeList <$> p
-    where
-        bob str = runParser p str
-
---something = runParser (zeroOrMore' (satisfy isUpper)) "ABCdEfgH"
---something = runParser (zeroOrMore' (satisfy isUpper)) "abCdEfgH"
-something = runParser ((satisfy isUpper)) "AbCdEfgH"
-
-
-doSomething :: String -> Parser a -> [a]
-doSomething str p = case f of Nothing -> []
-                              Just(x, rem) -> x ++ doSomething rem p
-    where f = runParser (makeList <$> p) str
-
-
-
+zeroOrMore p = oneOrMore p <|> pure []
 
 oneOrMore :: Parser a -> Parser [a]
-oneOrMore p = undefined
+oneOrMore p = (:) <$> p <*> zeroOrMore p
+
 
 ------------------------------------------------------------
 --  2. Utilities
