@@ -293,11 +293,6 @@ intOrUppercase = (\_ -> ()) <$> (fmap (const ()) posInt) <|> (fmap (const ()) up
 
 
 
-b = char 'b'
-c = char 'c'
-
-
-bc = makePair <$> b <*> c
 
 
 

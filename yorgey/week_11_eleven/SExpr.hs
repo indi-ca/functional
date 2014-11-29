@@ -73,8 +73,23 @@ sexpr_4 = "(((lambda x (lambda y (plus x y))) 3) 5)"
 sexpr_5 = "(   lots  of   (  spaces   in  )  this ( one ) )"
 
 
+parseAtom :: Parser Atom
+parseAtom = (N <$> posInt) <|> (I <$> ident)
+
+parseCollection :: Parser [SExpr]
+parseCollection = (char '(' *> oneOrMore parseSExpr) <* char ')'
+
+parseSpaces :: Parser [Char]
+parseSpaces = zeroOrMore $ satisfy isSpace
+
 parseSExpr :: Parser SExpr
-parseSExpr = undefined
+parseSExpr = (parseSpaces *> ((A <$> parseAtom) <|> (Comb <$> parseCollection))) <* parseSpaces
+
+
+
+
+
+
 
 
 
@@ -84,16 +99,40 @@ parseBranch = oneOrMore (satisfy isAlpha <|> char '-') *> posInt
 
 example = "ipiyasena-multi-tenant-support-7050 13030:98fe3563246c (inactive)"
 
+-- starts with a literal
+-- looks like a timestamp
+-- the timestamp has milliseconds
+-- then some sort of UUID
+-- then something unique
+-- finally a .request
+icap_example = "icap_1353374505.47060_b9cf50e33a564e538f80180a82b420dd_HVACFz.request"
 
 
+-- TODO: How can I make parsing strings better
+parseLiteral :: Parser String
+parseLiteral = (\x y w z -> [x, y, w, z]) <$> char 'i' <*> char 'c' <*> char 'a' <*> char 'p'
+
+parseTimestamp :: Parser String
+parseTimestamp = (\x y z -> show x ++ [y] ++ show z) <$> posInt <*> (char '.') <*> posInt
+
+-- TODO: How do I get 32 chars?
+parseHash :: Parser String
+parseHash = oneOrMore (satisfy isAlphaNum)
+
+parseUnique :: Parser String
+parseUnique = oneOrMore (satisfy isAlphaNum)
+
+-- TODO: How do I discard the first?
+parseICAP :: Parser ICAP
+parseICAP = ICAP <$> parseLiteral <* char '_' <*> parseTimestamp <* char '_' <*> parseHash <* char '_' <*> parseUnique
 
 
+type Timestamp = String
+type Hash = String
+type Unique = String
 
-
-
-
-
-
+data ICAP = ICAP String Timestamp Hash Unique
+    deriving Show
 
 
 
