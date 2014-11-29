@@ -7,7 +7,7 @@ module SExpr where
 import AParser
 import Control.Applicative
 
-import Data.Char (isUpper)
+import Data.Char (isSpace, isAlpha, isAlphaNum)
 
 ------------------------------------------------------------
 --  1. Parsing repetitions
@@ -30,11 +30,21 @@ oneOrMore p = (:) <$> p <*> zeroOrMore p
 --  2. Utilities
 ------------------------------------------------------------
 
+-- First, spaces should parse a consecutive list of zero or more whitespace characters
+-- (use the isSpace function from the standard Data.Char module).
+
 spaces :: Parser String
-spaces = undefined
+spaces = zeroOrMore (satisfy isSpace)
+
+-- Next, ident should parse an identifier,
+-- which for our purposes will be an alphabetic character (use isAlpha) followed by zero or more alphanumeric characters (use isAlphaNum).
+-- In other words, an identifier can be any nonempty sequence of letters and digits,
+-- except that it may not start with a digit.
 
 ident :: Parser String
-ident = undefined
+ident = (:) <$> (satisfy isAlpha) <*> zeroOrMore (satisfy isAlphaNum)
+
+
 
 ------------------------------------------------------------
 --  3. Parsing S-expressions
