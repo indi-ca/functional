@@ -230,12 +230,7 @@ intPair = makeIntPair <$> posInt <*> char ' ' <*> posInt
 -- Hint: there is already an Alternative instance for Maybe which you may find useful.
 
 
-class Applicative f => Alternative f where
-  empty :: f a
-  (<|>) :: f a -> f a -> f a
-
-
-instance AParser.Alternative Parser where
+instance Alternative Parser where
 
   empty = Parser (const Nothing)
 
@@ -250,7 +245,7 @@ instance AParser.Alternative Parser where
 
 
 abEitherParser :: Parser Char
-abEitherParser = char 'a' AParser.<|> char 'b'
+abEitherParser = char 'a' <|> char 'b'
 
 
 
@@ -272,17 +267,17 @@ uppercase = Parser f
       | otherwise = Nothing
 
 
+
+
 eliminate :: Integer -> Char -> ()
 eliminate _ _ = ()
 
 intOrUppercase :: Parser ()
---intOrUppercase = (\_ -> ()) <$> (fmap (\_ -> ()) posInt) AParser.<|> (fmap (\_ -> ()) uppercase)
-
-intOrUppercase = (\_ -> ()) <$> (fmap (const ()) posInt) AParser.<|> (fmap (const ()) uppercase)
+intOrUppercase = (\_ -> ()) <$> (fmap (const ()) posInt) <|> (fmap (const ()) uppercase)
 
 
 
-
+--intOrUppercase = (\_ -> ()) <$> (fmap (\_ -> ()) posInt) <|> (fmap (\_ -> ()) uppercase)
 --intOrUppercase = eliminate <$> posInt AParser.<|> uppercase
 
 -- Implement a parser
@@ -298,10 +293,11 @@ intOrUppercase = (\_ -> ()) <$> (fmap (const ()) posInt) AParser.<|> (fmap (cons
 
 
 
+b = char 'b'
+c = char 'c'
 
 
-
-
+bc = makePair <$> b <*> c
 
 
 
