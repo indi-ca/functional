@@ -63,3 +63,54 @@ data Atom = N Integer | I Ident
 data SExpr = A Atom
            | Comb [SExpr]
   deriving Show
+
+
+
+sexpr_1 = "5"
+sexpr_2 = "foo3"
+sexpr_3 = "(bar (foo) 3 5 874)"
+sexpr_4 = "(((lambda x (lambda y (plus x y))) 3) 5)"
+sexpr_5 = "(   lots  of   (  spaces   in  )  this ( one ) )"
+
+
+parseSExpr :: Parser SExpr
+parseSExpr = undefined
+
+
+
+-- Being practical
+parseBranch :: Parser Integer
+parseBranch = oneOrMore (satisfy isAlpha <|> char '-') *> posInt
+
+example = "ipiyasena-multi-tenant-support-7050 13030:98fe3563246c (inactive)"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
