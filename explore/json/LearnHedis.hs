@@ -83,7 +83,9 @@ fetchIndexes' conn index = runRedis conn $ do
                   (Right x) -> return $ map unpack x
 
 -- Remember, there is an IO map
---fetchItems :: Connection -> [String] -> IO ([String])
+-- This is a list of indexes
+fetchItems :: Connection -> [String] -> IO ([String])
+fetchItems conn indexes = runRedis conn $ do
 
 
 
