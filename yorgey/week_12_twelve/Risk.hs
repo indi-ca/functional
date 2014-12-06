@@ -82,21 +82,20 @@ sortedDice :: (RandomGen g) => Int -> Rand g [Int]
 sortedDice n = fmap sort results
     where results = dice n
 
-pairOff :: [Int] -> [Int] -> [Bool]
-pairOff x y = fmap (uncurry (>)) $ zip x y
-
--- All the True results are the attackers that won
-carnage :: [Int] -> [Int] -> Battlefield
-carnage x y = Battlefield att def
-    where result = pairOff x y
-          att = length (filter (\x -> x == True) result)
-          def = length (filter (\x -> x == False) result)
-
-
 twoRandomSets :: (RandomGen g) => Int -> Int -> Rand g ([Int], [Int])
 twoRandomSets x y = (sortedDice x) >>= \i1 ->
                     (sortedDice y) >>= \i2 ->
                     return (i1, i2)
+
+
+-- All the True results are the attackers that won
+carnage :: [Int] -> [Int] -> Battlefield
+carnage x y = Battlefield att def
+    where result = fmap (uncurry (>)) $ zip x y
+          att = length (filter (\x -> x == True) result)
+          def = length (filter (\x -> x == False) result)
+
+
 
 battle :: Battlefield -> Rand StdGen Battlefield
 battle bf = fmap (uncurry carnage) (twoRandomSets (attackers bf) (defenders bf))
