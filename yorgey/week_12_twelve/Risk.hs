@@ -135,21 +135,11 @@ sortedDice n = fmap sort results
     where results = dice n
 
 pairOff :: [Int] -> [Int] -> [Bool]
-pairOff x y = fmap (\t -> fst t > snd t) $ zip x y
-
+pairOff x y = fmap (uncurry (>)) $ zip x y
 
 simple :: [Int] -> [Bool]
 simple xs = fmap (\x -> x > 3) xs
 
-
-microBattle :: (RandomGen g) => Rand g [Bool]
-microBattle = fmap simple set_one
-    where set_one = sortedDice 3
-          set_two = sortedDice 2
-
-
-twoRandomSets :: (RandomGen g) => Rand g ([Int], [Int])
-twoRandomSets = (sortedDice 2) >>= (sortedDice 3)
 
 --microBattle :: (RandomGen g) => Rand g [Bool]
 --microBattle = fmap simple set_one
@@ -157,8 +147,19 @@ twoRandomSets = (sortedDice 2) >>= (sortedDice 3)
 --          set_two = sortedDice 2
 
 
+twoRandomSets :: (RandomGen g) => Int -> Int -> Rand g ([Int], [Int])
+twoRandomSets x y = (sortedDice x) >>= \i1 ->
+                    (sortedDice y) >>= \i2 ->
+                    return (i1, i2)
+
+microBattle :: (RandomGen g) => Rand g [Bool]
+microBattle = fmap (uncurry pairOff) (twoRandomSets 2 3)
+
+
+
 --doit = evalRandIO sortedDice
-doit = pairOff [6, 4, 1] [5, 5]
+--doit = pairOff [6, 4, 1] [5, 5]
+doit = evalRandIO microBattle
 
 
 
