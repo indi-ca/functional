@@ -76,59 +76,7 @@ foo x = return x
 
 
 
--- therefore, I can call return on it
 
---bob ::  Int
---bob = return die_roll'
-
--- I can also bind them together
---something = die_roll' (>>=) die_roll'
-
-
-
-
-
-
-
--- What are the rules of the battle?
--- There is the attacker, and there is the defender
-
---instance Monad Rand where
---    --return
---    ma (>>=) mb =
-
--- What does it mean to derive something
-
-
-
--- Cannot do this
---data Apple a = Apple Int a
---    deriving (Monad)
-
-
-roll_one :: Rand StdGen Int
-roll_one = getRandomR (1, 6)
-
-roll_two :: Rand StdGen Int
-roll_two = getRandomR (1, 6)
-
-
-bob :: Int -> Bool
-bob x
-    | x < 3 = True
-    | otherwise = False
-
-something :: IO Int -> IO Bool
-something roll = fmap bob roll
-
-
-yo = something (evalRandIO roll_one)
-
-
-
-
-
---dice :: (RandomGen g) => Int -> Rand g [Int]
 
 sortedDice :: (RandomGen g) => Int -> Rand g [Int]
 sortedDice n = fmap sort results
@@ -137,14 +85,12 @@ sortedDice n = fmap sort results
 pairOff :: [Int] -> [Int] -> [Bool]
 pairOff x y = fmap (uncurry (>)) $ zip x y
 
-simple :: [Int] -> [Bool]
-simple xs = fmap (\x -> x > 3) xs
-
-
---microBattle :: (RandomGen g) => Rand g [Bool]
---microBattle = fmap simple set_one
---    where set_one = sortedDice 3
---          set_two = sortedDice 2
+-- All the True results are the attackers that won
+carnage :: [Int] -> [Int] -> Battlefield
+carnage x y = Battlefield att def
+    where result = pairOff x y
+          att = length (filter (\x -> x == True) result)
+          def = length (filter (\x -> x == False) result)
 
 
 twoRandomSets :: (RandomGen g) => Int -> Int -> Rand g ([Int], [Int])
@@ -152,16 +98,19 @@ twoRandomSets x y = (sortedDice x) >>= \i1 ->
                     (sortedDice y) >>= \i2 ->
                     return (i1, i2)
 
-microBattle :: (RandomGen g) => Rand g [Bool]
-microBattle = fmap (uncurry pairOff) (twoRandomSets 2 3)
+battle :: Battlefield -> Rand StdGen Battlefield
+battle bf = fmap (uncurry carnage) (twoRandomSets (attackers bf) (defenders bf))
 
 
 
---doit = evalRandIO sortedDice
---doit = pairOff [6, 4, 1] [5, 5]
-doit = evalRandIO microBattle
 
 
+battle_field = Battlefield 3 2
+doit = evalRandIO $ battle battle_field
+
+
+render :: IO Battlefield -> IO Int
+render bf = fmap attackers bf
 
 
 
