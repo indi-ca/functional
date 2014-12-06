@@ -3,6 +3,8 @@
 module Risk where
 
 import Control.Monad.Random
+import Data.List(sort)
+
 
 ------------------------------------------------------------
 -- Die values
@@ -34,6 +36,7 @@ dice n = sequence (replicate n die')
 --To extract a value from the Rand monad, we can can use evalRandIO.
 
 main = do
+  values <- evalRandIO (dice 2)
   values <- evalRandIO (dice 2)
   putStrLn (show values)
 
@@ -101,6 +104,68 @@ foo x = return x
 -- Cannot do this
 --data Apple a = Apple Int a
 --    deriving (Monad)
+
+
+roll_one :: Rand StdGen Int
+roll_one = getRandomR (1, 6)
+
+roll_two :: Rand StdGen Int
+roll_two = getRandomR (1, 6)
+
+
+bob :: Int -> Bool
+bob x
+    | x < 3 = True
+    | otherwise = False
+
+something :: IO Int -> IO Bool
+something roll = fmap bob roll
+
+
+yo = something (evalRandIO roll_one)
+
+
+
+
+
+--dice :: (RandomGen g) => Int -> Rand g [Int]
+
+sortedDice :: (RandomGen g) => Int -> Rand g [Int]
+sortedDice n = fmap sort results
+    where results = dice n
+
+pairOff :: [Int] -> [Int] -> [Bool]
+pairOff x y = fmap (\t -> fst t > snd t) $ zip x y
+
+
+simple :: [Int] -> [Bool]
+simple xs = fmap (\x -> x > 3) xs
+
+
+microBattle :: (RandomGen g) => Rand g [Bool]
+microBattle = fmap simple set_one
+    where set_one = sortedDice 3
+          set_two = sortedDice 2
+
+
+twoRandomSets :: (RandomGen g) => Rand g ([Int], [Int])
+twoRandomSets = (sortedDice 2) >>= (sortedDice 3)
+
+--microBattle :: (RandomGen g) => Rand g [Bool]
+--microBattle = fmap simple set_one
+--    where set_one = sortedDice 3
+--          set_two = sortedDice 2
+
+
+--doit = evalRandIO sortedDice
+doit = pairOff [6, 4, 1] [5, 5]
+
+
+
+
+
+
+
 
 
 
