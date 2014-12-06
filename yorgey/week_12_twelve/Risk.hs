@@ -52,11 +52,40 @@ data Battlefield = Battlefield { attackers :: Army, defenders :: Army }
 
 -- EXCERCISE 2
 
--- write a function of this type
+sortedDice :: (RandomGen g) => Int -> Rand g [Int]
+sortedDice n = fmap sort results
+    where results = dice n
 
--- What does this do?
--- Which creates the result of a random battle
---battle :: Battlefield -> Rand StdGen Battlefield
+twoRandomSets :: (RandomGen g) => Int -> Int -> Rand g ([Int], [Int])
+twoRandomSets x y = (sortedDice x) >>= \i1 ->
+                    (sortedDice y) >>= \i2 ->
+                    return (i1, i2)
+
+carnage :: [Int] -> [Int] -> Battlefield
+carnage x y = Battlefield att def
+    where result = fmap (uncurry (>)) $ zip x y
+          att = length (filter (\x -> x == True) result)
+          def = length (filter (\x -> x == False) result)
+
+battle :: Battlefield -> Rand StdGen Battlefield
+battle bf = fmap (uncurry carnage) (twoRandomSets (attackers bf) (defenders bf))
+
+
+
+
+
+
+
+
+battle_field = Battlefield 3 2
+doit = evalRandIO $ battle battle_field
+
+
+render :: IO Battlefield -> IO Int
+render bf = fmap attackers bf
+
+
+
 
 
 -- Now I know, how to create the result of a die roll
@@ -73,47 +102,6 @@ die_roll' = getRandomR (1, 6)
 -- Rand is, apparently a Monad,
 foo :: Int -> Rand StdGen Int
 foo x = return x
-
-
-
-
-
-sortedDice :: (RandomGen g) => Int -> Rand g [Int]
-sortedDice n = fmap sort results
-    where results = dice n
-
-twoRandomSets :: (RandomGen g) => Int -> Int -> Rand g ([Int], [Int])
-twoRandomSets x y = (sortedDice x) >>= \i1 ->
-                    (sortedDice y) >>= \i2 ->
-                    return (i1, i2)
-
-
--- All the True results are the attackers that won
-carnage :: [Int] -> [Int] -> Battlefield
-carnage x y = Battlefield att def
-    where result = fmap (uncurry (>)) $ zip x y
-          att = length (filter (\x -> x == True) result)
-          def = length (filter (\x -> x == False) result)
-
-
-
-battle :: Battlefield -> Rand StdGen Battlefield
-battle bf = fmap (uncurry carnage) (twoRandomSets (attackers bf) (defenders bf))
-
-
-
-
-
-battle_field = Battlefield 3 2
-doit = evalRandIO $ battle battle_field
-
-
-render :: IO Battlefield -> IO Int
-render bf = fmap attackers bf
-
-
-
-
 
 
 
