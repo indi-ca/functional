@@ -141,50 +141,11 @@ battle bf
 
 
 
-
-
---joinBattleField' x y = Battlefield (attackers x + attackers y) (defenders x + defenders y)
-
-
-
 -- I have to do recursion with a monad
-
--- Battlefield is just the type
--- the instance we have a monad for is
--- is the Rand StdGen
-
---instance Monad Battlefield where
---    return x =
-
---instance Monad Rand StdGen Battlefield
---    return
-
--- I might have to do the replicate
---invade :: Battlefield -> Rand StdGen Battlefield
---invade bf
---    | defenders bf == 0 = return bf
---    | attackers bf < 2 = return bf
---    | otherwise = joinBattleField (invade (makeBattleField bf)) (remaining bf)
---    where result = battle (makeBattleField bf)
-
-
-next' :: Battlefield -> Rand StdGen Battlefield
-next' bf
-    | defenders bf == 0 = return bf
-    | attackers bf < 2 = return bf
-    | otherwise = joinBattleField' (remaining bf) (battle (makeBattleField bf))
-
-something :: Rand StdGen Battlefield -> Rand StdGen Battlefield
-something bf = bf >>= next'
-
---invade :: Battlefield -> Rand StdGen Battlefield
---invade bf
---    | defenders bf == 0 = return bf
---    | attackers bf < 2 = return bf
---    | otherwise = joinBattleField' (remaining bf) (invade (makeBattleField bf))
+-- So what's the stop condition?
 
 invade :: Battlefield -> Rand StdGen Battlefield
-invade bf = something (battle bf)
+invade bf = battle bf >>= battle >>= battle >>= battle >>= battle
 
 
 
@@ -204,7 +165,7 @@ render' bf = "Attackers: " ++ (show $ attackers bf) ++ " Defenders: " ++ (show $
 render :: IO Battlefield -> IO String
 render bf = fmap render' bf
 
-doit = render (evalRandIO $ battle battle_field)
+doit = render (evalRandIO $ invade battle_field)
 
 
 
