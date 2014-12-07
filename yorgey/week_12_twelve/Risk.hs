@@ -2,7 +2,7 @@
 
 module Risk where
 
-import Control.Monad(liftM)
+import Control.Monad(replicateM)
 import Control.Monad.Random
 import Data.List(sort)
 
@@ -36,10 +36,6 @@ dice :: (RandomGen g) => Int -> Rand g [Int]
 dice n = sequence (replicate n die')
 --To extract a value from the Rand monad, we can can use evalRandIO.
 
-main = do
-  values <- evalRandIO (dice 2)
-  values <- evalRandIO (dice 2)
-  putStrLn (show values)
 
 
 ------------------------------------------------------------
@@ -145,7 +141,34 @@ invade bf
 
 
 
-battle_field = Battlefield 40 10
+
+
+
+-- EXCERCISE 4
+-- successProb :: Battlefield -> Rand StdGen Double
+
+-- which runs invade 1000 times,
+-- and uses the results to compute a Double between 0 and 1
+-- representing the estimated probability that the attacking army will completely
+-- destroy the defending army.
+-- For example, if the defending army is destroyed in 300 of the 1000 simulations
+-- (but the attacking army is reduced to 1 unit in the other 700),
+-- successProb should return 0.3.
+
+successProb_ :: [Battlefield] -> Double
+successProb_ xs = (fromIntegral num_wins) / (fromIntegral $ length xs)
+    where num_wins = length (filter (\x -> defenders x == 0) xs)
+
+successProb :: Battlefield -> Rand StdGen Double
+successProb bf = fmap successProb_ collection
+    where collection = replicateM 1000 (invade bf)
+
+
+
+
+
+-- DEBUGGING
+battle_field = Battlefield 5 5
 
 
 render' :: Battlefield -> String
@@ -154,26 +177,8 @@ render' bf = "Attackers: " ++ (show $ attackers bf) ++ " Defenders: " ++ (show $
 render :: IO Battlefield -> IO String
 render bf = fmap render' bf
 
-doit = render (evalRandIO $ invade battle_field)
+doit = evalRandIO (successProb battle_field)
 
-
-
-
-
--- Now I know, how to create the result of a die roll
-
-
-die_roll :: (RandomGen g) => Rand g Int
-die_roll = getRandomR (1, 6)
-
-die_roll' :: Rand StdGen Int
-die_roll' = getRandomR (1, 6)
-
-
-
--- Rand is, apparently a Monad,
-foo :: Int -> Rand StdGen Int
-foo x = return x
 
 
 
