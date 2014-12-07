@@ -72,17 +72,115 @@ battle bf = fmap (uncurry carnage) (twoRandomSets (attackers bf) (defenders bf))
 
 
 
+-- EXCERCISE 3
+
+
+-- Implement this
+-- Simulates an entire invasion attempt
+-- repeated calls to battle until there are no defenders remainder
+-- or fewer that two attackers
+
+-- Now I have to apply the rules of results
+
+-- attacker may attack with three units
+-- but has to leave one behind
+-- but not more than three
+
+
+
+-- defender may defend with up to two, or one if that is all they have
+
+
+getAttackers :: Army -> (Army, Army)
+getAttackers x
+    | x > 3     = (x - 3, 3)
+    | x == 3    = (x - 2, 2)
+    | otherwise = (x - 1, 1)
+
+
+getDefenders :: Army -> (Army, Army)
+getDefenders x
+    | x > 2     = (x - 2, 2)
+    | x == 2    = (x - 2, 2)
+    | otherwise = (x - 1, 1)
+
+makeBattleField :: Battlefield -> Battlefield
+makeBattleField bf = Battlefield (snd $ getAttackers (attackers bf)) (snd $ getDefenders (defenders bf))
+
+remaining :: Battlefield -> Battlefield
+remaining bf = Battlefield (fst $ getAttackers (attackers bf)) (fst $ getDefenders (defenders bf))
+
+joinBattleField :: Battlefield -> Battlefield -> Battlefield
+joinBattleField x y = Battlefield (attackers x + attackers y) (defenders x + defenders y)
 
 
 
 
+joinBattleField' :: Battlefield -> Rand StdGen Battlefield -> Rand StdGen Battlefield
+joinBattleField' x y = fmap (joinBattleField x) y
 
-battle_field = Battlefield 3 2
-doit = evalRandIO $ battle battle_field
+--joinBattleField' x y = Battlefield (attackers x + attackers y) (defenders x + defenders y)
 
 
-render :: IO Battlefield -> IO Int
-render bf = fmap attackers bf
+
+-- I have to do recursion with a monad
+
+-- Battlefield is just the type
+-- the instance we have a monad for is
+-- is the Rand StdGen
+
+--instance Monad Battlefield where
+--    return x =
+
+--instance Monad Rand StdGen Battlefield
+--    return
+
+-- I might have to do the replicate
+--invade :: Battlefield -> Rand StdGen Battlefield
+--invade bf
+--    | defenders bf == 0 = return bf
+--    | attackers bf < 2 = return bf
+--    | otherwise = joinBattleField (invade (makeBattleField bf)) (remaining bf)
+--    where result = battle (makeBattleField bf)
+
+
+next' :: Battlefield -> Rand StdGen Battlefield
+next' bf
+    | defenders bf == 0 = return bf
+    | attackers bf < 2 = return bf
+    | otherwise = joinBattleField' (remaining bf) (battle (makeBattleField bf))
+
+something :: Rand StdGen Battlefield -> Rand StdGen Battlefield
+something bf = bf >>= next'
+
+--invade :: Battlefield -> Rand StdGen Battlefield
+--invade bf
+--    | defenders bf == 0 = return bf
+--    | attackers bf < 2 = return bf
+--    | otherwise = joinBattleField' (remaining bf) (invade (makeBattleField bf))
+
+invade :: Battlefield -> Rand StdGen Battlefield
+invade bf = something (battle bf)
+
+
+
+-- TODO:
+-- I think I need to do a diff of the battlefield
+-- pieces won and pieces lost
+-- I really should be using Monoid as well
+
+
+
+battle_field = Battlefield 20 10
+
+
+render' :: Battlefield -> String
+render' bf = "Attackers: " ++ (show $ attackers bf) ++ " Defenders: " ++ (show $ defenders bf)
+
+render :: IO Battlefield -> IO String
+render bf = fmap render' bf
+
+doit = render (evalRandIO $ invade battle_field)
 
 
 
