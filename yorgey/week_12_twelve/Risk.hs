@@ -167,6 +167,13 @@ successProb bf = fmap successProb_ collection
 
 
 
+-- EXCERCISE 5
+--exactSuccessProb :: Battlefield -> Double
+
+-- which computes the exact probability of success based on principles of probability,
+-- without running any simulations.
+
+
 -- DEBUGGING
 battle_field = Battlefield 5 5
 
