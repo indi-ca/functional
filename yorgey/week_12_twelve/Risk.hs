@@ -61,14 +61,63 @@ twoRandomSets x y = (sortedDice x) >>= \i1 ->
                     (sortedDice y) >>= \i2 ->
                     return (i1, i2)
 
+zipWithTail :: a -> [a] -> [a] -> [(a, a)]
+zipWithTail mempty xs ys
+    | length xs > length ys = zip xs (ys ++ padded)
+    | length xs < length ys = zip (xs ++ padded) ys
+    | otherwise             = zip xs ys
+    where
+        diff = length xs - length ys
+        padded = take diff $ repeat mempty
+
 carnage :: [Int] -> [Int] -> Battlefield
 carnage x y = Battlefield att def
-    where result = fmap (uncurry (>)) $ zip x y
+    where result = fmap (uncurry (>)) $ zipWithTail 0 x y
           att = length (filter (\x -> x == True) result)
           def = length (filter (\x -> x == False) result)
 
+
+a = [1, 1, 1] :: [Int]
+b = [5, 5] :: [Int]
+
+-- This take a mini battlefield
+battle' :: Battlefield -> Rand StdGen Battlefield
+battle' x = fmap (uncurry carnage) (twoRandomSets (attackers x) (defenders x))
+
+
+getAttackers :: Army -> (Army, Army)
+getAttackers x
+    | x > 3     = (x - 3, 3)
+    | x == 3    = (x - 2, 2)
+    | otherwise = (x - 1, 1)
+
+
+getDefenders :: Army -> (Army, Army)
+getDefenders x
+    | x > 2     = (x - 2, 2)
+    | x == 2    = (x - 2, 2)
+    | otherwise = (x - 1, 1)
+
+makeBattleField :: Battlefield -> Battlefield
+makeBattleField bf = Battlefield (snd $ getAttackers (attackers bf)) (snd $ getDefenders (defenders bf))
+
+remaining :: Battlefield -> Battlefield
+remaining bf = Battlefield (fst $ getAttackers (attackers bf)) (fst $ getDefenders (defenders bf))
+
+
+joinBattleField :: Battlefield -> Battlefield -> Battlefield
+joinBattleField x y = Battlefield (attackers x + attackers y) (defenders x + defenders y)
+
+joinBattleField' :: Battlefield -> Rand StdGen Battlefield -> Rand StdGen Battlefield
+joinBattleField' x y = fmap (joinBattleField x) y
+
+-- This one decides how many to attacke and defend with
 battle :: Battlefield -> Rand StdGen Battlefield
-battle bf = fmap (uncurry carnage) (twoRandomSets (attackers bf) (defenders bf))
+battle bf
+    | defenders bf == 0 = return bf
+    | attackers bf < 2 = return bf
+    | otherwise = joinBattleField' (remaining bf) (battle' (makeBattleField bf))
+
 
 
 
@@ -91,33 +140,8 @@ battle bf = fmap (uncurry carnage) (twoRandomSets (attackers bf) (defenders bf))
 -- defender may defend with up to two, or one if that is all they have
 
 
-getAttackers :: Army -> (Army, Army)
-getAttackers x
-    | x > 3     = (x - 3, 3)
-    | x == 3    = (x - 2, 2)
-    | otherwise = (x - 1, 1)
 
 
-getDefenders :: Army -> (Army, Army)
-getDefenders x
-    | x > 2     = (x - 2, 2)
-    | x == 2    = (x - 2, 2)
-    | otherwise = (x - 1, 1)
-
-makeBattleField :: Battlefield -> Battlefield
-makeBattleField bf = Battlefield (snd $ getAttackers (attackers bf)) (snd $ getDefenders (defenders bf))
-
-remaining :: Battlefield -> Battlefield
-remaining bf = Battlefield (fst $ getAttackers (attackers bf)) (fst $ getDefenders (defenders bf))
-
-joinBattleField :: Battlefield -> Battlefield -> Battlefield
-joinBattleField x y = Battlefield (attackers x + attackers y) (defenders x + defenders y)
-
-
-
-
-joinBattleField' :: Battlefield -> Rand StdGen Battlefield -> Rand StdGen Battlefield
-joinBattleField' x y = fmap (joinBattleField x) y
 
 --joinBattleField' x y = Battlefield (attackers x + attackers y) (defenders x + defenders y)
 
@@ -171,7 +195,7 @@ invade bf = something (battle bf)
 
 
 
-battle_field = Battlefield 20 10
+battle_field = Battlefield 4 10
 
 
 render' :: Battlefield -> String
@@ -180,7 +204,7 @@ render' bf = "Attackers: " ++ (show $ attackers bf) ++ " Defenders: " ++ (show $
 render :: IO Battlefield -> IO String
 render bf = fmap render' bf
 
-doit = render (evalRandIO $ invade battle_field)
+doit = render (evalRandIO $ battle battle_field)
 
 
 
