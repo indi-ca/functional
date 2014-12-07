@@ -2,6 +2,7 @@
 
 module Risk where
 
+import Control.Monad(liftM)
 import Control.Monad.Random
 import Data.List(sort)
 
@@ -136,27 +137,15 @@ battle bf
 -- but not more than three
 
 
-
--- defender may defend with up to two, or one if that is all they have
-
-
-
--- I have to do recursion with a monad
--- So what's the stop condition?
-
 invade :: Battlefield -> Rand StdGen Battlefield
-invade bf = battle bf >>= battle >>= battle >>= battle >>= battle
+invade bf
+    | defenders bf == 0 = return bf
+    | attackers bf < 2 = return bf
+    | otherwise = (battle bf) >>= invade
 
 
 
--- TODO:
--- I think I need to do a diff of the battlefield
--- pieces won and pieces lost
--- I really should be using Monoid as well
-
-
-
-battle_field = Battlefield 4 10
+battle_field = Battlefield 40 10
 
 
 render' :: Battlefield -> String
