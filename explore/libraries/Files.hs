@@ -1,13 +1,21 @@
 module Files where
 
 import Control.Applicative
+
+--import Data.Attoparsec
+--import Text.ParserCombinators.Parsec
+
 import Data.List(sort, sortBy)
 
 import System.IO(FilePath)
-import System.Directory(getDirectoryContents)
+import System.Directory(getDirectoryContents, getModificationTime)
 import System.FilePath.Posix(joinPath)
 
+import Data.Time.Clock(UTCTime)
+
 data Pattern = BasicPattern String
+
+
 
 
 initialPath = "/Users/indika/Movies"
@@ -20,6 +28,8 @@ main = do
     mapM_ putStrLn (match basicPattern all_files)
 
 
+-- If I were to use a glob like query, then I would
+-- have to work on my parser module
 
 -- match a set of files based on a pattern
 match :: Pattern -> [FilePath] -> [FilePath]
@@ -45,3 +55,70 @@ sortAscending = sort
 
 sortDescending :: [FilePath] -> [FilePath]
 sortDescending = sortBy (flip compare)
+
+
+-- This takes an AbsoluteFilePath
+-- Should I create a new type?
+
+-- This involves two IO operations
+-- I need to sequence two IO operations
+-- But is it really dependant on the outcome of the first
+-- because it is just going to be a map
+
+--lastModified :: [FilePath] -> IO [FilePath]
+--lastModified fs =
+
+
+aFile = "/Users/indika/users.py"
+
+doSomething :: FilePath -> IO UTCTime
+doSomething fp = getModificationTime fp
+
+
+--g :: [FilePath] -> IO [FilePath]
+--g fs = fmap (sortBy compare) modified_fs
+--    where modified_fs = map getModificationTime fs -- IO UTCTime
+
+
+-- I have two UTCTimes in an IO Context
+--
+compareTuples :: (FilePath, IO UTCTime) -> (FilePath, IO UTCTime) -> IO Ordering
+compareTuples (_, x) (_, y) = pure compare <*> x <*> y
+
+-- I have to do the sort without the IO Context
+compareFiles :: (FilePath, UTCTime) -> (FilePath, UTCTime) -> Ordering
+compareFiles (_, x) (_, y) = compare x y
+
+compare' :: (String, Int) -> (String, Int) -> Ordering
+compare' (_, x) (_, y) = compare x y
+
+
+
+tuples = [("bob", 400), ("jane", 6), ("namehunt", 23)]
+doIt = sortBy compare' tuples
+
+--withContext tuples = pure sortBy <*> (compareTuples tuples)
+
+
+
+
+--something :: FilePath -> (FilePath,  UTCTime)
+--something fp = (fp, getModificationTime fp)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
