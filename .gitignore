@@ -1,7 +1,12 @@
+### Haskell Project
+.DS_Store
 *.hi
 *.o
+.cabal-sandbox
+cabal.sandbox.config
+
+
 
 explore/hello
-
 
 nicta-course
