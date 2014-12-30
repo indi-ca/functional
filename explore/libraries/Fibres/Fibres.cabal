@@ -11,7 +11,7 @@ build-type:         Simple
 
 
 Library
-  Build-Depends:    base, HTTP, directory, filepath, hedis
+  Build-Depends:    base, HTTP, directory, filepath, bytestring, hedis, transformers
 
 
 executable "fibres"
