@@ -12,12 +12,11 @@ import System.Directory(getDirectoryContents, getModificationTime)
 import System.FilePath.Posix(joinPath)
 
 import Data.Time.Clock(UTCTime)
-import Data.Attoparsec(Parser, parseOnly)
+--import Data.Attoparsec(Parser, parseOnly)
 
 import Parsing
 
 data Pattern a = BasicPattern String | Parser a
---data Pattern a = BasicPattern String | Parser a
 --data Pattern = BasicPattern String
 
 
@@ -25,8 +24,8 @@ data Bob = Int | String
 
 
 
-initialPath = "/Users/indika/Movies"
-basicPattern = BasicPattern "The"
+initialPath = "/Users/indika"
+basicPattern = BasicPattern "lek"
 
 
 main :: IO ()
@@ -35,13 +34,29 @@ main = do
     mapM_ putStrLn (match basicPattern all_files)
 
 
+--again = match basicPattern (getDirectoryContents initialPath)
+
+-- No bind is required. just fmap
+--theBind :: IO [FilePath] -> IO [UTCTime]
+
+
+first :: FilePath -> IO [FilePath]
+first root = getDirectoryContents root
+
+-- Is this even possible [?]
+--second :: IO [FilePath] -> IO [UTCTime]
+--second xs = (>>=) xs (fmap getModificationTime)
+
+
+
+
 -- If I were to use a glob like query, then I would
 -- have to work on my parser module
 
 -- match a set of files based on a pattern
 match :: Pattern a -> [FilePath] -> [FilePath]
 match (BasicPattern xs) = filter (startsWith xs)
-match (Parser a) = filter (parseOnly a)
+--match (Parser a) = filter (parseOnly a)
 
 startsWith :: Eq a => [a] -> [a] -> Bool
 startsWith [] _ = True

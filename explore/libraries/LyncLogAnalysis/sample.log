@@ -1,0 +1,47 @@
+2014-12-23 13:41:36,630 mslync.db: XD Processing since times: [2013-07-22 01:56:21.860000,2013-07-24 04:50:18.560000,2014-10-17 01:58:06.613000]
+2014-12-23 13:41:38,239 mslync.db: XD Number of two way messages found: [100] till [2013-07-22 02:46:00.510000]
+2014-12-23 13:41:38,316 mslync.db: XD Number of conference messages found: [100] till [2013-07-24 04:50:52.067000]
+2014-12-23 13:41:38,895 mslync.db: XD Number of attachments found: [0] till [2014-10-17 01:58:06.613000]
+2014-12-23 13:41:38,895 mslync.db: XI Attempting to upload 200 records.
+2014-12-23 13:41:40,615 mslync.db: XI 200 records uploaded successfully.
+2014-12-23 13:41:40,615 mslync.db: XD Processing since times: [2013-07-22 02:46:00.510000,2013-07-24 04:50:52.067000,2014-10-17 01:58:06.613000]
+2014-12-23 13:41:42,334 mslync.db: XD Number of two way messages found: [100] till [2013-07-22 04:59:02.737000]
+2014-12-23 13:41:42,427 mslync.db: XD Number of conference messages found: [100] till [2013-07-24 04:51:23.523000]
+2014-12-23 13:41:42,974 mslync.db: XD Number of attachments found: [0] till [2014-10-17 01:58:06.613000]
+2014-12-23 13:41:42,974 mslync.db: XI Attempting to upload 200 records.
+2014-12-23 13:41:44,194 mslync.db: XI 200 records uploaded successfully.
+2014-12-23 13:41:44,194 mslync.db: XD Processing since times: [2013-07-22 04:59:02.737000,2013-07-24 04:51:23.523000,2014-10-17 01:58:06.613000]
+2014-12-23 13:41:45,835 mslync.db: XD Number of two way messages found: [100] till [2013-07-22 23:38:26.720000]
+2014-12-23 13:41:45,898 mslync.db: XD Number of conference messages found: [100] till [2013-07-24 04:52:08.800000]
+2014-12-23 13:41:46,506 mslync.db: XD Number of attachments found: [0] till [2014-10-17 01:58:06.613000]
+2014-12-23 13:41:46,506 mslync.db: XI Attempting to upload 200 records.
+2014-12-23 13:41:47,553 mslync.db: XI 200 records uploaded successfully.
+2014-12-23 13:41:47,553 mslync.db: XD Processing since times: [2013-07-22 23:38:26.720000,2013-07-24 04:52:08.800000,2014-10-17 01:58:06.613000]
+2014-12-23 13:41:49,180 mslync.db: XD Number of two way messages found: [100] till [2013-07-23 00:50:10.123000]
+2014-12-23 13:41:49,242 mslync.db: XD Number of conference messages found: [100] till [2013-07-24 04:52:22.800000]
+2014-12-23 13:41:49,617 mslync.db: XD Number of attachments found: [0] till [2014-10-17 01:58:06.613000]
+2014-12-23 13:41:49,617 mslync.db: XI Attempting to upload 200 records.
+2014-12-23 13:41:50,601 mslync.db: XI 200 records uploaded successfully.
+2014-12-23 13:41:50,601 mslync.db: XD Processing since times: [2013-07-23 00:50:10.123000,2013-07-24 04:52:22.800000,2014-10-17 01:58:06.613000]
+2014-12-23 13:41:52,243 mslync.db: XD Number of two way messages found: [100] till [2013-07-23 01:03:53.120000]
+2014-12-23 13:41:52,321 mslync.db: XD Number of conference messages found: [100] till [2013-07-24 04:52:38.780000]
+2014-12-23 13:41:52,836 mslync.db: XD Number of attachments found: [0] till [2014-10-17 01:58:06.613000]
+2014-12-23 13:41:52,836 mslync.db: XI Attempting to upload 200 records.
+2014-12-23 13:41:53,775 mslync.db: XI 200 records uploaded successfully.
+2014-12-23 13:41:53,789 mslync.db: XD Processing since times: [2013-07-23 01:03:53.120000,2013-07-24 04:52:38.780000,2014-10-17 01:58:06.613000]
+2014-12-23 13:41:55,305 mslync.db: XD Number of two way messages found: [100] till [2013-07-23 01:48:57.483000]
+2014-12-23 13:41:55,352 mslync.db: XD Number of conference messages found: [100] till [2013-07-25 02:55:19.857000]
+2014-12-23 13:41:55,822 mslync.db: XD Number of attachments found: [0] till [2014-10-17 01:58:06.613000]
+2014-12-23 13:41:55,822 mslync.db: XI Attempting to upload 200 records.
+2014-12-23 13:41:56,915 mslync.db: XI 200 records uploaded successfully.
+2014-12-23 13:41:56,915 mslync.db: XD Processing since times: [2013-07-23 01:48:57.483000,2013-07-25 02:55:19.857000,2014-10-17 01:58:06.613000]
+2014-12-23 13:41:58,354 mslync.db: XD Number of two way messages found: [100] till [2013-07-23 02:04:25.967000]
+2014-12-23 13:41:58,384 mslync.db: XD Number of conference messages found: [100] till [2013-08-01 03:01:15.500000]
+2014-12-23 13:41:59,056 mslync.db: XD Number of attachments found: [0] till [2014-10-17 01:58:06.613000]
+2014-12-23 13:41:59,056 mslync.db: XI Attempting to upload 200 records.
+2014-12-23 13:42:01,963 mslync.db: XI 200 records uploaded successfully.
+2014-12-23 13:42:01,980 mslync.db: XD Processing since times: [2013-07-23 02:04:25.967000,2013-08-01 03:01:15.500000,2014-10-17 01:58:06.613000]
+2014-12-23 13:42:03,588 mslync.db: XD Number of two way messages found: [100] till [2013-07-23 02:18:20.060000]
+2014-12-23 13:42:03,635 mslync.db: XD Number of conference messages found: [100] till [2013-08-05 00:22:07.207000]
+2014-12-23 13:42:04,260 mslync.db: XD Number of attachments found: [0] till [2014-10-17 01:58:06.613000]
+2014-12-23 13:42:04,260 mslync.db: XI Attempting to upload 200 records.

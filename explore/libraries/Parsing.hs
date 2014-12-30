@@ -1,16 +1,12 @@
---{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE OverloadedStrings #-}
 
-module Parsing (RPM, Release, parseRPM) where
+module Parsing(parseRPM, Release, RPM) where
 
-import qualified Data.Attoparsec as A
-import Data.Attoparsec.Text(char, decimal)
---import Data.Attoparsec.Char8
---import Data.ByteString.Internal
---import Data.ByteString
---import Data.ByteString.Char8(pack)
-import Data.Text(Text, pack)
+import Data.Attoparsec.Text as A
+import Data.Text
 
-sample = pack "mslync-29.5-42.i686.rpm"
+
+sample = "mslync-29.5-42.i686.rpm"
 
 
 data Release = Release {
@@ -36,20 +32,17 @@ parseRelease = do
 
 parseRPM :: A.Parser RPM
 parseRPM = do
-    d1 <- A.string (pack "mslync")
+    d1 <- A.string "mslync"
     char '-'
     d2 <- parseRelease
     char '-'
     d3 <- decimal
     char '.'
-    d4 <- A.string (pack "i686")
-    A.string (pack ".rpm")
+    d4 <- A.string "i686"
+    A.string ".rpm"
     return $ RPM d1 d2 d3 d4
 
 
 
---parse' :: Parser a -> String -> a
---parse' parser str = parseOnly (pack str)
-
---main = do
---    print $ A.parseOnly parseRPM sample
+main = do
+    print $ A.parseOnly parseRPM sample
