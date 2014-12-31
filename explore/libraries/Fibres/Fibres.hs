@@ -7,7 +7,7 @@ import System.FilePath.Posix((</>))
 import System.IO(hPutStrLn, openFile, hClose, Handle, IOMode( WriteMode ))
 
 
-import HedisInterface
+import HedisInterface(stuff)
 
 type URL = String
 
@@ -16,9 +16,6 @@ data Search = Search {
     keyword :: String,
     url :: URL
 } deriving Show
-
-
-
 
 
 

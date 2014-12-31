@@ -12,9 +12,10 @@ import Data.ByteString.Internal as Foo(ByteString)
 
 
 
-main = do
+stuff = do
     conn <- connect defaultConnectInfo
-    writeSomething conn
+    --writeSomething conn
+    persistSearch conn "surfboard" "gumtree" "filepath"
     runRedis conn $ do
         ret <- hset (pack "test") (pack "hello") (pack "value")
         liftIO $ print ("")
@@ -54,3 +55,31 @@ switch'' (Right _) = return (Right 0)
 incrementer :: Either Reply Integer -> Redis (Either Reply Integer)
 incrementer (Left x) = return (Left x)
 incrementer (Right x) = rpush (pack "mylist") [ (pack $ show (x + 1))]
+
+
+
+-- next, i want to create a set with this incremented index
+-- it is going to include multiple inserts
+-- it really should fail if all of them fail
+-- however, i could hack it by discarding the outputs
+createSet index query target filepath = do
+    ret <- hset (pack $ "fibres:" ++ index) (pack "query") (pack query)
+    ret <- hset (pack $ "fibres:" ++ index) (pack "target") (pack target)
+    ret <- hset (pack $ "fibres:" ++ index) (pack "filepath") (pack filepath)
+    return ret
+
+-- the interface should be agonstic to the details of the items i want to persist
+-- another layer of agnostisms
+
+
+-- first thing that i have to do is to get the index
+persistSearch conn query target filepath = runRedis conn $ do
+    index <- switch nextIndex
+    yo <- incrementer index
+    case yo of (Left reply) -> return (Left reply)
+               (Right idx) -> createSet (show idx) query target filepath
+
+
+
+
+
