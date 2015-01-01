@@ -14,10 +14,11 @@ createKey prefix index = pack (prefix ++ ":" ++ (show index))
 persistThree prefix list_key k1 v1 k2 v2 k3 v3 = do
     conn <- connect defaultConnectInfo
     runRedis conn $ do
-        index <- (switch list_key) (nextIndex list_key)
-        yo <- (incrementList list_key) index
-        case yo of (Left reply) -> return (Left reply)
-                   (Right idx) -> createSet' idx prefix k1 v1 k2 v2 k3 v3
+        index <- (nextIndex list_key) >>= (createList list_key)
+        incrResult <- (incrementList list_key) index
+        case incrResult of (Left reply) -> return (Left reply)
+                           (Right idx) -> createSet' idx prefix k1 v1 k2 v2 k3 v3
+    -- TODO: How do I return nothing?
     putStrLn "Done"
 
 
@@ -32,21 +33,16 @@ createSet' index prefix k1 v1 k2 v2 k3 v3 = do
 nextIndex :: String -> Redis (Either Reply (Maybe ByteString))
 nextIndex list_key = lindex (pack list_key) (-1)
 
+-- Create a new list if necessary
+createList :: String -> Either Reply (Maybe ByteString) -> Redis (Either Reply Integer)
+createList _ (Left x) = return (Left x)
+createList list_key (Right Nothing) = rpush (pack list_key) [(pack "0")] >>= initResponse
+createList _ (Right (Just bs)) = return (Right (read $ unpack bs :: Integer))
 
-switch :: String -> Redis (Either Reply (Maybe ByteString)) -> Redis (Either Reply Integer)
-switch list_key first_result = first_result >>= (switch' list_key)
-
-
--- This is some sort of create if not exists
-switch' :: String -> Either Reply (Maybe ByteString) -> Redis (Either Reply Integer)
-switch' _ (Left x) = return (Left x)
-switch' list_key (Right Nothing) = rpush (pack list_key) [(pack "0")] >>= switch''
-switch' _ (Right (Just bs)) = return (Right (read $ unpack bs :: Integer))
-
--- This is a fail or return the init state
-switch'' :: Either Reply Integer -> Redis (Either Reply Integer)
-switch'' (Left x) = return (Left x)
-switch'' (Right _) = return (Right 0)
+-- Create an initial response of 0
+initResponse :: Either Reply Integer -> Redis (Either Reply Integer)
+initResponse (Left x) = return (Left x)
+initResponse (Right _) = return (Right 0)
 
 incrementList :: String -> Either Reply Integer -> Redis (Either Reply Integer)
 incrementList _ (Left x) = return (Left x)
