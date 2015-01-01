@@ -1,9 +1,10 @@
 module HedisInterface where
 
-import Database.Redis(Redis, Connection, Reply, runRedis, connect, defaultConnectInfo, hset, lindex, rpush)
 import Data.ByteString.Char8(pack, unpack)
 import Data.ByteString.Internal(ByteString)
 import Control.Monad.IO.Class(liftIO)
+
+import Database.Redis(Redis, Connection, Reply, runRedis, connect, defaultConnectInfo, hset, lindex, rpush)
 
 
 createKey :: String -> Integer -> ByteString
