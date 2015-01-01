@@ -7,7 +7,7 @@ import System.FilePath.Posix((</>))
 import System.IO(hPutStrLn, openFile, hClose, Handle, IOMode( WriteMode ))
 
 
-import HedisInterface(stuff)
+import HedisInterface(persistThree)
 
 type URL = String
 
@@ -18,11 +18,15 @@ data Search = Search {
 } deriving Show
 
 
-
+doSomething = persistThree "fibres" "mylistyoyo" "k1" "v1" "k2" "v2" "k3" "v3"
 
 
 sample_url = "http://www.gumtree.com.au/s-scooters/spring-hill-brisbane/scooter/k0c18629l3005758?price=0.00__1500.00"
 search = Search "gumtree" "scooter" sample_url
+
+
+
+
 
 
 

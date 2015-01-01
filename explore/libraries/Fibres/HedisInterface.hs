@@ -10,74 +10,46 @@ import Data.ByteString.Internal as Foo(ByteString)
 
 
 
-
-
-stuff = do
+persistThree prefix list_key k1 v1 k2 v2 k3 v3 = do
     conn <- connect defaultConnectInfo
-    --writeSomething conn
-    persistSearch conn "surfboard" "gumtree" "filepath"
     runRedis conn $ do
-        ret <- hset (pack "test") (pack "hello") (pack "value")
-        liftIO $ print ("")
-    -- ret <- sadd (pack "key") [pack "subkey"] (pack "value")
+        index <- (switch list_key) (nextIndex' list_key)
+        yo <- (incrementer list_key) index
+        case yo of (Left reply) -> return (Left reply)
+                   (Right idx) -> createSet' idx prefix k1 v1 k2 v2 k3 v3
     putStrLn "Done"
 
 
+createSet' index prefix k1 v1 k2 v2 k3 v3 = do
+    ret <- hset (createKey prefix index) (pack k1) (pack v1)
+    ret <- hset (createKey prefix index) (pack k2) (pack v2)
+    ret <- hset (createKey prefix index) (pack k3) (pack v3)
+    return ret
 
 
--- this is the thing that get's the next index
+createKey :: String -> Integer -> ByteString
+createKey prefix index = pack (prefix ++ ":" ++ (show index))
 
-writeSomething conn = runRedis conn $ do
-    ret <- switch nextIndex
-    yo <- incrementer ret
-    liftIO $ print yo
+nextIndex' :: String -> Redis (Either Reply (Maybe Foo.ByteString))
+nextIndex' list_key = lindex (pack list_key) (-1)
 
 
-nextIndex :: Redis (Either Reply (Maybe Foo.ByteString))
-nextIndex = lindex (pack "mylist") (-1)
+switch :: String -> Redis (Either Reply (Maybe Foo.ByteString)) -> Redis (Either Reply Integer)
+switch list_key first_result = first_result >>= (switch' list_key)
 
-switch :: Redis (Either Reply (Maybe Foo.ByteString)) -> Redis (Either Reply Integer)
-switch first_result = first_result >>= switch'
-
-switch' :: Either Reply (Maybe Foo.ByteString) -> Redis (Either Reply Integer)
-switch' (Left x) = return (Left x)
-switch' (Right Nothing) = rpush (pack "mylist") [(pack "0")] >>= switch''
-switch' (Right (Just bs)) = return (Right (read $ unpack bs :: Integer))
+switch' :: String -> Either Reply (Maybe Foo.ByteString) -> Redis (Either Reply Integer)
+switch' _ (Left x) = return (Left x)
+switch' list_key (Right Nothing) = rpush (pack list_key) [(pack "0")] >>= switch''
+switch' _ (Right (Just bs)) = return (Right (read $ unpack bs :: Integer))
 
 switch'' :: Either Reply Integer -> Redis (Either Reply Integer)
 switch'' (Left x) = return (Left x)
 switch'' (Right _) = return (Right 0)
 
+incrementer :: String -> Either Reply Integer -> Redis (Either Reply Integer)
+incrementer _ (Left x) = return (Left x)
+incrementer list_key (Right x) = rpush (pack list_key) [ (pack $ show (x + 1))]
 
-
--- next, i want to increment the index
-
-incrementer :: Either Reply Integer -> Redis (Either Reply Integer)
-incrementer (Left x) = return (Left x)
-incrementer (Right x) = rpush (pack "mylist") [ (pack $ show (x + 1))]
-
-
-
--- next, i want to create a set with this incremented index
--- it is going to include multiple inserts
--- it really should fail if all of them fail
--- however, i could hack it by discarding the outputs
-createSet index query target filepath = do
-    ret <- hset (pack $ "fibres:" ++ index) (pack "query") (pack query)
-    ret <- hset (pack $ "fibres:" ++ index) (pack "target") (pack target)
-    ret <- hset (pack $ "fibres:" ++ index) (pack "filepath") (pack filepath)
-    return ret
-
--- the interface should be agonstic to the details of the items i want to persist
--- another layer of agnostisms
-
-
--- first thing that i have to do is to get the index
-persistSearch conn query target filepath = runRedis conn $ do
-    index <- switch nextIndex
-    yo <- incrementer index
-    case yo of (Left reply) -> return (Left reply)
-               (Right idx) -> createSet (show idx) query target filepath
 
 
 
