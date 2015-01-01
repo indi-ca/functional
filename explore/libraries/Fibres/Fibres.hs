@@ -7,7 +7,7 @@ import System.FilePath.Posix((</>))
 import System.IO(hPutStrLn, openFile, hClose, Handle, IOMode( WriteMode ))
 
 
-import HedisInterface(persistThree)
+import HedisInterface(persistFour)
 
 type URL = String
 
@@ -18,15 +18,23 @@ data Search = Search {
 } deriving Show
 
 
+data QueryResult = QueryResult {
+    query :: Search,
+    filepath :: FilePath
+} deriving Show
+
+
+
 
 sample_url = "http://www.gumtree.com.au/s-scooters/spring-hill-brisbane/scooter/k0c18629l3005758?price=0.00__1500.00"
 search = Search "gumtree" "scooter" sample_url
 
-persistSearch :: Search -> IO ()
-persistSearch search = persistThree "fibres" "search"
-                        "site" (site search)
-                        "keyword" (keyword search)
-                        "url" (url search)
+persistQueryResult :: QueryResult -> IO ()
+persistQueryResult qr = persistFour "fibres" "newlist"
+                        "site" (site $ query qr)
+                        "keyword" (keyword $ query qr)
+                        "url" (url $ query qr)
+                        "filepath" (filepath qr)
 
 
 
@@ -51,4 +59,7 @@ save search = do
     content <- getURL (url search)
     handle <- makeHandle search
     hPutStrLn handle content
+    filepath <- create_target search
+    let qr = QueryResult search filepath
+    persistQueryResult qr
     hClose handle

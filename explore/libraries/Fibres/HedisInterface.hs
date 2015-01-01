@@ -12,21 +12,22 @@ createKey prefix index = pack (prefix ++ ":" ++ (show index))
 
 
 
-persistThree prefix list_key k1 v1 k2 v2 k3 v3 = do
+persistFour prefix list_key k1 v1 k2 v2 k3 v3 k4 v4 = do
     conn <- connect defaultConnectInfo
     runRedis conn $ do
         index <- (nextIndex list_key) >>= (createList list_key)
         incrResult <- (incrementList list_key) index
         case incrResult of (Left reply) -> return (Left reply)
-                           (Right idx) -> createSet' idx prefix k1 v1 k2 v2 k3 v3
+                           (Right idx) -> createSet' idx prefix k1 v1 k2 v2 k3 v3 k4 v4
     -- TODO: How do I return nothing?
     putStrLn "Done"
 
 
-createSet' index prefix k1 v1 k2 v2 k3 v3 = do
+createSet' index prefix k1 v1 k2 v2 k3 v3 k4 v4 = do
     ret <- hset (createKey prefix index) (pack k1) (pack v1)
     ret <- hset (createKey prefix index) (pack k2) (pack v2)
     ret <- hset (createKey prefix index) (pack k3) (pack v3)
+    ret <- hset (createKey prefix index) (pack k4) (pack v4)
     return ret
 
 
