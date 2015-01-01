@@ -56,10 +56,10 @@ createTempFile filename = fmap (</> filename) getTemporaryDirectory
 
 save :: Search -> IO ()
 save search = do
-    content <- getURL (url search)
-    handle <- makeHandle search
-    hPutStrLn handle content
+    --content <- getURL (url search)
+    --handle <- makeHandle search
+    --hPutStrLn handle content
     filepath <- create_target search
     let qr = QueryResult search filepath
     persistQueryResult qr
-    hClose handle
+    --hClose handle

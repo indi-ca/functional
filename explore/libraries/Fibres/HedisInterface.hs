@@ -17,8 +17,9 @@ persistFour prefix list_key k1 v1 k2 v2 k3 v3 k4 v4 = do
     runRedis conn $ do
         index <- (nextIndex list_key) >>= (createList list_key)
         incrResult <- (incrementList list_key) index
-        case incrResult of (Left reply) -> return (Left reply)
-                           (Right idx) -> createSet' idx prefix k1 v1 k2 v2 k3 v3 k4 v4
+        case index of (Left reply) -> return (Left reply)
+                      (Right idx) -> createSet' (idx + 1) prefix k1 v1 k2 v2 k3 v3 k4 v4
+        return (Right index)
     -- TODO: How do I return nothing?
     putStrLn "Done"
 
@@ -41,10 +42,10 @@ createList _ (Left x) = return (Left x)
 createList list_key (Right Nothing) = rpush (pack list_key) [(pack "0")] >>= initResponse
 createList _ (Right (Just bs)) = return (Right (read $ unpack bs :: Integer))
 
--- Create an initial response of 0
+-- Create an initial response of -1 because it will be incremented
 initResponse :: Either Reply Integer -> Redis (Either Reply Integer)
 initResponse (Left x) = return (Left x)
-initResponse (Right _) = return (Right 0)
+initResponse (Right _) = return (Right (-1))
 
 incrementList :: String -> Either Reply Integer -> Redis (Either Reply Integer)
 incrementList _ (Left x) = return (Left x)
