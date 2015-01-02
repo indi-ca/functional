@@ -24,13 +24,13 @@ data QueryResult = QueryResult {
 } deriving Show
 
 
-
-
 sample_url = "http://www.gumtree.com.au/s-scooters/spring-hill-brisbane/scooter/k0c18629l3005758?price=0.00__1500.00"
 search = Search "gumtree" "scooter" sample_url
 
+list_key = "newlist"
+
 persistQueryResult :: QueryResult -> IO ()
-persistQueryResult qr = persistFour "fibres" "newlist"
+persistQueryResult qr = persistFour "fibres" list_key
                         "site" (site $ query qr)
                         "keyword" (keyword $ query qr)
                         "url" (url $ query qr)
@@ -56,10 +56,10 @@ createTempFile filename = fmap (</> filename) getTemporaryDirectory
 
 save :: Search -> IO ()
 save search = do
-    --content <- getURL (url search)
-    --handle <- makeHandle search
-    --hPutStrLn handle content
+    content <- getURL (url search)
+    handle <- makeHandle search
+    hPutStrLn handle content
     filepath <- create_target search
     let qr = QueryResult search filepath
     persistQueryResult qr
-    --hClose handle
+    hClose handle
