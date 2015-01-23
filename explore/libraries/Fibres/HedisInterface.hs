@@ -1,4 +1,4 @@
-module HedisInterface where
+module HedisInterface (persistFour) where
 
 import Data.ByteString.Char8(pack, unpack)
 import Data.ByteString.Internal(ByteString)
