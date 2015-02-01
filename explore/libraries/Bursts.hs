@@ -12,12 +12,19 @@ import Data.List(sort)
 -- the jobs execute immediately
 
 
-die' :: (RandomGen g) => Rand g Float
-die' = getRandomR (-1.0, 1.0)
+--data Burst = Rand g [Float] | Rand g [Burst]
+--    deriving (Show)
 
+--data Burst g = Rand g [Float] | Rand g [Burst]
+--    deriving (Show)
+
+
+
+spark :: (RandomGen g) => Rand g Float
+spark = getRandomR (-1.0, 1.0)
 
 burst :: (RandomGen g) => Int -> Rand g [Float]
-burst n = sequence (replicate n die')
+burst n = sequence (replicate n spark)
 
 -- Create a burst of n items with a mean and a deviation
 createBurst :: (RandomGen g) => Int -> Float -> Float -> Rand g [Float]

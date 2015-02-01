@@ -25,7 +25,7 @@ data Bob = Int | String
 
 
 initialPath = "/Users/indika"
-basicPattern = BasicPattern "lek"
+basicPattern = BasicPattern "cas"
 
 
 main :: IO ()
@@ -117,7 +117,7 @@ compare' (_, x) (_, y) = compare x y
 
 
 tuples = [("bob", 400), ("jane", 6), ("namehunt", 23)]
-doIt = sortBy compare' tuples
+--doIt = sortBy compare' tuples
 
 --withContext tuples = pure sortBy <*> (compareTuples tuples)
 
@@ -127,15 +127,39 @@ doIt = sortBy compare' tuples
 --something :: FilePath -> (FilePath,  UTCTime)
 --something fp = (fp, getModificationTime fp)
 
+aPath = "/Users/indika/temp"
+
+getFiles :: FilePath -> IO [FilePath]
+getFiles startPath = getDirectoryContents startPath
+
+
+mapper :: [FilePath] -> [ IO UTCTime ]
+mapper fs = fmap getModificationTime fs
+
+something :: FilePath -> IO [IO UTCTime]
+something path = fmap mapper (getFiles path)
+
+
+-- but, I cannot evaluate this
+sequenceIt bob = fmap sequence bob
+
+
+injector :: FilePath -> UTCTime -> (FilePath, UTCTime)
+injector x y = (x, y)
+
+getModificationTime' :: FilePath ->  IO(FilePath, UTCTime)
+getModificationTime' fp = fmap (injector fp) (getModificationTime fp)
 
 
 
+binding = (getDirectoryContents aPath) >>= (\x -> sequence (fmap getModificationTime x))
+
+doIt = (find aPath basicPattern) >>= (\x -> sequence (fmap getModificationTime' x))
 
 
 
-
-
-
+--main :: IO ()
+--main = doIt
 
 
 
