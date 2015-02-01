@@ -6,6 +6,8 @@ import Control.Applicative
 --import Text.ParserCombinators.Parsec
 
 import Data.List(sort, sortBy)
+import Data.Ord(comparing)
+
 
 import System.IO(FilePath)
 import System.Directory(getDirectoryContents, getModificationTime)
@@ -144,19 +146,16 @@ something path = fmap mapper (getFiles path)
 sequenceIt bob = fmap sequence bob
 
 
-injector :: FilePath -> UTCTime -> (FilePath, UTCTime)
-injector x y = (x, y)
-
 getModificationTime' :: FilePath ->  IO(FilePath, UTCTime)
-getModificationTime' fp = fmap (injector fp) (getModificationTime fp)
+getModificationTime' fp = fmap (\x -> (fp, x)) (getModificationTime fp)
 
 
-
-binding = (getDirectoryContents aPath) >>= (\x -> sequence (fmap getModificationTime x))
+sortIt :: [(FilePath, UTCTime)] -> [(FilePath, UTCTime)]
+sortIt xs = sortBy (comparing snd) xs
 
 doIt = (find aPath basicPattern) >>= (\x -> sequence (fmap getModificationTime' x))
 
-
+final = fmap sortIt doIt
 
 --main :: IO ()
 --main = doIt
