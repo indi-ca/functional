@@ -21,10 +21,10 @@ main = do
     -- Copy everything to syslog from here on out.
     s <- openlog "SyslogStuff" [PID] USER DEBUG
 
-    f <- fileHandler "/Users/indika/temp.log" DEBUG
+    f <- fileHandler "/Users/indika/logs/instance/instance.log" DEBUG
 
     --TODO: Figure out how to appropriate close and open this file
-    --updateGlobalLogger rootLoggerName (addHandler f)
+    updateGlobalLogger rootLoggerName (addHandler f)
     updateGlobalLogger rootLoggerName (addHandler s)
 
 
@@ -49,4 +49,4 @@ main = do
     -- This message goes nowhere.
     debugM "MyApp.WorkingComponent" "Hello"
 
-    --close f
+    close f
