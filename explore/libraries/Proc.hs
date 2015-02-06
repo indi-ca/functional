@@ -50,3 +50,21 @@ sshCommand sk cmd = uncurry readProcessWithExitCode the_tuple $ []
     where the_tuple = sshCommand' sk cmd
 
 
+doSomething = sshCommand "lego" "cat /etc/redhat-release"
+
+
+
+-- Successful response is something like this:
+-- (ExitSuccess,"connecting to lego.safenetbox.biz\nTrying 1 servers\n['10.107.11.189']\nIP address: 10.107.11.189\nGot port 4 from nbupdate SRV record\nStarting ssh connection\nNetbox release 29.6 (Final)\n","")
+
+
+raw_string = "connecting to lego.safenetbox.biz\nTrying 1 servers\n['10.107.11.189']\nIP address: 10.107.11.189\nGot port 4 from nbupdate SRV record\nStarting ssh connection\nNetbox release 29.6 (Final)\n"
+
+splitString :: String -> [String]
+splitString = lines
+
+
+parseIt = splitString raw_string
+
+
+
