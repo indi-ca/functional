@@ -1,6 +1,7 @@
 
 module Proc where
 
+import Data.List(elemIndex)
 
 import System.IO(FilePath)
 import System.Directory(getDirectoryContents)
@@ -10,36 +11,46 @@ import System.FilePath.Posix
 
 
 
---createProcess (proc "ss lego 'ls'" [])
---createProcess (proc "./Users/indika/dev/box/internal/nb-devtools/bin/ss lego 'ls'" [])
+-- What are the options for running a process?
+-- proc, defined in System.Process
+-- runProcess, defined in System.Process
 
---runProcess "/Users/indika/dev/box/internal/nb-devtools/bin/ss" []
+-- readProcess, defined in System.Process
+-- readProcess "/bin/ss" ["lego", "'ls'"] []
 
--- but it could fail, so, it should be tried again
---callCommand "/Users/indika/dev/box/internal/nb-devtools/bin/ss lego 'ls'"
+-- callCommand, defined in System.Process
+-- callCommand "/bin/ss lego 'ls'"
 
---readProcess "/Users/indika/dev/box/internal/nb-devtools/bin/ss" ["lego", "'ls'"] []
+
+
+
+
+-- EXPONENTIAL BACKOFF
+-- How do I create something that tries n number of times
+-- with an exponential backoff
+
+-- I'll have to produce a bunch of y values, for a bunch of x volues
+-- What is the equation for an exponential backoff? e to the power x
+
+
 
 
 type SiteKey = String
 
 
--- This is a recurring problem I try to solve
--- I want to configure it / taint it / with a site key
--- Perhaps it should be the last parameter
--- Because i'll want to change the same infrastructure for different sites
+data SSHRequest = SSHRequest {
+    command :: String,
+    result :: [String]
+} deriving (Show)
+
+data SSHRequestType = StandardSSHRequest | NBBSSHRequest
 
 
+-- The configuration problem, is one that I'm constantly encountering
+-- I want to taint the code, with the SiteKey, on at the last possible moment
+-- However, the site key has to be passed into the inner most function
+-- So, do I keep passing it in, down the call stack?
 
--- How do I create something that tries n number of times
--- with an exponential backoff
-
-
-
--- How about I open up an SSH connection
--- and run processes through there
--- but there is only one connection
--- so this becomes a shared resource
 
 sshCommand' :: SiteKey -> String -> (String, [String])
 sshCommand' sk cmd = ("/Users/indika/dev/box/internal/nb-devtools/bin/ss", [sk, cmd])
@@ -50,21 +61,37 @@ sshCommand sk cmd = uncurry readProcessWithExitCode the_tuple $ []
     where the_tuple = sshCommand' sk cmd
 
 
-doSomething = sshCommand "lego" "cat /etc/redhat-release"
+determine_release = sshCommand "lego" "cat /etc/redhat-release"
+
 
 
 
 -- Successful response is something like this:
--- (ExitSuccess,"connecting to lego.safenetbox.biz\nTrying 1 servers\n['10.107.11.189']\nIP address: 10.107.11.189\nGot port 4 from nbupdate SRV record\nStarting ssh connection\nNetbox release 29.6 (Final)\n","")
-
-
 raw_string = "connecting to lego.safenetbox.biz\nTrying 1 servers\n['10.107.11.189']\nIP address: 10.107.11.189\nGot port 4 from nbupdate SRV record\nStarting ssh connection\nNetbox release 29.6 (Final)\n"
+sampleRequest = SSHRequest "bob" (lines raw_string)
 
-splitString :: String -> [String]
-splitString = lines
+successString = "Starting ssh connection"
 
 
-parseIt = splitString raw_string
+
+
+-- There are multiple attributes to success
+-- Perhaps a fuzzy match is required
+-- Perhaps with a probability
+isSuccess :: SSHRequest -> Bool
+isSuccess request = successString `elem` results
+    where results = result request
+
+-- get's the contents of the command
+inner :: SSHRequest -> Maybe [String]
+inner request = case index of (Nothing) -> Nothing
+                              (Just x) -> Just (drop (x+1) results)
+    where results = result request
+          index = elemIndex successString results
+
+
+
+
 
 
 
