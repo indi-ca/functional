@@ -1,6 +1,5 @@
 module URLFetch where
 
-
 import Network.HTTP
 
 
