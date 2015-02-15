@@ -68,7 +68,7 @@ determine_release = sshCommand "lego" "cat /etc/redhat-release"
 
 -- Successful response is something like this:
 raw_string = "connecting to lego.safenetbox.biz\nTrying 1 servers\n['10.107.11.189']\nIP address: 10.107.11.189\nGot port 4 from nbupdate SRV record\nStarting ssh connection\nNetbox release 29.6 (Final)\n"
-sampleRequest = SSHRequest "bob" (lines raw_string)
+sampleRequest = SSHRequest "cat /etc/redhat-release" (lines raw_string)
 
 successString = "Starting ssh connection"
 
@@ -88,6 +88,14 @@ inner request = case index of (Nothing) -> Nothing
                               (Just x) -> Just (drop (x+1) results)
     where results = result request
           index = elemIndex successString results
+
+
+
+-- First configure the request
+-- Then poppualet it with the contents
+-- THen parse it
+
+doIt = sshCommand "lego" (command sampleRequest)
 
 
 
