@@ -17,6 +17,20 @@ data Pattern a = BasicPattern String | Parser a
 --data Pattern = BasicPattern String
 
 
+-- Obtains a list of files matching a pattern
+-- from a directory
+-- similar to what glob does
+
+-- usage
+-- provide an initial path
+-- provide a pattern
+-- and it will return a list of files
+-- and for some reason it was important to sort these files by date
+
+-- my only real objection to this
+-- is that it does not work over ssh
+
+
 
 initialPath = "/Users/indika/temp"
 basicPattern = BasicPattern "cas"
