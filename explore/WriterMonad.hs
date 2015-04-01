@@ -1,6 +1,6 @@
 module WriterModule where
 
-
+import Data.Monoid
 
 -- What's going on?
 -- I have a function that let's me decide things
@@ -53,7 +53,53 @@ decider x
     | x < 9     =  (False, "less than")
     | otherwise =  (True, "greater than")
 
+decider'' :: Int -> (Bool, Thneed)
+decider'' x
+    | x < 9     =  (False, Thneed "less than")
+    | otherwise =  (True, Thneed "greater than")
+
+
+
+-- Ok cool
+-- What am I going to do with Monoids now?
+
+-- Monoids is about joining things
+-- I can declare some thing, and then I can declare that it is joinable
+
+data Thneed = Thneed String
+    deriving Show
+
+-- OK: Now I want to make this Thneed composable
+
+instance Monoid Thneed where
+    mempty = Thneed ""
+    (Thneed x) `mappend` (Thneed y) = Thneed (x ++ y)
+
+
+someThneed = Thneed "Something that you need"
+
+
+-- The first step of generalizing
+--applyLog'' :: (Int, Thneed) -> (Int -> (Bool, Thneed)) -> (Bool, Thneed)
+--applyLog'' (v, log) df = let (y, log') = df v in (y, log `mappend` log')
+
+-- I think that I can generalize it even more
+applyLog'' :: Monoid c => (Int, c) -> (Int -> (Bool, c)) -> (Bool, c)
+applyLog'' (v, log) df = let (y, log') = df v in (y, log `mappend` log')
+
+
+-- So, in brief, what do I do?
+-- I was apply ++ on a type
+-- I realized that it was a join
+-- Made it into an instance of the Monoid type class
+-- Replaced the function declaration of it, with a type variable
+-- and made that into an instance of a Monoid
+
+
+
+
+
 
 
 --test = decider 7
-test = applyLog (7, "this is the past") decider
+test = applyLog'' (7, Thneed "this is the past") decider''
