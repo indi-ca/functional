@@ -84,8 +84,13 @@ someThneed = Thneed "Something that you need"
 --applyLog'' (v, log) df = let (y, log') = df v in (y, log `mappend` log')
 
 -- I think that I can generalize it even more
-applyLog'' :: Monoid c => (Int, c) -> (Int -> (Bool, c)) -> (Bool, c)
-applyLog'' (v, log) df = let (y, log') = df v in (y, log `mappend` log')
+--applyLog'' :: Monoid c => (Int, c) -> (Int -> (Bool, c)) -> (Bool, c)
+--applyLog'' (v, log) df = let (y, log') = df v in (y, log `mappend` log')
+
+-- Even further generalization
+applyLog''' :: Monoid c => (a, c) -> (a -> (b, c)) -> (b, c)
+applyLog''' (v, log) df = let (y, log') = df v in (y, log `mappend` log')
+
 
 
 -- So, in brief, what do I do?
@@ -96,10 +101,40 @@ applyLog'' (v, log) df = let (y, log') = df v in (y, log `mappend` log')
 -- and made that into an instance of a Monoid
 
 
+-- Remember: The Monoid typeclass has laws
+-- Law 1: idenity
+-- Law 2: Association
+
+
+
+
+-- THE WRITER TYPE
+
+-- There is a type that looks like: Writer w a
+-- Something just like Maybe x
+
+-- it's definition looks like:
+
+newtype Writer' w a = Writer' { runWriter :: (a, w) }
+    deriving Show
+
+newtype WriterPlain w a = WriterPlain (a, w)
+    deriving Show
+
+-- I've seen this before: the function inside a type
+-- Reminds me of the runParser
+
+someWriter = Writer' (3, "hello bob")
+plainWriter = WriterPlain (3, "hello bob")
+
+direct_unboxing = runWriter someWriter
+convoluted_unboxing = let (WriterPlain x) = plainWriter in x
+
+-- A Monad instance is exported for it
 
 
 
 
 
 --test = decider 7
-test = applyLog'' (7, Thneed "this is the past") decider''
+test = applyLog''' (7, Thneed "this is the past") decider''

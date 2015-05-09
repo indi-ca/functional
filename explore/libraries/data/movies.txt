@@ -1,0 +1,528 @@
+total 0
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:01 12 Years A Slave
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:01 13 Sins
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:00 2 Guns
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:56 2047 Sights Of Death
+drwxr-xr-x  1 indika  staff      0  4 Sep 17:14 21 Jump Street
+drwxr-xr-x  1 indika  staff      0  4 Sep 17:15 22 Jump Street
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:01 28 Days Later
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:02 300 Rise of an Empire
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:02 3096 Days
+drwxr-xr-x  1 indika  staff      0  5 Sep 17:10 310 to Yuma
+drwxr-xr-x  1 indika  staff      0 25 Oct 10:19 36 Saints
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:02 47 Ronin
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:00 6 Souls
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:00 8 Mile
+drwxr-xr-x  1 indika  staff      0  7 Jan 16:52 88
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:02 A Boy
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:00 A Merry Friggin Christmas
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:03 A Million Ways to Die in the West
+drwxr-xr-x  1 indika  staff      0 28 Jan 05:52 Addicted
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:03 After Earth
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:03 After Midnight
+drwxr-xr-x  1 indika  staff      0  7 Sep 12:37 Alan Partridge Alpha Papa
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:04 All Things to All Men
+drwxr-xr-x  1 indika  staff      0 27 Jan 13:58 American Heist
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:04 American Muscle
+drwxr-xr-x  1 indika  staff      0  9 Jan 16:09 American Sniper
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:04 Anchorman 2 The Legend Continues
+drwxr-xr-x  1 indika  staff      0 10 Nov 18:08 And Soon The Darkness
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:04 Arbitrage
+drwxr-xr-x  1 indika  staff      0  4 Sep 17:28 Arrow
+drwxr-xr-x  1 indika  staff      0  4 Sep 17:28 Arrow faster
+drwxr-xr-x  1 indika  staff      0 24 Nov 20:00 As Good as It Gets
+drwxr-xr-x  1 indika  staff      0 23 Dec 16:22 Ask Me Anything
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:05 At the Devil's Door
+drwxr-xr-x  1 indika  staff      0  4 Sep 17:29 August Rush
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:05 Automata
+drwxr-xr-x  1 indika  staff      0  7 Sep 12:37 Avengers
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:05 Bad Country
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:05 Bad Neighbours
+drwxr-xr-x  1 indika  staff      0 29 Oct 22:00 Bad Turn Worse
+drwxr-xr-x  1 indika  staff      0  2 Feb 19:46 Badge of Honour
+drwxr-xr-x  1 indika  staff      0  4 Sep 17:31 Barbarella
+drwxr-xr-x  1 indika  staff      0 25 Nov 03:54 Before I Go to Sleep
+drwxr-xr-x  1 indika  staff      0 19 Nov 04:58 Beverly Hills Cop 3
+drwxr-xr-x  1 indika  staff   4096 10 Feb 16:37 Big Bang Theory Season 8
+drwxr-xr-x  1 indika  staff      0 30 Jan 17:46 Big Driver
+drwxr-xr-x  1 indika  staff      0  9 Jan 16:10 Big Hero 6
+drwxr-xr-x  1 indika  staff   4096  5 Sep 17:14 Black Books S2
+drwxr-xr-x  1 indika  staff      0  4 Sep 17:32 Black Swan
+drwxr-xr-x  1 indika  staff   4096 25 Oct 10:26 Blackadder
+drwxr-xr-x  1 indika  staff      0  7 Jan 16:09 Bladerunner
+drwxr-xr-x  1 indika  staff      0  4 Sep 17:32 Bloodbath At The House Of Death
+drwxr-xr-x  1 indika  staff   4096  4 Sep 17:45 Bottom Complete Pack
+drwxr-xr-x  1 indika  staff      0 19 Jan 20:34 Bound
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:34 Brick Mansions
+drwxr-xr-x  1 indika  staff      0  9 Dec 16:51 By the Gun
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:18 Captain Phillips
+drwxr-xr-x  1 indika  staff      0  4 Sep 17:48 Carrie
+drwxr-xr-x  1 indika  staff      0  4 Sep 17:49 Casablanca
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:18 Code Red
+drwxr-xr-x  1 indika  staff      0 20 Nov 04:01 Convict
+drwxr-xr-x  1 indika  staff      0  3 Feb 19:32 Corner Gas
+drwxr-xr-x  1 indika  staff      0  6 Oct 14:58 Crash
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:19 Crush
+drwxr-xr-x  1 indika  staff      0 15 Oct 17:59 Cut
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:19 Dallas Buyers Club
+drwxr-xr-x  1 indika  staff      0 10 Feb 15:44 Dark Shadows
+drwxr-xr-x  1 indika  staff      0 15 Jan 17:54 Dark Summer
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:19 Day Of The Dead
+drwxr-xr-x  1 indika  staff      0 23 Dec 17:07 Day of the Mummy
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:20 Dead Man Down
+drwxr-xr-x  1 indika  staff      0  4 Sep 17:55 Dead Men Don't Wear Plaid
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:21 Deadrise
+drwxr-xr-x  1 indika  staff   4096  4 Sep 17:59 Death Note Movies 1 And 2
+drwxr-xr-x  1 indika  staff      0 11 Nov 04:57 Debug
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:22 Deliver Us From Evil
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:22 Delivery Man
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:23 Dinner for Schmucks
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:23 Disaster Movie
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:23 Dom Hemingway
+drwxr-xr-x  1 indika  staff      0 16 Dec 21:32 Doomsday
+drwxr-xr-x  1 indika  staff      0  6 Jan 18:20 Dr. Cabbie
+drwxr-xr-x  1 indika  staff      0 10 Nov 19:20 Dracula Untold
+drwxr-xr-x  1 indika  staff      0 25 Nov 03:52 Dragons of Camelot
+drwxr-xr-x  1 indika  staff      0  4 Sep 18:03 Dredd
+drwxr-xr-x  1 indika  staff      0 20 Jan 05:48 Drew Carey Show
+drwxr-xr-x  1 indika  staff      0 18 Nov 17:41 Drive Hard
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:24 Due Date
+drwxr-xr-x  1 indika  staff      0  6 Feb 04:10 Dumb and Dumber To
+drwxr-xr-x  1 indika  staff      0  4 Sep 18:04 Duplicity
+drwxr-xr-x  1 indika  staff      0  9 Dec 16:52 Dying of the Light
+drwxr-xr-x  1 indika  staff      0 20 Jan 05:50 Ed Byrne
+drwxr-xr-x  1 indika  staff      0  6 Jan 17:43 Electric Slide
+drwxr-xr-x  1 indika  staff      0  4 Sep 18:05 Elysium
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:24 Empire State
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:24 Ender's Game
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:24 Epic
+drwxr-xr-x  1 indika  staff      0  4 Sep 18:10 Escape From Planet Earth
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:24 Escape Plan
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:25 Essex Boys Retribution
+drwxr-xr-x  1 indika  staff      0 27 Jan 13:58 Everly
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:25 Extraterrestrial
+drwxr-xr-x  1 indika  staff      0  7 Jan 16:44 Falcon Rising
+drwxr-xr-x  1 indika  staff   4096  4 Sep 18:19 Faulty Towers
+drwxr-xr-x  1 indika  staff      0 31 Jan 16:23 Fear Clinic
+drwxr-xr-x  1 indika  staff      0  4 Sep 18:21 Fifty Dead Men Walking
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:25 Filth
+drwxr-xr-x  1 indika  staff      0  4 Sep 18:23 Fired Up
+drwxr-xr-x  1 indika  staff      0  4 Sep 18:23 Flight
+drwxr-xr-x  1 indika  staff   4096  4 Sep 18:28 Forever Strong
+drwxr-xr-x  1 indika  staff      0  4 Sep 18:28 Frankenhood
+drwxr-xr-x  1 indika  staff   4096 14 Jan 22:44 Frankie Boyle
+drwxr-xr-x  1 indika  staff      0 18 Nov 17:06 Free Fall
+drwxr-xr-x  1 indika  staff      0  8 Sep 17:02 Freebird
+drwxr-xr-x  1 indika  staff      0 10 Jan 22:31 From Hell
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:26 Frozen
+drwxr-xr-x  1 indika  staff      0  4 Sep 18:29 Frozen River
+drwxr-xr-x  1 indika  staff      0 19 Jan 21:13 Fugly
+drwxr-xr-x  1 indika  staff      0  4 Dec 21:49 Fury
+drwxr-xr-x  1 indika  staff      0  4 Sep 18:30 G.I. Joe Retaliation
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:26 Generation Um
+drwxr-xr-x  1 indika  staff      0  4 Sep 18:33 Get Him To The Greek
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:26 Girl With The Dragon Tattoo
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:27 Gods Not Dead
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:27 Godzilla
+drwxr-xr-x  1 indika  staff      0 23 Dec 16:35 Gone Girl
+drwxr-xr-x  1 indika  staff      0 10 Feb 16:37 Gone Too Far!
+drwxr-xr-x  1 indika  staff      0  9 Oct 18:19 Gone in 60 Seconds
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:27 Good Luck Chuck
+drwxr-xr-x  1 indika  staff      0 10 Feb 15:46 Good Morning Vietnam
+drwxr-xr-x  1 indika  staff      0 23 Dec 16:18 Goodbye to All That
+drwxr-xr-x  1 indika  staff      0 19 Jan 22:07 Gravity
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:27 Grown Ups 2
+drwxr-xr-x  1 indika  staff      0 18 Nov 17:06 Guardians of the Galaxy
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:28 Gypsy Fighter
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:28 Halloween II
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:28 Hansel And Gretel Get Baked
+drwxr-xr-x  1 indika  staff      0 22 Jan 16:12 Hansel Vs Gretel
+drwxr-xr-x  1 indika  staff      0  4 Sep 18:38 Hansel and Gretel Witch Hunters
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:28 Harry Brown
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:36 Harry Potter and the Deathly Hallows-Pt 1
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:29 Haunter
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:29 Heaven Is For Real
+drwxr-xr-x  1 indika  staff      0  4 Sep 18:41 Hells Angels 69
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:29 Hells Angels on Wheels
+drwxr-xr-x  1 indika  staff      0 12 Jan 06:15 Hercules
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:29 Here Comes the Devil
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:30 Hes Just Not That In to You
+drwxr-xr-x  1 indika  staff      0  5 Nov 21:01 Hit by Lightning
+drwxr-xr-x  1 indika  staff      0  5 Feb 22:04 Home Sweet Hell
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:30 Horns
+drwxr-xr-x  1 indika  staff      0  9 Jan 16:11 Horrible Bosses 2
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:31 How to Lose Friends & Alienate People
+drwxr-xr-x  1 indika  staff   4096 24 Nov 17:36 I Am Legend
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:33 I Am Soldier
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:33 I Frankenstein
+drwxr-xr-x  1 indika  staff      0  5 Dec 05:02 I Origins
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:34 I'm Not There
+drwxr-xr-x  1 indika  staff      0  4 Sep 18:49 Identity Thief
+drwxr-xr-x  1 indika  staff      0 11 Dec 16:57 Imagine Im Beautiful
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:34 Immigrants La Dolce Vita
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:34 In Bruges
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:34 In Fear
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:35 In the Valley of Elah
+drwxr-xr-x  1 indika  staff   4096  4 Sep 18:56 Indiana Jones And The Kingdom Of The Crystal Skull
+drwxr-xr-x  1 indika  staff      0  4 Sep 18:56 Inglourious Basterds
+drwxr-xr-x  1 indika  staff      0 10 Jan 22:12 Inherent Vice
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:36 Inkheart
+drwxr-xr-x  1 indika  staff      0  9 Jan 16:12 Interstellar
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:36 Into the Wild
+drwxr-xr-x  1 indika  staff      0  9 Jan 15:27 Into the Woods
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:37 Intouchables
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:38 Iron Man
+drwxr-xr-x  1 indika  staff      0  4 Sep 19:01 Iron man 3
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:38 Is Anybody There
+drwxr-xr-x  1 indika  staff      0  7 Jan 16:10 Isle of Man TT 2014
+drwxr-xr-x  1 indika  staff      0  4 Sep 19:02 Jack Reacher
+drwxr-xr-x  1 indika  staff      0 10 Dec 17:29 Jake's Road
+drwxr-xr-x  1 indika  staff  12288  4 Sep 19:22 James Bond
+drwxr-xr-x  1 indika  staff      0 11 Nov 17:50 Jinn
+drwxr-xr-x  1 indika  staff      0  4 Sep 19:23 John Carter
+drwxr-xr-x  1 indika  staff      0 15 Jan 17:54 John Wick
+drwxr-xr-x  1 indika  staff      0  2 Dec 22:40 Johnny Got His Gun
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:38 Jonah Hex
+drwxr-xr-x  1 indika  staff      0 10 Feb 16:36 Julia
+drwxr-xr-x  1 indika  staff      0 30 Jan 19:51 Jurassic City
+drwxr-xr-x  1 indika  staff      0 27 Nov 21:19 Kath And Kimderella
+drwxr-xr-x  1 indika  staff      0 14 Oct 13:46 Keeping Mum
+drwxr-xr-x  1 indika  staff      0 19 Jan 21:14 Kick
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:39 Kill the Irishman
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:39 Killing Season
+drwxr-xr-x  1 indika  staff      0 25 Oct 10:28 Kite
+drwxr-xr-x  1 indika  staff      0  4 Sep 19:28 Knowing
+drwxr-xr-x  1 indika  staff      0  7 Jan 21:44 Laggies
+drwxr-xr-x  1 indika  staff      0  7 Oct 15:40 Lantana
+drwxr-xr-x  1 indika  staff      0 10 Dec 17:43 Lap Dance
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:40 Last Vegas
+drwxr-xr-x  1 indika  staff      0 23 Nov 17:21 Late Phases
+drwxr-xr-x  1 indika  staff      0 20 Nov 04:02 Lee Evans - Monsters
+drwxr-xr-x  1 indika  staff      0 25 Oct 21:06 Left Behind
+drwxr-xr-x  1 indika  staff      0  6 Jan 18:19 Lemon Tree Passage
+drwxr-xr-x  1 indika  staff      0  3 Dec 22:30 Leon
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:40 Let Me In
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:40 Let The Right One In ***
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:40 Lets Be Cops
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:40 Life as We Know It
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:41 Lions For Lambs
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:41 Little Fockers
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:41 Lone Survivor
+drwxr-xr-x  1 indika  staff   4096 24 Nov 17:37 Lost and Found in Armenia
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:43 Love And Other Drugs
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:43 Love in the Time of Cholera
+drwxr-xr-x  1 indika  staff      0  4 Sep 19:38 Lovelace
+drwxr-xr-x  1 indika  staff      0 25 Nov 03:55 Lucy
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:44 Mad Max
+drwxr-xr-x  1 indika  staff   4096  8 Sep 17:02 Maleficent
+drwxr-xr-x  1 indika  staff      0  4 Sep 19:39 Mall Cop
+drwxr-xr-x  1 indika  staff      0  4 Sep 19:39 Man of Steel
+drwxr-xr-x  1 indika  staff      0 10 Dec 17:43 Mars Attacks
+drwxr-xr-x  1 indika  staff      0 19 Jan 20:33 Match
+drwxr-xr-x  1 indika  staff      0 25 Oct 10:12 Meet the Firm - Revenge In Rio
+drwxr-xr-x  1 indika  staff      0 23 Dec 16:19 Men, Women & Children
+drwxr-xr-x  1 indika  staff      0 28 Nov 05:26 Mercy
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:44 Michael Clayton
+drwxr-xr-x  1 indika  staff      0  4 Sep 19:42 Micky Flanagan
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:44 Mirrors
+drwxr-xr-x  1 indika  staff      0 18 Nov 17:07 Miss Meadows
+drwxr-xr-x  1 indika  staff      0  4 Sep 19:43 Missionary Man
+drwxr-xr-x  1 indika  staff      0 25 Oct 10:12 Moms Night Out
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:38 Monsters vs Aliens Mutant Pumpkins from Outer Space
+drwxr-xr-x  1 indika  staff      0 25 Oct 10:13 Montana
+drwxr-xr-x  1 indika  staff      0 25 Nov 03:53 Morning Star
+drwxr-xr-x  1 indika  staff      0  1 Feb 17:03 Mortdecai
+drwxr-xr-x  1 indika  staff      0  4 Sep 19:44 Movie 43
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:46 Mr Brooks
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:47 Mrs Browns Boys D Movies
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:47 Mud
+drwxr-xr-x  1 indika  staff      0 18 Nov 17:07 Muffin Top A Love Story
+drwxr-xr-x  1 indika  staff      0 20 Jan 18:38 My Old Lady
+drwxr-xr-x  1 indika  staff      0  4 Sep 19:46 My Sisters Keeper
+drwxr-xr-x  1 indika  staff      0 29 Jan 10:47 Mystic Blade
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:47 Narnia The Voyage of the Dawn Treader
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:47 National Treasure
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:47 Need For Speed
+drwxr-xr-x  1 indika  staff      0 19 Jan 22:31 Night At The Museum - Secret Of The Tomb
+drwxr-xr-x  1 indika  staff      0  4 Dec 21:17 Nightcrawler
+drwxr-xr-x  1 indika  staff      0  5 Sep 17:11 No Country For Old Men
+drwxr-xr-x  1 indika  staff      0 23 Dec 16:19 No Good Deed
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:48 Noah
+drwxr-xr-x  1 indika  staff      0 18 Nov 17:07 Non Stop
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:48 Northern Soul
+drwxr-xr-x  1 indika  staff      0  4 Sep 19:52 Now You See Me
+drwxr-xr-x  1 indika  staff      0  5 Feb 22:05 October Gale
+drwxr-xr-x  1 indika  staff      0  4 Sep 19:55 Odd Thomas
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:48 Of Mice and Men
+drwxr-xr-x  1 indika  staff      0  4 Sep 19:56 Olympus Has Fallen
+drwxr-xr-x  1 indika  staff      0 11 Nov 04:58 One Shot
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:48 Only God Forgives
+drwxr-xr-x  1 indika  staff      0 15 Jan 17:55 Out of the Dark
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:49 Out of the Furnace
+drwxr-xr-x  1 indika  staff      0 23 Dec 16:19 Outcast
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:39 Outlander
+drwxr-xr-x  1 indika  staff   4096  6 Oct 15:01 Outlander Season 1
+drwxr-xr-x  1 indika  staff      0  4 Sep 20:00 Outsourced
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:49 Pacific Rim
+drwxr-xr-x  1 indika  staff      0 30 Jan 17:47 Paddington
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:40 Paranormal Activity
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:49 Paranormal Activity The Marked Ones
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:50 Pathfinder
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:50 Paul
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:50 Peaceful Warrior
+drwxr-xr-x  1 indika  staff      0 27 Jan 13:59 Penguins of Madagascar
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:51 Percy Jackson  & The Olympians
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:51 Pirates of the Caribbean 4
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:51 Planes Fire and Rescue
+drwxr-xr-x  1 indika  staff      0  7 Feb 08:25 Playing It Cool
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:51 Plus 1
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:51 Point Break
+drwxr-xr-x  1 indika  staff      0  6 Jan 17:25 Poker Night
+drwxr-xr-x  1 indika  staff      0  7 Jan 21:44 Pompeii
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:52 Predators
+drwxr-xr-x  1 indika  staff      0 23 Nov 15:52 Predestination
+drwxr-xr-x  1 indika  staff      0 10 Jan 17:19 Preservation
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:52 Priest
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:52 Prisoners
+drwxr-xr-x  1 indika  staff      0  7 Nov 16:56 Quadrophenia
+drwxr-xr-x  1 indika  staff   4096 17 Nov 19:53 R.I.P.D
+drwxr-xr-x  1 indika  staff      0  4 Sep 20:16 Rambo
+drwxr-xr-x  1 indika  staff      0  5 Sep 17:12 Rambo IV
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:40 Rango
+drwxr-xr-x  1 indika  staff      0  4 Sep 20:17 Reasonable Doubt
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:41 Red
+drwxr-xr-x  1 indika  staff   4096 24 Nov 17:41 Red Dawn
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:41 Red Riding Hood
+drwxr-xr-x  1 indika  staff   4096 24 Nov 17:41 Red Sky
+drwxr-xr-x  1 indika  staff      0 23 Dec 16:20 Redirected
+drwxr-xr-x  1 indika  staff   4096 24 Nov 17:42 Rescue Dawn
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:42 Reservation Road
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:42 Resident Evil Extinction
+drwxr-xr-x  1 indika  staff   4096 24 Nov 17:42 Ride Along
+drwxr-xr-x  1 indika  staff      0  9 Oct 18:20 Righteous Kill
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:42 Rio
+drwxr-xr-x  1 indika  staff   4096 24 Nov 17:43 Rise of the Footsoldier
+drwxr-xr-x  1 indika  staff      0  4 Sep 20:27 Road House
+drwxr-xr-x  1 indika  staff      0  9 Dec 16:52 Roadside
+drwxr-xr-x  1 indika  staff      0 17 Nov 18:57 RocknRolla
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:43 Role Models
+drwxr-xr-x  1 indika  staff      0  2 Feb 17:05 Rosewater
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:43 Rudy
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:43 Runaway Bride
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:43 Runner Runner
+drwxr-xr-x  1 indika  staff   4096 24 Nov 17:44 Rush
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:44 Rush Hour.3
+drwxr-xr-x  1 indika  staff      0  4 Sep 20:34 Ruthless Game
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:45 Salt
+drwxr-xr-x  1 indika  staff  20480  4 Sep 20:37 Sasori
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:45 Saving Mr Banks
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:45 Saw IV
+drwxr-xr-x  1 indika  staff      0  4 Sep 20:38 Scary Movie 5
+drwxr-xr-x  1 indika  staff   4096 24 Nov 17:45 Scott Pilgrim vs. the World
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:46 Scream
+drwxr-xr-x  1 indika  staff      0  4 Sep 20:41 Scream 4
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:46 Season of the Witch
+drwxr-xr-x  1 indika  staff      0  3 Feb 16:40 Selma
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:46 Semi-Pro
+drwxr-xr-x  1 indika  staff   4096 24 Nov 17:46 Severance
+drwxr-xr-x  1 indika  staff   4096 18 Nov 17:09 Sin City A Dame to Kill For
+drwxr-xr-x  1 indika  staff      0  4 Sep 20:45 Sinbad And The Minotaur
+drwxr-xr-x  1 indika  staff      0 10 Nov 17:13 Sniper
+drwxr-xr-x  1 indika  staff      0  4 Sep 20:46 So I Married An Axe Murderer
+drwxr-xr-x  1 indika  staff      0  7 Jan 16:06 Soldier Blue
+drwxr-xr-x  1 indika  staff   4096 24 Nov 17:47 Solomon Kane
+drwxr-xr-x  1 indika  staff      0  2 Dec 22:40 Somewhere in Time
+drwxr-xr-x  1 indika  staff      0  6 Jan 21:51 Son of a Gun
+drwxr-xr-x  1 indika  staff      0 18 Nov 18:44 St.Vincent
+drwxr-xr-x  1 indika  staff   4096 24 Nov 17:47 Stag
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:47 Stage Fright
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:47 Stand Up Guys
+drwxr-xr-x  1 indika  staff   4096 24 Dec 06:36 Star Trek - Enterprise
+drwxr-xr-x  1 indika  staff      0  7 Sep 12:39 Star Trek Into Darkness
+drwxr-xr-x  1 indika  staff   4096 24 Nov 17:47 Stargate-The Ark Of Truth
+drwxr-xr-x  1 indika  staff      0 18 Nov 17:09 Starry Eyes
+drwxr-xr-x  1 indika  staff      0  4 Sep 20:50 Stone
+drwxr-xr-x  1 indika  staff      0 11 Nov 04:55 Stonehearst Asylum
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:48 Street Kings
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:48 Stretch
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:48 Sucker Punch
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:48 Superbad
+drwxr-xr-x  1 indika  staff      0  4 Sep 20:54 Superman Doomsday
+drwxr-xr-x  1 indika  staff      0 27 Jan 13:57 Supremacy
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:48 Sweeny Todd
+drwxr-xr-x  1 indika  staff      0 24 Dec 06:36 Take Care
+drwxr-xr-x  1 indika  staff      0  4 Sep 20:54 Taken
+drwxr-xr-x  1 indika  staff      0  9 Nov 18:30 Taking Chance
+drwxr-xr-x  1 indika  staff   4096  6 Jan 17:44 Taking Lives
+drwxr-xr-x  1 indika  staff      0  4 Sep 20:57 Tales From The Crypt - Demon Knight
+drwxr-xr-x  1 indika  staff      0 25 Oct 10:16 Tammy
+drwxr-xr-x  1 indika  staff      0  9 Nov 18:29 Teeth
+drwxr-xr-x  1 indika  staff      0  9 Dec 16:53 Tell
+drwxr-xr-x  1 indika  staff      0  4 Sep 20:59 That Awkward Moment
+drwxr-xr-x  1 indika  staff      0 23 Dec 16:20 That Burning Feeling
+drwxr-xr-x  1 indika  staff      0  4 Sep 20:59 The Amazing Spider Man 2
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:49 The American
+drwxr-xr-x  1 indika  staff      0 20 Nov 04:01 The Art of the Steal
+drwxr-xr-x  1 indika  staff   4096 24 Nov 17:49 The Assassination of Jesse James
+drwxr-xr-x  1 indika  staff      0 10 Jan 22:13 The Atticus Institute
+drwxr-xr-x  1 indika  staff      0  4 Sep 21:03 The Awakening
+drwxr-xr-x  1 indika  staff   4096 24 Nov 17:49 The Bag Man
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:49 The Baker
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:50 The Best And The Brightest
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:50 The Boat That Rocked
+drwxr-xr-x  1 indika  staff   4096 24 Nov 17:50 The Bourne Ultimatum
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:50 The Boy In The Striped Pyjamas
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:50 The Brave One
+drwxr-xr-x  1 indika  staff      0  4 Sep 21:09 The Breakfast Club
+drwxr-xr-x  1 indika  staff      0 25 Oct 10:17 The Brides of Sodom
+drwxr-xr-x  1 indika  staff   4096  4 Sep 21:10 The Bucket List
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:51 The Butler
+drwxr-xr-x  1 indika  staff   4096 24 Nov 17:51 The Call
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:51 The Captive
+drwxr-xr-x  1 indika  staff   4096 24 Nov 17:51 The Chronicles of Narnia - The Voyage of the Dawn Treader
+drwxr-xr-x  1 indika  staff      0  4 Sep 21:13 The Commitments
+drwxr-xr-x  1 indika  staff   4096 24 Nov 17:52 The Darjeeling
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:52 The Descent
+drwxr-xr-x  1 indika  staff      0 24 Dec 06:33 The Device
+drwxr-xr-x  1 indika  staff      0  9 Dec 16:50 The Disappearance Of Eleanor Rigby
+drwxr-xr-x  1 indika  staff      0  6 Jan 18:02 The Drop
+drwxr-xr-x  1 indika  staff      0  4 Sep 21:16 The Duchess
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:52 The Dyatlov Pass Incident
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:53 The Eagle
+drwxr-xr-x  1 indika  staff      0 23 Dec 16:23 The Equalizer
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:53 The Exorcist
+drwxr-xr-x  1 indika  staff      0  8 Jan 05:51 The Expendables 3
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:53 The Eye
+drwxr-xr-x  1 indika  staff   4096 24 Nov 17:53 The Fall Of The Essex Boys
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:53 The Fighter
+drwxr-xr-x  1 indika  staff      0  4 Sep 21:22 The Four Horsemen
+drwxr-xr-x  1 indika  staff      0 10 Jan 22:30 The Gambler
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:53 The Girl on the Train
+drwxr-xr-x  1 indika  staff      0  7 Jan 17:23 The Giver
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:54 The Golden Boys
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:54 The Golden Compass
+drwxr-xr-x  1 indika  staff      0  4 Sep 21:24 The Goonies
+drwxr-xr-x  1 indika  staff   4096  6 Oct 14:57 The Grand Budapest Hotel
+drwxr-xr-x  1 indika  staff   4096 24 Nov 17:55 The Great Gatsby
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:55 The Green Hornet
+drwxr-xr-x  1 indika  staff      0  6 Jan 17:00 The Guvnors
+drwxr-xr-x  1 indika  staff   4096 24 Nov 17:55 The Hangover III
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:56 The Heartbreak Kid
+drwxr-xr-x  1 indika  staff      0  9 Jan 16:06 The Hobbit - Battle Of The Five Armies
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:56 The Hobbit The Desolation Of Smaug
+drwxr-xr-x  1 indika  staff      0 25 Oct 10:18 The Hooligan Factory
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:56 The Hottie and the Nottie
+drwxr-xr-x  1 indika  staff   4096 24 Nov 17:56 The Hunger Games
+drwxr-xr-x  1 indika  staff      0  4 Sep 22:12 The Hunger Games 2
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:57 The Hunger Games Catching Fire
+drwxr-xr-x  1 indika  staff      0  2 Dec 22:39 The Hunger Games Mockingjay - Part 1
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:57 The Hunters
+drwxr-xr-x  1 indika  staff   4096 24 Nov 17:58 The Iceman
+drwxr-xr-x  1 indika  staff      0  9 Jan 16:07 The Identical
+drwxr-xr-x  1 indika  staff      0  9 Jan 16:08 The Imitation Game
+drwxr-xr-x  1 indika  staff   4096 24 Nov 17:58 The Inbetweeners 2
+drwxr-xr-x  1 indika  staff      0  4 Sep 21:33 The International
+drwxr-xr-x  1 indika  staff      0  6 Jan 22:26 The Interview
+drwxr-xr-x  1 indika  staff   4096 24 Nov 17:58 The Jane Austin Book Club
+drwxr-xr-x  1 indika  staff      0 29 Oct 21:59 The Judge
+drwxr-xr-x  1 indika  staff   4096  4 Sep 21:35 The Kids Are Alright
+drwxr-xr-x  1 indika  staff   4096 24 Nov 17:58 The Kingdom
+drwxr-xr-x  1 indika  staff      0  4 Sep 21:37 The Kings Speech
+drwxr-xr-x  1 indika  staff   4096  4 Sep 21:37 The Kite Runner
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:59 The Last House On The Left
+drwxr-xr-x  1 indika  staff   4096 24 Nov 17:59 The Last Song
+drwxr-xr-x  1 indika  staff      0 24 Nov 17:59 The Legend Of Hercules
+drwxr-xr-x  1 indika  staff      0  4 Sep 21:40 The Lego Movie
+drwxr-xr-x  1 indika  staff      0 17 Nov 19:56 The Level
+drwxr-xr-x  1 indika  staff   4096 25 Oct 11:36 The Love Punch
+drwxr-xr-x  1 indika  staff      0 24 Nov 18:00 The Lovely Bones
+drwxr-xr-x  1 indika  staff   4096 10 Feb 15:48 The Machine
+drwxr-xr-x  1 indika  staff   4096  4 Sep 21:42 The Machinist
+drwxr-xr-x  1 indika  staff   4096 24 Nov 18:00 The Maid's Room
+drwxr-xr-x  1 indika  staff      0 24 Nov 18:00 The Maltese Falcon
+drwxr-xr-x  1 indika  staff      0 24 Nov 18:00 The Mechanic
+drwxr-xr-x  1 indika  staff      0 10 Feb 15:48 The Midnight Meat Train
+drwxr-xr-x  1 indika  staff      0 24 Nov 19:59 The Mule
+drwxr-xr-x  1 indika  staff      0 24 Nov 21:29 The Navigator
+drwxr-xr-x  1 indika  staff   4096 24 Nov 18:00 The Next Three Days
+drwxr-xr-x  1 indika  staff      0 18 Nov 22:29 The November Man
+drwxr-xr-x  1 indika  staff      0  7 Jan 21:42 The Other Woman
+drwxr-xr-x  1 indika  staff      0 19 Jan 16:36 The Phoenix Project
+drwxr-xr-x  1 indika  staff   4096  9 Nov 18:28 The Phoenix Rises
+drwxr-xr-x  1 indika  staff   4096 24 Nov 18:01 The Possession
+drwxr-xr-x  1 indika  staff   4096 24 Nov 18:01 The Power of Few
+drwxr-xr-x  1 indika  staff      0 24 Nov 18:01 The Purge Anarchy
+drwxr-xr-x  1 indika  staff      0 19 Jan 22:06 The Remaining
+drwxr-xr-x  1 indika  staff      0 24 Nov 18:01 The Ring
+drwxr-xr-x  1 indika  staff      0 20 Jan 18:08 The Riot Club
+drwxr-xr-x  1 indika  staff   4096 24 Nov 18:02 The Rise
+drwxr-xr-x  1 indika  staff      0  9 Nov 18:00 The Rite
+drwxr-xr-x  1 indika  staff      0  4 Sep 21:48 The Road
+drwxr-xr-x  1 indika  staff   4096 24 Nov 18:02 The Savages
+drwxr-xr-x  1 indika  staff      0 15 Jan 17:52 The Scarehouse
+drwxr-xr-x  1 indika  staff      0 10 Feb 15:43 The Scribbler
+drwxr-xr-x  1 indika  staff      0  7 Jan 21:43 The Secret Life of Walter Mitty
+drwxr-xr-x  1 indika  staff      0 24 Nov 18:02 The Sentinel
+drwxr-xr-x  1 indika  staff   4096 24 Nov 18:03 The Sisterhood of the Traveling Pants
+drwxr-xr-x  1 indika  staff      0  3 Dec 05:30 The Skeleton Twins
+drwxr-xr-x  1 indika  staff      0 24 Nov 18:03 The Social Network
+drwxr-xr-x  1 indika  staff   4096  4 Sep 21:59 The Sopranos - Complete 1st Season
+drwxr-xr-x  1 indika  staff   4096  4 Sep 22:00 The Stranger Within
+drwxr-xr-x  1 indika  staff      0 24 Nov 18:03 The Strangers
+drwxr-xr-x  1 indika  staff      0  3 Dec 05:17 The Taking of Deborah Logan
+drwxr-xr-x  1 indika  staff      0 14 Oct 13:39 The Tall Guy
+drwxr-xr-x  1 indika  staff      0  5 Feb 22:09 The Tourist
+drwxr-xr-x  1 indika  staff      0  4 Sep 22:05 The Twilight Saga’s Eclipse
+drwxr-xr-x  1 indika  staff      0 24 Nov 18:05 The Unborn
+drwxr-xr-x  1 indika  staff      0  4 Sep 22:06 The Visitor
+drwxr-xr-x  1 indika  staff      0  7 Feb 08:26 The Voices
+drwxr-xr-x  1 indika  staff      0 24 Nov 18:05 The Warriors Way
+drwxr-xr-x  1 indika  staff      0  4 Sep 22:08 The Wind in the Willows
+drwxr-xr-x  1 indika  staff      0 24 Nov 18:05 The Wolf of Wall Street
+drwxr-xr-x  1 indika  staff   4096 24 Nov 18:05 The Wolverine Unleashed
+drwxr-xr-x  1 indika  staff      0 10 Jan 17:23 The World Made Straight
+drwxr-xr-x  1 indika  staff   4096 24 Nov 18:06 The Wrestler
+drwxr-xr-x  1 indika  staff      0 22 Jan 16:02 They Wait
+drwxr-xr-x  1 indika  staff      0  4 Sep 22:16 Thor
+drwxr-xr-x  1 indika  staff      0 24 Nov 18:06 Thor - Hammer of the Gods
+drwxr-xr-x  1 indika  staff   4096 24 Nov 18:06 Thor The Dark World
+drwxr-xr-x  1 indika  staff      0 15 Oct 17:57 Throwdown
+drwxr-xr-x  1 indika  staff      0  6 Jan 17:25 Time Lapse
+drwxr-xr-x  1 indika  staff      0  5 Nov 17:20 Tom Sawyer and Huckleberry Finn
+drwxr-xr-x  1 indika  staff      0  4 Sep 22:22 Tomorrow When The War Began
+drwxr-xr-x  1 indika  staff      0 31 Jan 18:11 Top Five
+drwxr-xr-x  1 indika  staff      0 30 Jan 18:53 Toxin
+drwxr-xr-x  1 indika  staff      0  4 Sep 22:23 Traitor
+drwxr-xr-x  1 indika  staff      0 24 Nov 18:06 Trance
+drwxr-xr-x  1 indika  staff   4096 25 Oct 13:32 Transcendence
+drwxr-xr-x  1 indika  staff      0  4 Sep 22:24 Transformers - Age of Extinction
+drwxr-xr-x  1 indika  staff      0 24 Nov 18:07 True Grit
+drwxr-xr-x  1 indika  staff      0  4 Sep 22:26 True blood
+drwxr-xr-x  1 indika  staff      0 24 Nov 18:07 Tucker And Dale Vs Evil
+drwxr-xr-x  1 indika  staff      0  9 Jan 16:09 Unbroken
+drwxr-xr-x  1 indika  staff      0 24 Nov 18:07 Unstoppable
+drwxr-xr-x  1 indika  staff      0  4 Sep 22:35 Vampire Academy
+drwxr-xr-x  1 indika  staff      0  1 Feb 16:58 Vanish
+drwxr-xr-x  1 indika  staff      0  4 Sep 22:35 Vehicle 19
+drwxr-xr-x  1 indika  staff      0 19 Jan 16:36 Vice
+drwxr-xr-x  1 indika  staff      0 23 Dec 16:21 We Still Kill The Old Way
+drwxr-xr-x  1 indika  staff      0 27 Jan 11:59 We'll Never Have Paris
+drwxr-xr-x  1 indika  staff      0  4 Sep 22:36 Welcome To The Punch
+drwxr-xr-x  1 indika  staff      0 24 Nov 18:07 Werewolf Rising
+drwxr-xr-x  1 indika  staff      0  6 Jan 21:50 What We Do in the Shadows
+drwxr-xr-x  1 indika  staff      0  4 Sep 22:37 When in Rome
+drwxr-xr-x  1 indika  staff      0  6 Jan 16:56 Whiplash
+drwxr-xr-x  1 indika  staff      0 20 Jan 18:35 Wicked Blood
+drwxr-xr-x  1 indika  staff      0 31 Jan 16:38 Wild Card
+drwxr-xr-x  1 indika  staff      0  6 Jan 18:02 Wild Hogs
+drwxr-xr-x  1 indika  staff   4096 24 Nov 18:08 Wings Sky Force Heroes
+drwxr-xr-x  1 indika  staff      0 11 Nov 05:14 Wolves
+drwxr-xr-x  1 indika  staff   4096 24 Nov 18:08 World War Z
+drwxr-xr-x  1 indika  staff      0 24 Nov 18:08 X Men Days of Future Past
+drwxr-xr-x  1 indika  staff      0  4 Sep 22:38 X-Men First Class
+drwxr-xr-x  1 indika  staff      0 24 Nov 18:08 Yellowbeard
+drwxr-xr-x  1 indika  staff      0  4 Sep 22:40 You Don't Mess with the Zohan
+drwxr-xr-x  1 indika  staff      0  4 Sep 22:42 Young Frankenstein
+drwxr-xr-x  1 indika  staff      0  4 Sep 22:42 Zero Dark Thirty
+drwxr-xr-x  1 indika  staff      0 12 Jan 06:14 Zodiac Signs of the Apocalypse
+drwxr-xr-x  1 indika  staff      0  5 Feb 22:03 Zombie Killers Elephants Graveyard
