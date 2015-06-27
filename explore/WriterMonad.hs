@@ -1,5 +1,6 @@
 module WriterModule where
 
+import Control.Applicative
 import Data.Monoid
 
 -- What's going on?
@@ -118,7 +119,7 @@ applyLog''' (v, log) df = let (y, log') = df v in (y, log `mappend` log')
 
 -- it's definition looks like:
 
-newtype Writer' w a = Writer' { runWriter :: (a, w) }
+newtype Writer w a = Writer { runWriter :: (a, w) }
     deriving Show
 
 newtype WriterPlain w a = WriterPlain (a, w)
@@ -127,11 +128,26 @@ newtype WriterPlain w a = WriterPlain (a, w)
 -- I've seen this before: the function inside a type
 -- Reminds me of the runParser
 
-someWriter = Writer' (3, "hello bob")
+someWriter = Writer (3, "hello bob")
 plainWriter = WriterPlain (3, "hello bob")
 
 direct_unboxing = runWriter someWriter
 convoluted_unboxing = let (WriterPlain x) = plainWriter in x
+
+
+-- Writing a functor instance for the Writer
+
+instance Functor (Writer w) where
+    fmap f (Writer (x, v)) = Writer (f x, v)
+
+
+-- Writing an applicative instance for the Writer
+
+instance (Monoid w) => Applicative (Writer w) where
+    pure x = Writer (x, mempty)
+    (Writer (f, v)) <*> (Writer (x, v')) = (Writer (f x, v `mappend` v'))
+
+
 
 -- A Monad instance is exported for it
 
