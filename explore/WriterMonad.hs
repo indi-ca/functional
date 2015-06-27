@@ -3,16 +3,19 @@ module WriterModule where
 import Data.Monoid
 
 -- What's going on?
--- I have a function that let's me decide things
--- Why do I need an applyLog?
--- Well, I need an application function
--- Because I have a history, and I want to create a future
--- However, not quite
+
+-- I have a "Categorizer - with Reason" :: (a, b)
+-- It is not quite a Decider, because a decision seems like a fork in the road,
+-- and there are no Forks on the Haskell Road (with exception to ForkIO)
+
+-- The Reason is historical. It has gone through a series of mutations.
+
+-- I have an "ApplyLog" :: call it this for now, until I can give it a better name
+-- It simply, categorizes x, and merges it with the history of reasons
+
+-- Or, perhaps the following is True... ?
 -- Because, my past is of type Integer (antes)
 -- and my future, is of type Bool (despues)
-
-main :: IO ()
-main = undefined
 
 
 
@@ -44,17 +47,17 @@ applyLog (v, log) df = let (y, log') = df v in (y, log ++ log')
 -- [?] Something that I am yet to understand.
 -- And when can I use the actual type?
 -- This is what I would like to do:
--- decider :: a -> (b, [Char])
+-- categorizer :: a -> (b, [Char])
 -- but, now I'm going to resort to
--- decider :: Int -> (Bool, [Char])
+-- categorizer :: Int -> (Bool, [Char])
 
-decider :: Int -> (Bool, [Char])
-decider x
+categorizer :: Int -> (Bool, [Char])
+categorizer x
     | x < 9     =  (False, "less than")
     | otherwise =  (True, "greater than")
 
-decider'' :: Int -> (Bool, Thneed)
-decider'' x
+categorizer'' :: Int -> (Bool, Thneed)
+categorizer'' x
     | x < 9     =  (False, Thneed "less than")
     | otherwise =  (True, Thneed "greater than")
 
@@ -136,5 +139,10 @@ convoluted_unboxing = let (WriterPlain x) = plainWriter in x
 
 
 
---test = decider 7
-test = applyLog''' (7, Thneed "this is the past") decider''
+--test = categorizer 7
+test = applyLog''' (7, Thneed "this is the past") categorizer''
+
+
+main :: IO ()
+main = undefined
+
